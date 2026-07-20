@@ -1,0 +1,139 @@
+.why-choose {
+  background: var(--white);
+}
+
+.why-choose__layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.why-choose__intro .section-title {
+  text-align: left;
+}
+
+.why-choose__title {
+  margin-bottom: 20px;
+}
+
+.why-choose__text {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.why-choose__highlight {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--primary-subtle), var(--primary-light));
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 102, 204, 0.15);
+}
+
+.why-choose__highlight-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+}
+
+.why-choose__highlight-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.why-choose__highlight strong {
+  display: block;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.why-choose__highlight p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.why-choose__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.why-choose__card {
+  padding: 24px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+}
+
+.why-choose__card:hover {
+  background: var(--white);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.why-choose__icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.why-choose__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.why-choose__card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.why-choose__card-text {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .why-choose__layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .why-choose__intro .section-title {
+    text-align: center;
+  }
+
+  .why-choose__intro .section-label {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .why-choose__text {
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .why-choose__grid {
+    grid-template-columns: 1fr;
+  }
+}
