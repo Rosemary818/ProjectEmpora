@@ -7,15 +7,18 @@ import { sendEmail } from '../utils/email';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt';
 
 export class AuthService {
-  static async registerUser(name: string, email: string, password?: string) {
+  static async registerUser(firstName: string, lastName: string, email: string, phone?: string, password?: string, role: 'SuperAdmin' | 'HRAdmin' | 'Manager' | 'Employee' | 'Candidate' = 'Employee') {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      if (existingUser.isEmailVerified) {
+      if (existingUser.isVerified) {
         throw new AppError('User already exists', 400);
       }
       // If user exists but not verified, we can resend OTP or allow them to try again.
       // For simplicity, we'll just update the name/password and send a new OTP.
-      existingUser.name = name;
+      existingUser.firstName = firstName;
+      existingUser.lastName = lastName;
+      existingUser.phone = phone;
+      existingUser.isVerified = true; // For development testing
       if (password) {
         existingUser.password = await hashData(password);
       }
@@ -27,12 +30,18 @@ export class AuthService {
       }
       
       await User.create({
-        name,
+        firstName,
+        lastName,
         email,
+        phone,
         password: hashedPassword,
+        role,
+        isVerified: true, // For development testing
       });
     }
 
+    /*
+    // Disabled for development testing
     const otp = generateOTP();
     const hashedOtp = await hashData(otp);
     
@@ -52,6 +61,7 @@ export class AuthService {
       'Verify Your Email',
       `<p>Your OTP for email verification is: <strong>${otp}</strong>. It will expire in 10 minutes.</p>`
     );
+    */
   }
 
   static async verifyEmail(email: string, otp: string) {
@@ -65,7 +75,7 @@ export class AuthService {
       throw new AppError('Invalid OTP', 400);
     }
 
-    await User.findOneAndUpdate({ email }, { isEmailVerified: true });
+    await User.findOneAndUpdate({ email }, { isVerified: true });
     await Otp.deleteMany({ email, purpose: 'VERIFY_EMAIL' });
   }
 
@@ -75,9 +85,12 @@ export class AuthService {
       throw new AppError('Invalid credentials', 401);
     }
 
-    if (!user.isEmailVerified) {
+    /*
+    // Disabled for development testing
+    if (!user.isVerified) {
       throw new AppError('Please verify your email first', 401);
     }
+    */
 
     if (password && user.password) {
       const isMatch = await verifyHashedData(password, user.password);
@@ -88,8 +101,8 @@ export class AuthService {
       throw new AppError('Password not set for this user', 401);
     }
 
-    const accessToken = generateAccessToken(user._id as string);
-    const refreshToken = generateRefreshToken(user._id as string);
+    const accessToken = generateAccessToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
     
     const hashedRefreshToken = await hashData(refreshToken);
 
@@ -122,11 +135,15 @@ export class AuthService {
       expiresAt: new Date(Date.now() + 10 * 60 * 1000),
     });
 
-    await sendEmail(
+    const emailSent = await sendEmail(
       email,
       'Reset Your Password',
       `<p>Your OTP for password reset is: <strong>${otp}</strong>. It will expire in 10 minutes.</p>`
     );
+
+    if (!emailSent) {
+      throw new AppError('Failed to send reset email. Please try again later.', 500);
+    }
   }
 
   static async resetPassword(email: string, otp: string, newPassword: string) {

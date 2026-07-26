@@ -3,11 +3,24 @@ import { AuthService } from '../services/auth.service';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, password } = req.body;
-    await AuthService.registerUser(name, email, password);
+    const { firstName, lastName, email, phone, password } = req.body;
+    await AuthService.registerUser(firstName, lastName, email, phone, password);
     res.status(201).json({
       success: true,
-      message: 'Registration successful. Please check your email for OTP.',
+      message: 'Registration successful. You can now log in.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const candidateRegister = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { firstName, lastName, email, phone, password } = req.body;
+    await AuthService.registerUser(firstName, lastName, email, phone, password, 'Candidate');
+    res.status(201).json({
+      success: true,
+      message: 'Candidate registration successful. You can now log in.',
     });
   } catch (error) {
     next(error);
@@ -48,8 +61,11 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       data: {
         user: {
           id: data.user._id,
-          name: data.user.name,
+          employeeCode: data.user.employeeCode,
+          firstName: data.user.firstName,
+          lastName: data.user.lastName,
           email: data.user.email,
+          role: data.user.role,
         },
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,

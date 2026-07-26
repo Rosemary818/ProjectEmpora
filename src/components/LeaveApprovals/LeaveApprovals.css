@@ -1,0 +1,165 @@
+.la-container {
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.la-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.la-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.la-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.la-card-body {
+  padding: 1.5rem;
+}
+
+.la-table-responsive {
+  overflow-x: auto;
+}
+
+.la-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.la-table th,
+.la-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.la-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.la-table td {
+  color: #111827;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.la-emp-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.la-emp-dept {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.la-date {
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.la-truncate {
+  display: inline-block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.la-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.la-badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.la-badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.la-badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.la-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.la-btn {
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.la-btn-success {
+  background-color: #10b981;
+  color: white;
+}
+
+.la-btn-success:hover {
+  background-color: #059669;
+}
+
+.la-btn-danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.la-btn-danger:hover {
+  background-color: #dc2626;
+}
+
+.la-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.la-alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.la-alert-danger {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.la-text-muted {
+  color: #6b7280;
+}
+
+.la-loading {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+}

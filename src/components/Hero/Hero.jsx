@@ -53,20 +53,6 @@ function WorkplaceIllustration() {
         <circle cx="60" cy="340" r="20" fill="#c2edce" opacity="0.4" />
       </svg>
 
-      <div className="hero__float-card hero__float-card--1">
-        <span className="hero__float-icon">✓</span>
-        <div>
-          <strong>98.5%</strong>
-          <span>Attendance Rate</span>
-        </div>
-      </div>
-      <div className="hero__float-card hero__float-card--2">
-        <span className="hero__float-icon hero__float-icon--ai">AI</span>
-        <div>
-          <strong>Smart HR</strong>
-          <span>Assistant Active</span>
-        </div>
-      </div>
     </div>
   )
 }
@@ -94,6 +80,9 @@ function Hero() {
             <a href="#features" className="btn btn-secondary hero__btn">
               Explore Features
             </a>
+            <Link to="/candidate-register" className="btn btn-secondary hero__btn">
+              Career Portal
+            </Link>
           </div>
           <div className="hero__stats animate-on-scroll">
             <div className="hero__stat">

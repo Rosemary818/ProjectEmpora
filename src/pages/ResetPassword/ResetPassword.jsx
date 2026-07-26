@@ -56,11 +56,39 @@ function ResetPassword() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (validate()) {
-      alert('Password reset successful! You can now log in with your new password.')
-      navigate('/login')
+      const email = sessionStorage.getItem('resetEmail')
+      const otp = sessionStorage.getItem('resetOtp')
+      
+      if (!email || !otp) {
+        setErrors({ password: 'Session expired. Please try resetting your password again.' })
+        return
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/reset-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, otp, newPassword: form.password }),
+        })
+        
+        const data = await response.json()
+        
+        if (response.ok) {
+          sessionStorage.removeItem('resetEmail')
+          sessionStorage.removeItem('resetOtp')
+          alert('Password reset successful! You can now log in with your new password.')
+          navigate('/login')
+        } else {
+          setErrors({ password: data.message || 'Failed to reset password. The OTP might be invalid or expired.' })
+        }
+      } catch (err) {
+        setErrors({ password: 'Network error. Please try again later.' })
+      }
     }
   }
 

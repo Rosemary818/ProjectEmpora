@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { validateLoginForm } from '../../utils/validation'
 import './Login.css'
 
@@ -34,6 +34,7 @@ function Login() {
   const [showForgotModal, setShowForgotModal] = useState(false)
   const [forgotEmail, setForgotEmail] = useState('')
   const [forgotError, setForgotError] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const savedEmail = localStorage.getItem(REMEMBER_KEY)
@@ -59,7 +60,7 @@ function Login() {
     setErrors(validateLoginForm(form))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitted(true)
 
@@ -67,13 +68,48 @@ function Login() {
     setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      if (rememberMe) {
-        localStorage.setItem(REMEMBER_KEY, form.email.trim())
-      } else {
-        localStorage.removeItem(REMEMBER_KEY)
-      }
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email, password: form.password })
+        });
+        const data = await response.json();
 
-      alert('Login successful! Welcome back to Empora.')
+        if (response.ok) {
+          if (rememberMe) {
+            localStorage.setItem(REMEMBER_KEY, form.email.trim())
+          } else {
+            localStorage.removeItem(REMEMBER_KEY)
+          }
+          
+          if (data.data?.accessToken) {
+            localStorage.setItem('accessToken', data.data.accessToken);
+          }
+          if (data.data?.user) {
+            localStorage.setItem('user', JSON.stringify(data.data.user));
+          }
+
+          if (data.data?.user?.role === 'SuperAdmin') {
+            navigate('/super-admin/dashboard');
+          } else if (data.data?.user?.role === 'HRAdmin') {
+            navigate('/hr/dashboard');
+          } else if (data.data?.user?.role === 'Manager') {
+            navigate('/manager/dashboard');
+          } else if (data.data?.user?.role === 'Employee') {
+            navigate('/employee/dashboard');
+          } else if (data.data?.user?.role === 'Candidate') {
+            navigate('/career-portal/dashboard');
+          } else {
+            alert('Login successful! Welcome back to Empora.');
+          }
+        } else {
+          alert(data.message || data.error || 'Login failed');
+        }
+      } catch (err) {
+        alert('An error occurred during login. Please try again.');
+        console.error(err);
+      }
     }
   }
 

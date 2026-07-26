@@ -143,7 +143,6 @@
 
 .hero__illustration {
   position: relative;
-  animation: float 6s ease-in-out infinite;
 }
 
 .hero__illustration svg {

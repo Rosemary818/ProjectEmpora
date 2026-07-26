@@ -5,7 +5,6 @@ import Features from '../../components/Features/Features'
 import AIFeatures from '../../components/AIFeatures/AIFeatures'
 import WhyChoose from '../../components/WhyChoose/WhyChoose'
 import About from '../../components/About/About'
-import Contact from '../../components/Contact/Contact'
 import Footer from '../../components/Footer/Footer'
 
 function Landing() {
@@ -20,7 +19,6 @@ function Landing() {
         <AIFeatures />
         <WhyChoose />
         <About />
-        <Contact />
       </main>
       <Footer />
     </>

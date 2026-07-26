@@ -1,0 +1,230 @@
+.am-container {
+  padding: 1.5rem;
+}
+
+.am-header {
+  margin-bottom: 2rem;
+}
+
+.am-header h2 {
+  font-size: 1.5rem;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.am-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.am-alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.am-alert-danger {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+.am-alert-success {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.am-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .am-dashboard-grid {
+    grid-template-columns: 350px 1fr;
+  }
+}
+
+.am-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.am-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.am-card-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.am-date-badge {
+  background-color: #e5e7eb;
+  color: #4b5563;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.am-card-body {
+  padding: 1.5rem;
+}
+
+/* Status Display */
+.am-status-display {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.am-status-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.am-status-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.status-not-checked-in {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.status-checked-in {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.status-attendance-completed {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+/* Times Grid */
+.am-times-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.am-time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.am-time-box:first-child {
+  border-right: 1px solid #e5e7eb;
+}
+
+.am-time-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.am-time-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.am-total-hours {
+  text-align: center;
+  padding: 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  color: #374151;
+}
+
+.am-action-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.am-btn-large {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Table */
+.am-table-responsive {
+  overflow-x: auto;
+}
+
+.am-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.am-table th,
+.am-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.am-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.am-table td {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.am-badge {
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.am-badge-present {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.am-badge-absent {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.am-loading {
+  text-align: center;
+  padding: 4rem;
+  color: #6b7280;
+  font-size: 1.125rem;
+}

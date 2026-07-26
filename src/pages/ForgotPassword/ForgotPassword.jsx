@@ -7,7 +7,7 @@ function ForgotPassword() {
   const [error, setError] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email) {
       setError('Email is required')
@@ -18,9 +18,26 @@ function ForgotPassword() {
       return
     }
 
-    setError('')
-    setSubmitted(true)
-    // Add API logic here
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        sessionStorage.setItem('resetEmail', email);
+        setError('');
+        setSubmitted(true);
+      } else {
+        setError(data.message || 'Failed to send OTP. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please try again later.');
+    }
   }
 
   return (

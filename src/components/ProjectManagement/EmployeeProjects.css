@@ -1,0 +1,130 @@
+.ep-container {
+  padding: 1.5rem;
+}
+
+.ep-header {
+  margin-bottom: 2rem;
+}
+
+.ep-header h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+}
+
+.ep-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.ep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.ep-card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ep-card-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.ep-card-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  color: #111827;
+}
+
+.ep-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.ep-status-planning { background-color: #e0e7ff; color: #4338ca; }
+.ep-status-active { background-color: #dcfce7; color: #15803d; }
+.ep-status-onhold { background-color: #fef3c7; color: #b45309; }
+.ep-status-completed { background-color: #f3f4f6; color: #374151; }
+
+.ep-card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ep-desc {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0 0 1.5rem 0;
+}
+
+.ep-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+}
+
+.ep-info-grid strong {
+  color: #111827;
+}
+
+.ep-team-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.25rem;
+}
+
+.ep-team-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ep-team-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ep-member-badge {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.ep-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.ep-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}

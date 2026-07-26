@@ -54,8 +54,21 @@ function VerifyOTP() {
     inputRefs.current[focusIndex].focus()
   }
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (timer > 0) return
+    const email = sessionStorage.getItem('resetEmail')
+    if (email) {
+      try {
+        await fetch('http://localhost:5000/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        })
+      } catch (err) {
+        console.error('Failed to resend OTP', err)
+      }
+    }
+
     setTimer(60)
     setOtp(['', '', '', '', '', ''])
     setError('')
@@ -70,7 +83,7 @@ function VerifyOTP() {
       return
     }
     
-    // Simulated API success
+    sessionStorage.setItem('resetOtp', otpValue)
     navigate('/reset-password')
   }
 

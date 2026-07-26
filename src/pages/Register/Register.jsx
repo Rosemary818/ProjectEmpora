@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getPasswordStrength, validateRegisterForm } from '../../utils/validation'
 import './Register.css'
 
@@ -123,6 +123,7 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -140,7 +141,7 @@ function Register() {
     setErrors(validateRegisterForm(form))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitted(true)
 
@@ -148,11 +149,34 @@ function Register() {
     setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      alert('Registration successful! Welcome to Empora.')
-      setForm(initialForm)
-      setTouched({})
-      setSubmitted(false)
-      setErrors({})
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            phone: form.phone,
+            password: form.password,
+          })
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+          alert('Registration successful! Welcome to Empora. ' + (data.message || ''));
+          setForm(initialForm)
+          setTouched({})
+          setSubmitted(false)
+          setErrors({})
+          navigate('/login');
+        } else {
+          alert(data.message || data.error || 'Registration failed');
+        }
+      } catch (err) {
+        alert('An error occurred during registration. Please try again.');
+        console.error(err);
+      }
     }
   }
 

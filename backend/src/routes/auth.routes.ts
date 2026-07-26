@@ -13,6 +13,7 @@ import {
 const router = Router();
 
 router.post('/register', validate(registerSchema), AuthController.register);
+router.post('/candidate-register', validate(registerSchema), AuthController.candidateRegister);
 router.post('/verify-email', validate(verifyEmailSchema), AuthController.verifyEmail);
 router.post('/login', validate(loginSchema), AuthController.login);
 router.post('/forgot-password', validate(forgotPasswordSchema), AuthController.forgotPassword);
