@@ -30,7 +30,7 @@ const HREmployeeManagement = () => {
       if (res.ok) {
         setEmployees(data.data);
       } else {
-        setError(data.message || 'Failed to fetch employees');
+        setError(data.error || data.message || 'Failed to fetch employees');
       }
     } catch (err) {
       setError('Network error');
