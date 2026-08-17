@@ -9,7 +9,9 @@ const LeaveManagement = () => {
     startDate: '',
     endDate: '',
     reason: '',
+    relationship: 'Father',
   });
+  const [document, setDocument] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -42,26 +44,86 @@ const LeaveManagement = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('File size must be less than 5MB');
+        e.target.value = '';
+        setDocument(null);
+        return;
+      }
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(file.type)) {
+        setError('Only PDF, JPG, JPEG, and PNG formats are allowed');
+        e.target.value = '';
+        setDocument(null);
+        return;
+      }
+      setError('');
+      setDocument(file);
+    } else {
+      setDocument(null);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
+    
+    let days = 0;
+    let curDate = new Date(start.getTime());
+    while (curDate <= end) {
+      const dayOfWeek = curDate.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) days++;
+      curDate.setDate(curDate.getDate() + 1);
+    }
+
+    if (formData.leaveType === 'Sick Leave' && days > 2 && !document) {
+      setError('Medical Certificate is required for Sick Leave exceeding 2 days.');
+      return;
+    }
+    if (['Maternity Leave', 'Marriage Leave', 'Bereavement Leave', 'Compensatory Off'].includes(formData.leaveType) && !document) {
+      setError(`Supporting document is required for ${formData.leaveType}.`);
+      return;
+    }
+    if (formData.leaveType === 'Bereavement Leave' && !formData.relationship) {
+      setError('Please select the relationship for Bereavement Leave.');
+      return;
+    }
+
     setLoading(true);
+
+    const submitData = new FormData();
+    submitData.append('leaveType', formData.leaveType);
+    submitData.append('startDate', formData.startDate);
+    submitData.append('endDate', formData.endDate);
+    submitData.append('reason', formData.reason);
+    if (formData.leaveType === 'Bereavement Leave') {
+      submitData.append('relationship', formData.relationship);
+    }
+    if (document) {
+      submitData.append('document', document);
+    }
 
     try {
       const response = await fetch('http://localhost:5000/api/leave', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
-        body: JSON.stringify(formData),
+        body: submitData,
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setShowForm(false);
-        setFormData({ leaveType: 'Casual Leave', startDate: '', endDate: '', reason: '' });
+        setFormData({ leaveType: 'Casual Leave', startDate: '', endDate: '', reason: '', relationship: 'Father' });
+        setDocument(null);
         fetchLeaves();
       } else {
         setError(data.error || data.message || 'Failed to submit leave request');
@@ -72,6 +134,10 @@ const LeaveManagement = () => {
       setLoading(false);
     }
   };
+
+  const requiresDocument = ['Sick Leave', 'Maternity Leave', 'Marriage Leave', 'Bereavement Leave', 'Compensatory Off'].includes(formData.leaveType);
+  const isMedicalCert = ['Sick Leave', 'Maternity Leave'].includes(formData.leaveType);
+  const documentLabel = isMedicalCert ? 'Medical Certificate *' : 'Supporting Document *';
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -104,7 +170,12 @@ const LeaveManagement = () => {
                 <select name="leaveType" value={formData.leaveType} onChange={handleChange} required>
                   <option value="Casual Leave">Casual Leave</option>
                   <option value="Sick Leave">Sick Leave</option>
-                  <option value="Earned Leave">Earned Leave</option>
+                  <option value="Earned Leave">Earned Leave / Annual Leave</option>
+                  <option value="Maternity Leave">Maternity Leave</option>
+                  <option value="Marriage Leave">Marriage Leave</option>
+                  <option value="Bereavement Leave">Bereavement Leave</option>
+                  <option value="Work From Home">Work From Home</option>
+                  <option value="Compensatory Off">Compensatory Off</option>
                   <option value="Other Leave">Other Leave</option>
                 </select>
               </div>
@@ -118,6 +189,31 @@ const LeaveManagement = () => {
                   <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} required />
                 </div>
               </div>
+              {formData.leaveType === 'Bereavement Leave' && (
+                <div className="lm-form-group">
+                  <label>Relationship *</label>
+                  <select name="relationship" value={formData.relationship} onChange={handleChange} required>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Son">Son</option>
+                    <option value="Daughter">Daughter</option>
+                  </select>
+                </div>
+              )}
+              {requiresDocument && (
+                <div className="lm-form-group">
+                  <label>{documentLabel}</label>
+                  <input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" onChange={handleFileChange} />
+                  {document && (
+                    <div className="lm-file-preview">
+                      <p>Selected: {document.name} ({(document.size / 1024 / 1024).toFixed(2)} MB)</p>
+                    </div>
+                  )}
+                </div>
+              )}
               <div className="lm-form-group">
                 <label>Reason</label>
                 <textarea name="reason" rows="3" value={formData.reason} onChange={handleChange} required placeholder="Please provide a reason..."></textarea>

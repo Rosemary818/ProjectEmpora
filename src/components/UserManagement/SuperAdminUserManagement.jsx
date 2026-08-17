@@ -95,6 +95,7 @@ const SuperAdminUserManagement = () => {
           <option value="Manager">Manager</option>
           <option value="Employee">Employee</option>
           <option value="Candidate">Candidate</option>
+          <option value="ServiceExecutive">Service Executive</option>
         </select>
       </div>
 

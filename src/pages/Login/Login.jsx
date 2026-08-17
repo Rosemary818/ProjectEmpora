@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google'
 import { validateLoginForm } from '../../utils/validation'
 import './Login.css'
 
@@ -82,7 +83,7 @@ function Login() {
           } else {
             localStorage.removeItem(REMEMBER_KEY)
           }
-          
+
           if (data.data?.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);
           }
@@ -90,7 +91,9 @@ function Login() {
             localStorage.setItem('user', JSON.stringify(data.data.user));
           }
 
-          if (data.data?.user?.role === 'SuperAdmin') {
+          if (data.data?.user?.mustChangePassword) {
+            navigate('/change-password');
+          } else if (data.data?.user?.role === 'SuperAdmin') {
             navigate('/super-admin/dashboard');
           } else if (data.data?.user?.role === 'HRAdmin') {
             navigate('/hr/dashboard');
@@ -100,6 +103,8 @@ function Login() {
             navigate('/employee/dashboard');
           } else if (data.data?.user?.role === 'Candidate') {
             navigate('/career-portal/dashboard');
+          } else if (data.data?.user?.role === 'ServiceExecutive') {
+            navigate('/service-executive/dashboard');
           } else {
             alert('Login successful! Welcome back to Empora.');
           }
@@ -112,6 +117,53 @@ function Login() {
       }
     }
   }
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential })
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.data?.accessToken) {
+          localStorage.setItem('accessToken', data.data.accessToken);
+        }
+        if (data.data?.user) {
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+        }
+
+        if (data.data?.user?.mustChangePassword) {
+          navigate('/change-password');
+        } else if (data.data?.user?.role === 'SuperAdmin') {
+          navigate('/super-admin/dashboard');
+        } else if (data.data?.user?.role === 'HRAdmin') {
+          navigate('/hr/dashboard');
+        } else if (data.data?.user?.role === 'Manager') {
+          navigate('/manager/dashboard');
+        } else if (data.data?.user?.role === 'Employee') {
+          navigate('/employee/dashboard');
+        } else if (data.data?.user?.role === 'Candidate') {
+          navigate('/career-portal/dashboard');
+        } else if (data.data?.user?.role === 'ServiceExecutive') {
+          navigate('/service-executive/dashboard');
+        } else {
+          alert('Login successful! Welcome back to Empora.');
+        }
+      } else {
+        alert(data.message || data.error || 'Google login failed');
+      }
+    } catch (err) {
+      alert('An error occurred during Google login. Please try again.');
+      console.error(err);
+    }
+  };
+
+  const handleGoogleError = () => {
+    alert('Google authentication failed. Please try again.');
+  };
 
   const handleForgotSubmit = (e) => {
     e.preventDefault()
@@ -139,10 +191,10 @@ function Login() {
             <svg viewBox="0 0 48 32" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="14" r="5" />
               <path d="M3 32 C3 25, 8 22, 12 22 C16 22, 21 25, 21 32 Z" />
-              
+
               <circle cx="36" cy="14" r="5" />
               <path d="M27 32 C27 25, 32 22, 36 22 C40 22, 45 25, 45 32 Z" />
-              
+
               <circle cx="24" cy="11" r="6.5" />
               <path d="M12 32 C12 21, 17 17, 24 17 C31 17, 36 21, 36 32 Z" />
             </svg>
@@ -259,6 +311,21 @@ function Login() {
             <button type="submit" className="btn btn-primary login__submit">
               Login
             </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
+              <span style={{ padding: '0 1rem', color: '#6b7280', fontSize: '0.9rem' }}>OR</span>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                text="signin_with"
+                width="100%"
+              />
+            </div>
           </form>
 
           <p className="login__register-link">

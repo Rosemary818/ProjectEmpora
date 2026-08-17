@@ -1,0 +1,370 @@
+.app-mgt-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.app-mgt-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.app-mgt-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.app-mgt-search input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.app-mgt-search input:focus {
+  outline: none;
+  border-color: #388087;
+}
+
+.app-mgt-select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  color: #374151;
+  min-width: 180px;
+}
+
+.app-mgt-select:focus {
+  outline: none;
+  border-color: #388087;
+}
+
+.app-mgt-table-wrapper {
+  overflow-x: auto;
+}
+
+.app-mgt-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.app-mgt-table th {
+  padding: 1rem;
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-weight: 500;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.app-mgt-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.app-mgt-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.candidate-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.candidate-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #388087;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.candidate-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.candidate-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.candidate-info strong {
+  color: #111827;
+}
+
+.candidate-info span {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.app-mgt-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.resume-btn {
+  color: #388087;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.resume-btn:hover {
+  text-decoration: underline;
+}
+
+.view-app-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-app-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* Modal specific styles */
+.app-modal-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.info-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #111827;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.info-card p {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.action-btn-primary {
+  display: inline-block;
+  background-color: #388087;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.action-btn-primary:hover {
+  background-color: #2b6166;
+}
+
+.action-btn-secondary {
+  display: inline-block;
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.action-btn-secondary:hover {
+  background-color: #f3f4f6;
+}
+
+.status-action-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status-btn {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.status-btn:hover {
+  opacity: 0.9;
+}
+
+.status-btn.under-review { background-color: #4338ca; }
+.status-btn.shortlist { background-color: #d97706; }
+.status-btn.schedule { background-color: #a16207; }
+.status-btn.hire { background-color: #16a34a; }
+.status-btn.reject { background-color: #dc2626; }
+
+.status-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.status-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-color: #e5e7eb;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #388087;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-content strong {
+  color: #111827;
+}
+
+.timeline-content span {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.cover-letter-preview {
+  white-space: pre-wrap;
+  background: white;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .app-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Enhanced View Application Modal Styles */
+.app-modal {
+  width: 90%;
+  max-width: 1000px !important;
+}
+
+.candidate-profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.candidate-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.candidate-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #388087;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.candidate-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.candidate-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.resume-preview-iframe {
+  width: 100%;
+  height: 400px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.qualifications-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.qualification-section h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.qual-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #4b5563;
+}
+
+.qual-list li {
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.links-list p {
+  margin-bottom: 0.5rem;
+}
+

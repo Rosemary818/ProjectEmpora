@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google'
 import { getPasswordStrength, validateRegisterForm } from '../../utils/validation'
 import './Register.css'
 
@@ -180,6 +181,48 @@ function Register() {
     }
   }
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential })
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.data?.accessToken) {
+          localStorage.setItem('accessToken', data.data.accessToken);
+        }
+        if (data.data?.user) {
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+        }
+        
+        // Always redirect Google signups to Candidate Dashboard per prompt, unless they already exist as another role
+        if (data.data?.user?.role === 'SuperAdmin') {
+          navigate('/super-admin/dashboard');
+        } else if (data.data?.user?.role === 'HRAdmin') {
+          navigate('/hr/dashboard');
+        } else if (data.data?.user?.role === 'Manager') {
+          navigate('/manager/dashboard');
+        } else if (data.data?.user?.role === 'Employee') {
+          navigate('/employee/dashboard');
+        } else {
+          navigate('/career-portal/dashboard');
+        }
+      } else {
+        alert(data.message || data.error || 'Google signup failed');
+      }
+    } catch (err) {
+      alert('An error occurred during Google signup. Please try again.');
+      console.error(err);
+    }
+  };
+
+  const handleGoogleError = () => {
+    alert('Google authentication failed. Please try again.');
+  };
+
   return (
     <div className="register">
       <div className="register__panel">
@@ -358,6 +401,21 @@ function Register() {
             <button type="submit" className="btn btn-primary register__submit">
               Register
             </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
+              <span style={{ padding: '0 1rem', color: '#6b7280', fontSize: '0.9rem' }}>OR</span>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                text="signup_with"
+                width="100%"
+              />
+            </div>
           </form>
 
           <p className="register__login-link">

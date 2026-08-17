@@ -66,6 +66,42 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
           lastName: data.user.lastName,
           email: data.user.email,
           role: data.user.role,
+          mustChangePassword: data.user.mustChangePassword,
+        },
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const googleAuth = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { credential, isCandidateSignup } = req.body;
+    const ipAddress = req.ip || req.connection.remoteAddress;
+    const userAgent = req.headers['user-agent'];
+
+    const data = await AuthService.googleAuth(credential, ipAddress, userAgent, isCandidateSignup);
+    
+    res.cookie('refreshToken', data.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          id: data.user._id,
+          employeeCode: data.user.employeeCode,
+          firstName: data.user.firstName,
+          lastName: data.user.lastName,
+          email: data.user.email,
+          role: data.user.role,
         },
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
@@ -96,6 +132,19 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     res.status(200).json({
       success: true,
       message: 'Password reset successful. You can now log in with your new password.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    await AuthService.changePassword(req.user.id, currentPassword, newPassword);
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully.',
     });
   } catch (error) {
     next(error);

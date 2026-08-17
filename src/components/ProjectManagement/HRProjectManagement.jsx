@@ -4,6 +4,7 @@ import './HRProjectManagement.css';
 const HRProjectManagement = () => {
   const [projects, setProjects] = useState([]);
   const [managers, setManagers] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
@@ -16,6 +17,7 @@ const HRProjectManagement = () => {
     startDate: '',
     endDate: '',
     status: 'Planning',
+    departmentId: '',
     managerId: ''
   });
 
@@ -28,13 +30,15 @@ const HRProjectManagement = () => {
       setLoading(true);
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       
-      const [projectsRes, usersRes] = await Promise.all([
+      const [projectsRes, usersRes, deptRes] = await Promise.all([
         fetch('http://localhost:5000/api/projects', { headers }),
-        fetch('http://localhost:5000/api/admin/employees', { headers })
+        fetch('http://localhost:5000/api/admin/employees', { headers }),
+        fetch('http://localhost:5000/api/departments', { headers })
       ]);
       
       const projectsData = await projectsRes.json();
       const usersData = await usersRes.json();
+      const deptData = await deptRes.json();
       
       if (projectsRes.ok) {
         setProjects(projectsData.data);
@@ -47,6 +51,10 @@ const HRProjectManagement = () => {
         const allManagers = usersData.data.filter(u => u.role === 'Manager' && u.status === 'Active');
         setManagers(allManagers);
       }
+
+      if (deptRes.ok) {
+        setDepartments(deptData.data);
+      }
       
     } catch (err) {
       setError('Network error');
@@ -56,8 +64,19 @@ const HRProjectManagement = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === 'departmentId') {
+      setFormData({ ...formData, departmentId: e.target.value, managerId: '' });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
+
+  const filteredManagers = formData.departmentId
+    ? managers.filter(m => {
+        const mDeptId = typeof m.departmentId === 'object' && m.departmentId !== null ? m.departmentId._id : m.departmentId;
+        return mDeptId === formData.departmentId;
+      })
+    : managers;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +95,7 @@ const HRProjectManagement = () => {
       const data = await res.json();
       if (res.ok) {
         setIsModalOpen(false);
-        setFormData({ name: '', description: '', startDate: '', endDate: '', status: 'Planning', managerId: '' });
+        setFormData({ name: '', description: '', startDate: '', endDate: '', status: 'Planning', departmentId: '', managerId: '' });
         fetchData();
       } else {
         alert(data.message || 'Failed to create project');
@@ -110,6 +129,7 @@ const HRProjectManagement = () => {
             <thead>
               <tr>
                 <th>Project Name</th>
+                <th>Department</th>
                 <th>Project Manager</th>
                 <th>Status</th>
                 <th>Timeline</th>
@@ -122,6 +142,9 @@ const HRProjectManagement = () => {
                   <td>
                     <div className="hrpm-name">{project.name}</div>
                     <div className="hrpm-desc">{project.description.substring(0, 50)}{project.description.length > 50 ? '...' : ''}</div>
+                  </td>
+                  <td>
+                    <div className="hrpm-dept">{project.departmentId ? (departments.find(d => d._id === (typeof project.departmentId === 'object' ? project.departmentId._id : project.departmentId))?.departmentName || 'Not Set') : 'Not Set'}</div>
                   </td>
                   <td>
                     {project.managerId ? (
@@ -152,7 +175,7 @@ const HRProjectManagement = () => {
               ))}
               {projects.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="hrpm-empty">No projects found.</td>
+                  <td colSpan="6" className="hrpm-empty">No projects found.</td>
                 </tr>
               )}
             </tbody>
@@ -177,6 +200,16 @@ const HRProjectManagement = () => {
               <div className="hrpm-form-group">
                 <label>Description</label>
                 <textarea name="description" required rows="3" value={formData.description} onChange={handleInputChange}></textarea>
+              </div>
+              
+              <div className="hrpm-form-group">
+                <label>Department</label>
+                <select name="departmentId" value={formData.departmentId} onChange={handleInputChange}>
+                  <option value="">Select a Department (Optional)</option>
+                  {departments.map(d => (
+                    <option key={d._id} value={d._id}>{d.departmentName}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="hrpm-form-row">
@@ -204,7 +237,7 @@ const HRProjectManagement = () => {
                   <label>Assign Manager</label>
                   <select name="managerId" required value={formData.managerId} onChange={handleInputChange}>
                     <option value="">Select a Manager...</option>
-                    {managers.map(m => (
+                    {filteredManagers.map(m => (
                       <option key={m._id} value={m._id}>{m.firstName} {m.lastName}</option>
                     ))}
                   </select>

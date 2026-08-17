@@ -1,0 +1,355 @@
+.hrdept-container {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.hrdept-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.hrdept-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.hrdept-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.hrdept-btn-primary {
+  background-color: #388087;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hrdept-btn-primary:hover {
+  background-color: #2c666c;
+}
+
+.hrdept-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.hrdept-btn-secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hrdept-btn-secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.hrdept-btn-small {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hrdept-btn-small:hover {
+  background-color: #e5e7eb;
+}
+
+.hrdept-btn-danger {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.hrdept-btn-danger:hover {
+  background-color: #fee2e2;
+}
+
+.hrdept-btn-success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.hrdept-btn-success:hover {
+  background-color: #dcfce7;
+}
+
+.hrdept-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.hrdept-table-wrapper {
+  overflow-x: auto;
+}
+
+.hrdept-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hrdept-table th {
+  background-color: #f9fafb;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hrdept-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.hrdept-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.hrdept-code {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.hrdept-desc {
+  font-size: 0.875rem;
+  color: #6b7280;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hrdept-manager-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hrdept-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e0f2fe;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  overflow: hidden;
+}
+
+.hrdept-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hrdept-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.hrdept-status-active {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.hrdept-status-inactive {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.hrdept-empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 3rem !important;
+}
+
+.hrdept-loading {
+  text-align: center;
+  padding: 4rem;
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+.hrdept-alert-danger {
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #fecaca;
+}
+
+/* Modal Styles */
+.hrdept-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.hrdept-modal {
+  background: white;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.hrdept-modal-large {
+  max-width: 700px;
+}
+
+.hrdept-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hrdept-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+.hrdept-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.hrdept-modal-close:hover {
+  color: #111827;
+}
+
+.hrdept-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.hrdept-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.hrdept-form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.hrdept-form-group input,
+.hrdept-form-group select,
+.hrdept-form-group textarea {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.hrdept-form-group input:focus,
+.hrdept-form-group select:focus,
+.hrdept-form-group textarea:focus {
+  outline: none;
+  border-color: #388087;
+  box-shadow: 0 0 0 3px rgba(56, 128, 135, 0.1);
+}
+
+.hrdept-form-group textarea {
+  resize: vertical;
+}
+
+.hrdept-modal-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Details Grid */
+.hrdept-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.hrdept-details-section {
+  background-color: #f9fafb;
+  padding: 1.25rem;
+  border-radius: 8px;
+}
+
+.hrdept-details-section h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #111827;
+  font-size: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.hrdept-details-section p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.hrdept-details-section strong {
+  color: #111827;
+  display: inline-block;
+  width: 120px;
+}

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as LeaveController from '../controllers/leave.controller';
 import { protect, restrictTo } from '../middlewares/auth.middleware';
+import { upload } from '../middlewares/upload.middleware';
 
 const router = Router();
 
@@ -8,7 +9,7 @@ const router = Router();
 router.use(protect);
 
 // Employee routes
-router.post('/', LeaveController.applyLeave);
+router.post('/', upload.single('document'), LeaveController.applyLeave);
 router.get('/', LeaveController.getMyLeaves);
 
 // Manager / HRAdmin / SuperAdmin routes

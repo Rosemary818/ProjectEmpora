@@ -6,16 +6,29 @@ export interface IUser extends Document {
   email: string;
   phone?: string;
   password?: string;
-  role: 'SuperAdmin' | 'HRAdmin' | 'Manager' | 'Employee' | 'Candidate';
+  role: 'SuperAdmin' | 'HRAdmin' | 'Manager' | 'Employee' | 'Candidate' | 'ServiceExecutive';
   profileImage?: string;
   jobTitle?: string;
   department?: string;
+  departmentId?: mongoose.Types.ObjectId;
+  designationId?: mongoose.Types.ObjectId;
+  managerId?: mongoose.Types.ObjectId;
   employeeCode?: string;
   dateOfJoining?: Date;
+  dateOfBirth?: Date;
+  provider: 'local' | 'google';
+  googleId?: string;
   isVerified: boolean;
   status: string;
+  mustChangePassword?: boolean;
+  wellbeingStatus?: string;
+  wellbeingLastUpdated?: Date;
   createdAt: Date;
   updatedAt: Date;
+  skills?: {
+    name: string;
+    proficiency: 'Beginner' | 'Intermediate' | 'Advanced';
+  }[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -46,7 +59,7 @@ const userSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['SuperAdmin', 'HRAdmin', 'Manager', 'Employee', 'Candidate'],
+      enum: ['SuperAdmin', 'HRAdmin', 'Manager', 'Employee', 'Candidate', 'ServiceExecutive'],
       default: 'Employee',
     },
     profileImage: {
@@ -60,6 +73,17 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: 'Active',
     },
+    mustChangePassword: {
+      type: Boolean,
+      default: false,
+    },
+    wellbeingStatus: {
+      type: String,
+      enum: ['Good', 'Okay', 'Stressed', 'Overloaded'],
+    },
+    wellbeingLastUpdated: {
+      type: Date,
+    },
     jobTitle: {
       type: String,
       trim: true,
@@ -67,6 +91,18 @@ const userSchema = new Schema<IUser>(
     department: {
       type: String,
       trim: true,
+    },
+    departmentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Department',
+    },
+    designationId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Designation',
+    },
+    managerId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
     employeeCode: {
       type: String,
@@ -77,6 +113,25 @@ const userSchema = new Schema<IUser>(
     dateOfJoining: {
       type: Date,
     },
+    dateOfBirth: {
+      type: Date,
+    },
+    provider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local',
+    },
+    googleId: {
+      type: String,
+      sparse: true,
+      unique: true,
+    },
+    skills: [
+      {
+        name: { type: String, required: true, trim: true },
+        proficiency: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'], required: true }
+      }
+    ]
   },
   {
     timestamps: true,
@@ -90,6 +145,7 @@ userSchema.pre('save', async function () {
     else if (this.role === 'HRAdmin') prefix = 'HR';
     else if (this.role === 'SuperAdmin') prefix = 'SA';
     else if (this.role === 'Candidate') prefix = 'CAN';
+    else if (this.role === 'ServiceExecutive') prefix = 'SE';
 
     // Find the user with the highest code for this prefix
     const lastUser = await mongoose.model<IUser>('User')

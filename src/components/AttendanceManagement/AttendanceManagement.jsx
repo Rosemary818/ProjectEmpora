@@ -121,7 +121,7 @@ const AttendanceManagement = () => {
   // Determine current status
   let currentStatus = 'Not Checked In';
   if (todayRecord) {
-    if (todayRecord.checkOutTime) {
+    if (todayRecord.checkOut) {
       currentStatus = 'Attendance Completed';
     } else {
       currentStatus = 'Checked In';
@@ -160,17 +160,22 @@ const AttendanceManagement = () => {
             <div className="am-times-grid">
               <div className="am-time-box">
                 <span className="am-time-label">Check In</span>
-                <span className="am-time-value">{todayRecord ? formatTime(todayRecord.checkInTime) : '--:--'}</span>
+                <span className="am-time-value">{todayRecord && todayRecord.checkIn ? formatTime(todayRecord.checkIn) : '--:--'}</span>
               </div>
               <div className="am-time-box">
                 <span className="am-time-label">Check Out</span>
-                <span className="am-time-value">{todayRecord && todayRecord.checkOutTime ? formatTime(todayRecord.checkOutTime) : '--:--'}</span>
+                <span className="am-time-value">{todayRecord && todayRecord.checkOut ? formatTime(todayRecord.checkOut) : '--:--'}</span>
               </div>
             </div>
 
-            {todayRecord && todayRecord.totalWorkingHours && (
+            {todayRecord && todayRecord.workingHours !== undefined && (
               <div className="am-total-hours">
-                <strong>Total Working Hours:</strong> {todayRecord.totalWorkingHours}
+                <strong>Total Working Hours:</strong> {todayRecord.workingHours} hrs
+                {todayRecord.overtimeHours > 0 && (
+                  <span style={{ color: '#d97706', marginLeft: '10px' }}>
+                    (Overtime: {todayRecord.overtimeHours} hrs)
+                  </span>
+                )}
               </div>
             )}
 
@@ -184,7 +189,7 @@ const AttendanceManagement = () => {
                   {actionLoading ? 'Processing...' : 'Check In'}
                 </button>
               )}
-              {todayRecord && !todayRecord.checkOutTime && (
+              {todayRecord && !todayRecord.checkOut && (
                 <button 
                   className="btn btn-warning am-btn-large" 
                   onClick={handleCheckOut}
@@ -193,7 +198,7 @@ const AttendanceManagement = () => {
                   {actionLoading ? 'Processing...' : 'Check Out'}
                 </button>
               )}
-              {todayRecord && todayRecord.checkOutTime && (
+              {todayRecord && todayRecord.checkOut && (
                 <button 
                   className="btn btn-secondary am-btn-large" 
                   disabled={true}
@@ -221,7 +226,8 @@ const AttendanceManagement = () => {
                       <th>Date</th>
                       <th>Check In</th>
                       <th>Check Out</th>
-                      <th>Duration</th>
+                      <th>Duration (hrs)</th>
+                      <th>Overtime (hrs)</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -229,12 +235,15 @@ const AttendanceManagement = () => {
                     {attendanceRecords.map((record) => (
                       <tr key={record._id}>
                         <td>{formatDate(record.date)}</td>
-                        <td>{formatTime(record.checkInTime)}</td>
-                        <td>{formatTime(record.checkOutTime)}</td>
-                        <td>{record.totalWorkingHours || '-'}</td>
+                        <td>{formatTime(record.checkIn)}</td>
+                        <td>{formatTime(record.checkOut)}</td>
+                        <td>{record.workingHours || '-'}</td>
+                        <td style={{ color: record.overtimeHours > 0 ? '#d97706' : 'inherit' }}>
+                          {record.overtimeHours || '-'}
+                        </td>
                         <td>
-                          <span className={`am-badge am-badge-${record.status.toLowerCase()}`}>
-                            {record.status}
+                          <span className={`am-badge am-badge-${record.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                            {record.status} {record.isLate ? '(Late)' : ''}
                           </span>
                         </td>
                       </tr>

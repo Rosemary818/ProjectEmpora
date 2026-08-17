@@ -78,6 +78,20 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
         return next(new AppError('Invalid manager selected', 400));
       }
       project.managerId = managerId;
+      
+      if (project.teamMembers && project.teamMembers.length > 0) {
+        if (manager.departmentId) {
+          await User.updateMany(
+            { _id: { $in: project.teamMembers } },
+            { departmentId: manager.departmentId }
+          );
+        } else {
+          await User.updateMany(
+            { _id: { $in: project.teamMembers } },
+            { $unset: { departmentId: 1 } }
+          );
+        }
+      }
     }
 
     await project.save();
@@ -152,6 +166,11 @@ export const addTeamMember = async (req: Request, res: Response, next: NextFunct
     project.teamMembers.push(employeeId);
     await project.save();
 
+    const manager = await User.findById(project.managerId);
+    if (manager && manager.departmentId) {
+      await User.findByIdAndUpdate(employeeId, { departmentId: manager.departmentId });
+    }
+
     await project.populate('managerId', 'firstName lastName email profileImage');
     await project.populate('teamMembers', 'firstName lastName email profileImage');
 
@@ -180,6 +199,8 @@ export const removeTeamMember = async (req: Request, res: Response, next: NextFu
 
     project.teamMembers = project.teamMembers.filter(id => id.toString() !== employeeId);
     await project.save();
+
+    await User.findByIdAndUpdate(employeeId, { $unset: { departmentId: 1 } });
 
     await project.populate('managerId', 'firstName lastName email profileImage');
     await project.populate('teamMembers', 'firstName lastName email profileImage');

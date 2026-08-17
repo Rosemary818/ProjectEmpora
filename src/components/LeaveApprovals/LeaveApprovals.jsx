@@ -171,7 +171,19 @@ const LeaveApprovals = () => {
                         </td>
                         <td>{leave.numberOfDays}</td>
                         <td>
-                          <span className="la-truncate" title={leave.reason}>{leave.reason}</span>
+                          <div className="la-truncate" title={leave.reason}>{leave.reason}</div>
+                          {leave.relationship && (
+                            <div style={{ fontSize: '0.85rem', color: '#6b7280', marginTop: '4px' }}>
+                              <strong>Rel:</strong> {leave.relationship}
+                            </div>
+                          )}
+                          {leave.documentUrl && (
+                            <div style={{ marginTop: '4px' }}>
+                              <a href={`http://localhost:5000${leave.documentUrl}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#2563eb', textDecoration: 'underline' }}>
+                                View Doc
+                              </a>
+                            </div>
+                          )}
                         </td>
                         <td>{getStatusBadge(leave.status)}</td>
                         <td>

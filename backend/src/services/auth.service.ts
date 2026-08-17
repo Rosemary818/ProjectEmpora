@@ -5,6 +5,9 @@ import { AppError } from '../utils/error';
 import { hashData, verifyHashedData, generateOTP } from '../utils/helpers';
 import { sendEmail } from '../utils/email';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client('923115329782-3kbb29a74rpr8rgn8pfp46j232jpqu86.apps.googleusercontent.com');
 
 export class AuthService {
   static async registerUser(firstName: string, lastName: string, email: string, phone?: string, password?: string, role: 'SuperAdmin' | 'HRAdmin' | 'Manager' | 'Employee' | 'Candidate' = 'Employee') {
@@ -117,6 +120,69 @@ export class AuthService {
     return { user, accessToken, refreshToken };
   }
 
+  static async googleAuth(credential: string, ipAddress?: string, userAgent?: string, isCandidateSignup?: boolean) {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: '923115329782-3kbb29a74rpr8rgn8pfp46j232jpqu86.apps.googleusercontent.com',
+    });
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email) {
+      throw new AppError('Invalid Google token', 401);
+    }
+
+    const { email, given_name, family_name, picture, sub } = payload;
+    let user = await User.findOne({ email });
+
+    if (user) {
+      if (isCandidateSignup && user.role !== 'Candidate') {
+        throw new AppError('This Google account is already registered to an internal employee. Please use the standard employee login.', 403);
+      }
+      
+      let updated = false;
+      if (user.provider !== 'google') {
+        user.provider = 'google';
+        user.googleId = sub;
+        updated = true;
+      }
+      if (!user.profileImage && picture) {
+        user.profileImage = picture;
+        updated = true;
+      }
+      if (!user.isVerified) {
+        user.isVerified = true;
+        updated = true;
+      }
+      if (updated) {
+        await user.save();
+      }
+    } else {
+      user = await User.create({
+        firstName: given_name || 'Google',
+        lastName: family_name || 'User',
+        email,
+        profileImage: picture,
+        provider: 'google',
+        googleId: sub,
+        role: 'Candidate',
+        isVerified: true,
+      });
+    }
+
+    const accessToken = generateAccessToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
+    const hashedRefreshToken = await hashData(refreshToken);
+
+    await Session.create({
+      userId: user._id,
+      refreshToken: hashedRefreshToken,
+      ipAddress,
+      userAgent,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
+
+    return { user, accessToken, refreshToken };
+  }
+
   static async forgotPassword(email: string) {
     const user = await User.findOne({ email });
     if (!user) {
@@ -160,6 +226,24 @@ export class AuthService {
     const hashedPassword = await hashData(newPassword);
     await User.findOneAndUpdate({ email }, { password: hashedPassword });
     await Otp.deleteMany({ email, purpose: 'RESET_PASSWORD' });
+  }
+
+  static async changePassword(userId: string, currentPassword?: string, newPassword?: string) {
+    if (!currentPassword || !newPassword) {
+      throw new AppError('Current password and new password are required', 400);
+    }
+    const user = await User.findById(userId);
+    if (!user || !user.password) {
+      throw new AppError('User not found or password not set', 400);
+    }
+    const isMatch = await verifyHashedData(currentPassword, user.password);
+    if (!isMatch) {
+      throw new AppError('Incorrect current password', 400);
+    }
+    const hashedPassword = await hashData(newPassword);
+    user.password = hashedPassword;
+    user.mustChangePassword = false;
+    await user.save();
   }
 
   static async refreshToken(oldRefreshToken: string, ipAddress?: string, userAgent?: string) {

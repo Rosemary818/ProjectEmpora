@@ -29,10 +29,10 @@ function Navbar() {
             <svg viewBox="0 0 48 32" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="14" r="5" />
               <path d="M3 32 C3 25, 8 22, 12 22 C16 22, 21 25, 21 32 Z" />
-              
+
               <circle cx="36" cy="14" r="5" />
               <path d="M27 32 C27 25, 32 22, 36 22 C40 22, 45 25, 45 32 Z" />
-              
+
               <circle cx="24" cy="11" r="6.5" />
               <path d="M12 32 C12 21, 17 17, 24 17 C31 17, 36 21, 36 32 Z" />
             </svg>
@@ -57,7 +57,7 @@ function Navbar() {
             <Link to="/login" className="btn btn-secondary navbar__btn-login" onClick={closeMenu}>
               Login
             </Link>
-            <Link to="/register" className="btn btn-primary navbar__btn-cta" onClick={closeMenu}>
+            <Link to="/candidate-register" className="btn btn-primary navbar__btn-cta" onClick={closeMenu}>
               Get Started
             </Link>
           </div>

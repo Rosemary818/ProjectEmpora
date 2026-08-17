@@ -9,6 +9,7 @@ export interface IProject extends Document {
   managerId: mongoose.Types.ObjectId;
   teamMembers: mongoose.Types.ObjectId[];
   createdBy: mongoose.Types.ObjectId;
+  departmentId?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -53,6 +54,10 @@ const projectSchema = new Schema<IProject>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    departmentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Department',
     },
   },
   {

@@ -1,0 +1,237 @@
+.reports-module-container {
+  padding: 1.5rem;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.reports-header {
+  margin-bottom: 1.5rem;
+}
+
+.reports-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.reports-header p {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.reports-nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.report-tab-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.report-tab-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.report-tab-btn.active {
+  background: #2563eb;
+  color: white;
+}
+
+.reports-content-area {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+/* Individual Report Base Styles */
+.report-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.report-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.report-view-header h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.report-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.report-search, .report-select, .report-date {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.report-search:focus, .report-select:focus, .report-date:focus {
+  border-color: #2563eb;
+}
+
+.btn-export {
+  padding: 0.5rem 1rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-export:hover {
+  background: #059669;
+}
+
+.btn-print {
+  padding: 0.5rem 1rem;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-print:hover {
+  background: #4b5563;
+}
+
+.report-table-wrapper {
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table th, .report-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.report-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.report-table td {
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.report-table tr:hover {
+  background: #f3f4f6;
+}
+
+/* Dashboard Summary Cards */
+.reports-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.report-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.report-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 0.5rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f9fafb;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-name {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: #111827;
+  font-weight: 700;
+}
+
+/* Print Styles */
+@media print {
+  .no-print, .sad-sidebar, .ad-sidebar, .manager-sidebar {
+    display: none !important;
+  }
+  .reports-module-container {
+    padding: 0 !important;
+    background: white !important;
+  }
+  .reports-content-area {
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .report-table th, .report-table td {
+    border: 1px solid #000;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .reports-content-area, .reports-content-area * {
+    visibility: visible;
+  }
+  .reports-content-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

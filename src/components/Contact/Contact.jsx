@@ -74,7 +74,7 @@ function Contact() {
             <div className="contact__cta-box">
               <h3>Ready to transform your workplace?</h3>
               <p>Start your journey with Empora today and experience the future of employee self-service.</p>
-              <a href="#home" className="btn btn-primary">Get Started</a>
+              <Link to="/candidate-register" className="btn btn-primary">Get Started</Link>
             </div>
           </div>
 

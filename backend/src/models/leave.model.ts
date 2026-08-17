@@ -2,11 +2,13 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ILeaveRequest extends Document {
   userId: mongoose.Types.ObjectId;
-  leaveType: 'Casual Leave' | 'Sick Leave' | 'Earned Leave' | 'Other Leave';
+  leaveType: 'Casual Leave' | 'Sick Leave' | 'Earned Leave' | 'Maternity Leave' | 'Marriage Leave' | 'Bereavement Leave' | 'Work From Home' | 'Compensatory Off' | 'Other Leave';
   startDate: Date;
   endDate: Date;
   numberOfDays: number;
   reason: string;
+  documentUrl?: string;
+  relationship?: 'Father' | 'Mother' | 'Brother' | 'Sister' | 'Spouse' | 'Son' | 'Daughter';
   status: 'Pending' | 'Approved' | 'Rejected';
   rejectionReason?: string;
   createdAt: Date;
@@ -22,7 +24,7 @@ const leaveRequestSchema = new Schema<ILeaveRequest>(
     },
     leaveType: {
       type: String,
-      enum: ['Casual Leave', 'Sick Leave', 'Earned Leave', 'Other Leave'],
+      enum: ['Casual Leave', 'Sick Leave', 'Earned Leave', 'Maternity Leave', 'Marriage Leave', 'Bereavement Leave', 'Work From Home', 'Compensatory Off', 'Other Leave'],
       required: [true, 'Leave type is required'],
     },
     startDate: {
@@ -51,6 +53,13 @@ const leaveRequestSchema = new Schema<ILeaveRequest>(
     rejectionReason: {
       type: String,
       trim: true,
+    },
+    documentUrl: {
+      type: String,
+    },
+    relationship: {
+      type: String,
+      enum: ['Father', 'Mother', 'Brother', 'Sister', 'Spouse', 'Son', 'Daughter'],
     },
   },
   {

@@ -1,0 +1,365 @@
+.interview-calendar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.calendar-layout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .calendar-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.calendar-nav h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+  min-width: 150px;
+  text-align: center;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-left: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.calendar-day-name {
+  text-align: center;
+  padding: 1rem 0;
+  font-weight: 600;
+  color: #4b5563;
+  background: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-cell {
+  min-height: 120px;
+  padding: 0.5rem;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  transition: background-color 0.2s;
+}
+
+.calendar-cell.empty {
+  background: #f9fafb;
+}
+
+.calendar-cell.today {
+  background: #f0fdf4;
+}
+
+.calendar-cell.past-day {
+  background: #f9fafb;
+}
+
+.calendar-day-number {
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  text-align: right;
+}
+
+.calendar-cell.today .calendar-day-number {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.calendar-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.calendar-event {
+  background: #e0e7ff;
+  border-left: 3px solid #4338ca;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.calendar-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-event.status-scheduled, .calendar-event.status-rescheduled {
+  background: #e0e7ff;
+  border-left-color: #4338ca;
+  color: #312e81;
+}
+
+.calendar-event.status-completed {
+  background: #dcfce7;
+  border-left-color: #16a34a;
+  color: #14532d;
+}
+
+.calendar-event.status-cancelled {
+  background: #fee2e2;
+  border-left-color: #dc2626;
+  color: #7f1d1d;
+  text-decoration: line-through;
+}
+
+.calendar-event.past-event {
+  opacity: 0.6;
+}
+
+.event-time {
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Upcoming Interviews */
+.upcoming-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upcoming-list-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.upcoming-list-item:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.upcoming-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #e0e7ff;
+  color: #4338ca;
+  border-radius: 8px;
+  min-width: 60px;
+  padding: 0.5rem;
+}
+
+.up-day {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.up-month {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.upcoming-details h4 {
+  margin: 0 0 0.25rem 0;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.upcoming-details p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.empty-upcoming {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+
+.empty-upcoming svg {
+  width: 48px;
+  height: 48px;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+.empty-upcoming p {
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Modal */
+.calendar-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.calendar-modal {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.calendar-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+}
+
+.calendar-modal-header h3 {
+  margin: 0;
+  color: #111827;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: #111827;
+}
+
+.calendar-modal-body {
+  padding: 1.5rem;
+}
+
+.int-detail-header {
+  margin-bottom: 1.5rem;
+}
+
+.int-detail-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+  font-size: 1.25rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-scheduled, .status-rescheduled {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+.status-completed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.status-cancelled {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.int-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.int-detail-list li {
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+}
+
+.int-detail-list li strong {
+  color: #111827;
+  display: inline-block;
+  width: 140px;
+}
+
+.int-detail-list a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.int-detail-list a:hover {
+  text-decoration: underline;
+}
+
+.int-action {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.5rem;
+}
+
+.join-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}

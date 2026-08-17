@@ -1,0 +1,145 @@
+.talent-mgmt-container {
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.talent-mgmt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.talent-mgmt-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.talent-mgmt-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.talent-search {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.talent-search:focus {
+  outline: none;
+  border-color: #388087;
+  box-shadow: 0 0 0 2px rgba(56, 128, 135, 0.2);
+}
+
+.talent-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  min-width: 150px;
+  font-size: 0.95rem;
+}
+
+.talent-select:focus {
+  outline: none;
+  border-color: #388087;
+  box-shadow: 0 0 0 2px rgba(56, 128, 135, 0.2);
+}
+
+.talent-loading, .talent-error {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.talent-error {
+  color: #dc2626;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.talent-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.talent-table th {
+  padding: 0.75rem 1rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.talent-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.talent-table tr:hover {
+  background-color: #f9fafb;
+}
+
+.talent-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.category-badge.professional {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.category-badge.personal {
+  background-color: #fdf4ff;
+  color: #86198f;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.level-beginner { background-color: #f3f4f6; color: #374151; }
+.level-intermediate { background-color: #dbeafe; color: #1e40af; }
+.level-advanced { background-color: #fef3c7; color: #92400e; }
+.level-expert { background-color: #dcfce3; color: #166534; }
+
+.no-data {
+  text-align: center;
+  padding: 2rem !important;
+  color: #6b7280 !important;
+}

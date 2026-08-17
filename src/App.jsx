@@ -5,12 +5,15 @@ import Login from './pages/Login/Login'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 import VerifyOTP from './pages/VerifyOTP/VerifyOTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
+import ChangePassword from './pages/ChangePassword/ChangePassword'
 import EmployeeDashboard from './pages/EmployeeDashboard/EmployeeDashboard'
 import SuperAdminDashboard from './pages/SuperAdminDashboard/SuperAdminDashboard'
 import HRAdminDashboard from './pages/HRAdminDashboard/HRAdminDashboard'
 import ManagerDashboard from './pages/ManagerDashboard/ManagerDashboard'
 import CareerPortalDashboard from './pages/CareerPortalDashboard/CareerPortalDashboard'
+import ServiceExecutiveDashboard from './pages/ServiceExecutiveDashboard/ServiceExecutiveDashboard'
 import CandidateRegister from './pages/CandidateRegister/CandidateRegister'
+import ActivityTimeline from './pages/ActivityTimeline/ActivityTimeline'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 
 function App() {
@@ -24,50 +27,76 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        
-        <Route 
-          path="/super-admin/dashboard" 
+        <Route path="/change-password" element={<ChangePassword />} />
+
+        <Route
+          path="/super-admin/dashboard"
           element={
             <ProtectedRoute allowedRoles={['SuperAdmin']}>
               <SuperAdminDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/hr/dashboard" 
+
+        <Route
+          path="/hr/dashboard"
           element={
             <ProtectedRoute allowedRoles={['HRAdmin']}>
               <HRAdminDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/manager/dashboard" 
+
+        <Route
+          path="/manager/dashboard"
           element={
             <ProtectedRoute allowedRoles={['Manager']}>
               <ManagerDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/employee/dashboard" 
+        <Route
+          path="/manager/activity"
+          element={
+            <ProtectedRoute allowedRoles={['Manager']}>
+              <ManagerDashboard defaultTab="Activity Timeline" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employee/dashboard"
           element={
             <ProtectedRoute allowedRoles={['Employee']}>
               <EmployeeDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/career-portal/dashboard" 
+        <Route
+          path="/employee/activity"
+          element={
+            <ProtectedRoute allowedRoles={['Employee']}>
+              <EmployeeDashboard defaultTab="Activity Timeline" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/career-portal/dashboard"
           element={
             <ProtectedRoute allowedRoles={['Candidate']}>
               <CareerPortalDashboard />
             </ProtectedRoute>
-          } 
+          }
+        />
+
+        <Route
+          path="/service-executive/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['ServiceExecutive']}>
+              <ServiceExecutiveDashboard />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </BrowserRouter>

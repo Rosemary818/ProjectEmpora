@@ -3,6 +3,8 @@ import './HREmployeeManagement.css';
 
 const HREmployeeManagement = () => {
   const [employees, setEmployees] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [designations, setDesignations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
@@ -14,7 +16,7 @@ const HREmployeeManagement = () => {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
-  const [editForm, setEditForm] = useState({ department: '', jobTitle: '', status: '' });
+  const [editForm, setEditForm] = useState({ departmentId: '', designationId: '', jobTitle: '', status: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -23,14 +25,28 @@ const HREmployeeManagement = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/employees', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setEmployees(data.data);
+      const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
+      const [empRes, deptRes, desigRes] = await Promise.all([
+        fetch('http://localhost:5000/api/admin/employees', { headers }),
+        fetch('http://localhost:5000/api/departments', { headers }),
+        fetch('http://localhost:5000/api/designations', { headers })
+      ]);
+      
+      const empData = await empRes.json();
+      if (empRes.ok) {
+        setEmployees(empData.data);
       } else {
-        setError(data.error || data.message || 'Failed to fetch employees');
+        setError(empData.error || empData.message || 'Failed to fetch employees');
+      }
+
+      const deptData = await deptRes.json();
+      if (deptRes.ok) {
+        setDepartments(deptData.data);
+      }
+
+      const desigData = await desigRes.json();
+      if (desigRes.ok) {
+        setDesignations(desigData.data);
       }
     } catch (err) {
       setError('Network error');
@@ -60,8 +76,9 @@ const HREmployeeManagement = () => {
   const openEditModal = (user) => {
     setSelectedUser(user);
     setEditForm({
-      department: user.department || '',
-      jobTitle: user.jobTitle || '',
+      departmentId: user.departmentId || '',
+      designationId: user.designationId || '',
+      jobTitle: user.designationName || '',
       status: user.status || 'Active'
     });
     setIsEditModalOpen(true);
@@ -195,8 +212,12 @@ const HREmployeeManagement = () => {
                     </td>
                     <td><span className={`hremp-badge hremp-badge-${emp.role.toLowerCase()}`}>{emp.role}</span></td>
                     <td>
-                      <div className="hremp-text-main">{emp.department || 'Not Set'}</div>
-                      <div className="hremp-text-sub">{emp.jobTitle || 'Not Set'}</div>
+                      <div className="hremp-text-main">{
+                        emp.departmentName || 'Not Assigned'
+                      }</div>
+                      <div className="hremp-text-sub">{
+                        emp.designationName || 'Not Set'
+                      }</div>
                     </td>
                     <td>
                       <div className="hremp-text-main">{emp.email}</div>
@@ -254,7 +275,11 @@ const HREmployeeManagement = () => {
                 </div>
                 <div>
                   <h2>{selectedUser.firstName} {selectedUser.lastName}</h2>
-                  <p className="hremp-profile-role">{selectedUser.jobTitle || 'No Title'} • {selectedUser.department || 'No Department'}</p>
+                  <p className="hremp-profile-role">
+                    {selectedUser.designationName || 'No Title'}
+                    {' • '}
+                    {selectedUser.departmentName || 'Not Assigned'}
+                  </p>
                   <span className={`hremp-status-indicator ${selectedUser.status === 'Active' ? 'hremp-status-active' : 'hremp-status-inactive'}`}>
                     {selectedUser.status}
                   </span>
@@ -294,11 +319,30 @@ const HREmployeeManagement = () => {
             <form onSubmit={handleEditSubmit} className="hremp-modal-body">
               <div className="hremp-form-group">
                 <label>Department</label>
-                <input 
-                  type="text" 
-                  value={editForm.department} 
-                  onChange={(e) => setEditForm({...editForm, department: e.target.value})} 
-                />
+                <select 
+                  value={editForm.departmentId} 
+                  onChange={(e) => setEditForm({...editForm, departmentId: e.target.value, designationId: ''})} 
+                >
+                  <option value="">Not Assigned</option>
+                  {departments.map(dept => (
+                    <option key={dept._id} value={dept._id}>{dept.departmentName}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="hremp-form-group">
+                <label>Designation</label>
+                <select 
+                  value={editForm.designationId} 
+                  onChange={(e) => setEditForm({...editForm, designationId: e.target.value})} 
+                  disabled={!editForm.departmentId}
+                >
+                  <option value="">{editForm.departmentId ? 'Select Designation' : 'Select a Department First'}</option>
+                  {designations
+                    .filter(desig => desig.departmentId === editForm.departmentId || (desig.departmentId && desig.departmentId._id === editForm.departmentId))
+                    .map(desig => (
+                    <option key={desig._id} value={desig._id}>{desig.designationName}</option>
+                  ))}
+                </select>
               </div>
               <div className="hremp-form-group">
                 <label>Job Title</label>

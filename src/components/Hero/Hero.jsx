@@ -74,7 +74,7 @@ function Hero() {
             A Digital Employee Self-Service and Workplace Management Platform.
           </p>
           <div className="hero__actions animate-on-scroll">
-            <Link to="/register" className="btn btn-primary hero__btn">
+            <Link to="/candidate-register" className="btn btn-primary hero__btn">
               Get Started
             </Link>
             <a href="#features" className="btn btn-secondary hero__btn">

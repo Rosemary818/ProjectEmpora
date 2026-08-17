@@ -1,0 +1,125 @@
+.service-history-container {
+  padding: 1.5rem;
+  background-color: var(--card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.history-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary, #111827);
+}
+
+.history-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: var(--text-secondary, #4b5563);
+}
+
+.filter-control {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 6px;
+  background-color: var(--input-bg, #ffffff);
+  color: var(--text-primary, #111827);
+  outline: none;
+  min-width: 150px;
+}
+
+.history-table-container {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th, .history-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.history-table th {
+  background-color: var(--bg-secondary, #f9fafb);
+  color: var(--text-secondary, #4b5563);
+  font-weight: 600;
+}
+
+.history-table tbody tr:hover {
+  background-color: var(--bg-hover, #f3f4f6);
+}
+
+.history-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary, #6b7280);
+}
+
+.empty-state p {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Reused status colors from complaint/service request */
+.status-open {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+.status-in-progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+.status-solved, .status-resolved {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+.status-closed {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}

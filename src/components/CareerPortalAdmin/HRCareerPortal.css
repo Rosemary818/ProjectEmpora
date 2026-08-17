@@ -1,0 +1,312 @@
+.hr-career-portal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hrcp-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hrcp-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.hrcp-header p {
+  margin: 0.5rem 0 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.hrcp-tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 1.5rem;
+  background: #f9fafb;
+}
+
+.hrcp-tab {
+  padding: 1rem 1.5rem;
+  border: none;
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.hrcp-tab:hover {
+  color: #374151;
+}
+
+.hrcp-tab.active {
+  color: #388087;
+  border-bottom-color: #388087;
+}
+
+.hrcp-content {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Job Management Specific */
+.hrcp-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hrcp-card {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.hrcp-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.hrcp-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.hrcp-card-info h3 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.hrcp-card-info p {
+  margin: 0.25rem 0 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.hrcp-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.hrcp-btn-primary {
+  background: #388087;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hrcp-btn-primary:hover {
+  background: #2c666c;
+}
+
+.hrcp-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.hrcp-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.hrcp-table th,
+.hrcp-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hrcp-table th {
+  background: #f9fafb;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.hrcp-table td {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.hrcp-table tr:last-child td {
+  border-bottom: none;
+}
+
+.hrcp-status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.hrcp-status-Draft {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.hrcp-status-Published {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.hrcp-status-Closed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.hrcp-action-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hrcp-btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.hrcp-btn-icon:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* Modal specific */
+.hrcp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.hrcp-modal {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hrcp-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hrcp-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.hrcp-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.hrcp-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.hrcp-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.hrcp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hrcp-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.hrcp-form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.hrcp-form-group input,
+.hrcp-form-group select,
+.hrcp-form-group textarea {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.hrcp-form-group textarea {
+  resize: vertical;
+}
+
+.hrcp-modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.hrcp-btn-secondary {
+  background: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.hrcp-btn-secondary:hover {
+  background: #f9fafb;
+}

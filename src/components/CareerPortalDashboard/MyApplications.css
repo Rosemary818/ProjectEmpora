@@ -1,0 +1,404 @@
+.my-apps-container {
+  padding: 1rem;
+}
+
+.my-apps-header {
+  margin-bottom: 2rem;
+}
+
+.my-apps-header h2 {
+  font-size: 1.75rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.my-apps-header p {
+  color: #6b7280;
+}
+
+.my-apps-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.my-apps-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  color: #6b7280;
+}
+
+.my-apps-empty svg {
+  width: 64px;
+  height: 64px;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.my-apps-empty h3 {
+  color: #111827;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.my-apps-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-search {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.filter-search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+}
+
+.filter-search input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.filter-search input:focus {
+  outline: none;
+  border-color: #388087;
+}
+
+.filter-select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  color: #374151;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #388087;
+}
+
+.my-apps-table-container {
+  overflow-x: auto;
+}
+
+.my-apps-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.my-apps-table th {
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.my-apps-table td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.my-apps-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.job-title-col strong {
+  display: block;
+  color: #111827;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.job-meta {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.app-status-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #388087;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.resume-link:hover {
+  color: #2b6166;
+  text-decoration: underline;
+}
+
+.btn-view {
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-view:hover {
+  background-color: #e5e7eb;
+}
+
+/* Modal Styles */
+.app-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.app-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.app-modal-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-modal-header h3 {
+  font-size: 1.5rem;
+  color: #111827;
+  margin: 0;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.btn-close:hover {
+  color: #111827;
+}
+
+.app-modal-content {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.app-modal-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+}
+
+.app-detail-group {
+  margin-bottom: 2rem;
+}
+
+.app-detail-group h4, .app-status-col h4 {
+  font-size: 1.1rem;
+  color: #374151;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.app-detail-group p {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.app-detail-group strong {
+  color: #111827;
+  display: inline-block;
+  width: 120px;
+}
+
+.doc-links {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.doc-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #388087;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.doc-btn:hover {
+  background-color: #2b6166;
+}
+
+.doc-btn.secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.doc-btn.secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.extra-link a {
+  color: #388087;
+  text-decoration: none;
+}
+
+.extra-link a:hover {
+  text-decoration: underline;
+}
+
+.cover-letter-box {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: #4b5563;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.status-timeline {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.status-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-color: #e5e7eb;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #388087;
+  border-radius: 50%;
+  margin-top: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-status {
+  font-weight: 600;
+  color: #111827;
+}
+
+.timeline-date {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.withdraw-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.btn-withdraw {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: white;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.5rem;
+}
+
+.btn-withdraw:hover {
+  background-color: #fef2f2;
+}
+
+.withdraw-warning {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .app-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

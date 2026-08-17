@@ -1,0 +1,319 @@
+.ann-management {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ann-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ann-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.ann-filters {
+  display: flex;
+  gap: 1rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ann-search-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.ann-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: white;
+}
+
+.ann-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ann-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  border-left: 4px solid #388087;
+  transition: transform 0.2s;
+}
+
+.ann-card.priority-important {
+  border-left-color: #f59e0b;
+}
+
+.ann-card.priority-urgent {
+  border-left-color: #ef4444;
+}
+
+.ann-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.ann-card-title-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ann-badge-category {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ann-badge-priority {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ann-badge-priority.important {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.ann-badge-priority.urgent {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.ann-badge-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ann-badge-status.draft {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.ann-badge-status.published {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.ann-badge-status.archived {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+}
+
+.ann-card-date {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.ann-card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+.ann-card-summary {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.ann-card-content {
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+}
+
+.ann-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.ann-author {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.ann-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.ann-btn-primary {
+  background-color: #388087;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ann-btn-primary:hover {
+  background-color: #2c666c;
+}
+
+.ann-btn-primary.outline {
+  background-color: transparent;
+  color: #388087;
+  border: 1px solid #388087;
+}
+
+.ann-btn-primary.outline:hover {
+  background-color: #f0fdf4;
+}
+
+.ann-btn-secondary {
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ann-btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+.ann-btn-text {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.text-success { color: #16a34a; }
+.text-warning { color: #d97706; }
+.text-danger { color: #dc2626; }
+
+/* Modal */
+.ann-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ann-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ann-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ann-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+.ann-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.ann-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.ann-form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.ann-form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.ann-form-group label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.ann-form-group input,
+.ann-form-group select,
+.ann-form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.ann-form-group input:focus,
+.ann-form-group select:focus,
+.ann-form-group textarea:focus {
+  outline: none;
+  border-color: #388087;
+  box-shadow: 0 0 0 2px rgba(56, 128, 135, 0.2);
+}
+
+.ann-modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

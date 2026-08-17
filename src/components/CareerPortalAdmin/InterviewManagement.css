@@ -1,0 +1,162 @@
+.interview-mgt-container {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.interview-mgt-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.interview-mgt-search input,
+.interview-mgt-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+  min-width: 200px;
+}
+
+.interview-mgt-search input:focus,
+.interview-mgt-select:focus {
+  outline: none;
+  border-color: #388087;
+  box-shadow: 0 0 0 3px rgba(56, 128, 135, 0.1);
+}
+
+.interview-mgt-table-wrapper {
+  overflow-x: auto;
+}
+
+.interview-mgt-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.interview-mgt-table th,
+.interview-mgt-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.interview-mgt-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.interview-mgt-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.action-menu {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.action-btn.edit {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.action-btn.cancel {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.action-btn.complete {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Modal specific for Cancellation/Edit */
+.interview-action-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.interview-action-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.interview-action-modal h3 {
+  margin-bottom: 1rem;
+}
+
+.interview-action-modal textarea,
+.interview-action-modal input,
+.interview-action-modal select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #388087;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}

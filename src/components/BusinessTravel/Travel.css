@@ -1,0 +1,222 @@
+.travel-container {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  min-height: calc(100vh - 120px);
+}
+
+.travel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.travel-header h1 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+}
+
+.travel-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.travel-btn-primary {
+  background: #388087;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.travel-btn-primary:hover {
+  background: #2c666c;
+}
+
+.travel-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.travel-tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.travel-tab.active {
+  color: #388087;
+  border-bottom-color: #388087;
+}
+
+.travel-tab:hover:not(.active) {
+  color: #374151;
+}
+
+.travel-table-wrapper {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.travel-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.travel-table th, .travel-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.travel-table th {
+  background: #f9fafb;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.travel-table td {
+  color: #4b5563;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.travel-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+}
+
+.travel-status.pending { color: #d97706; }
+.travel-status.approved { color: #16a34a; }
+.travel-status.rejected { color: #dc2626; }
+.travel-status.cancelled { color: #6b7280; }
+
+.travel-btn-action {
+  background: none;
+  border: none;
+  color: #388087;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
+  margin-right: 0.75rem;
+}
+
+.travel-btn-action:hover {
+  text-decoration: underline;
+}
+
+.travel-btn-action.danger {
+  color: #dc2626;
+}
+
+.travel-btn-action.approve {
+  color: #16a34a;
+}
+
+.travel-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.travel-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.travel-modal h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+.travel-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.travel-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.travel-form-control {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.travel-form-control:focus {
+  border-color: #388087;
+}
+
+.travel-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.travel-btn-secondary {
+  background: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.travel-btn-secondary:hover {
+  background: #f9fafb;
+}
+
+.travel-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #fee2e2;
+  border-radius: 6px;
+}

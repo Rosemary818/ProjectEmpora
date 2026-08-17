@@ -22,8 +22,10 @@
 
 .hero__container {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 60px;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1360px;
+  width: 100%;
+  gap: 48px;
   align-items: center;
   position: relative;
   z-index: 1;
@@ -82,7 +84,7 @@
   font-size: 1.25rem;
   color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 540px;
+  max-width: 600px;
   margin-bottom: 40px;
 }
 
@@ -139,10 +141,16 @@
 
 .hero__visual {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .hero__illustration {
   position: relative;
+  width: 100%;
+  max-width: 720px;
 }
 
 .hero__illustration svg {

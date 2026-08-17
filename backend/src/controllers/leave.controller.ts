@@ -16,10 +16,19 @@ const calculateDays = (start: Date, end: Date): number => {
 
 export const applyLeave = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { leaveType, startDate, endDate, reason } = req.body;
+    const { leaveType, startDate, endDate, reason, relationship } = req.body;
+    let documentUrl;
+
+    if (req.file) {
+      documentUrl = `/uploads/${req.file.filename}`;
+    }
 
     if (!leaveType || !startDate || !endDate || !reason) {
       return next(new AppError('Please provide all required fields', 400));
+    }
+
+    if (leaveType === 'Bereavement Leave' && !relationship) {
+      return next(new AppError('Please provide the relationship for Bereavement Leave', 400));
     }
 
     const start = new Date(startDate);
@@ -41,6 +50,8 @@ export const applyLeave = async (req: Request, res: Response, next: NextFunction
       endDate: end,
       numberOfDays,
       reason,
+      documentUrl,
+      relationship,
       status: 'Pending',
     });
 
@@ -68,12 +79,28 @@ export const getMyLeaves = async (req: Request, res: Response, next: NextFunctio
 export const getAllLeaves = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const leaves = await LeaveRequest.find()
-      .populate('userId', 'firstName lastName email department role')
-      .sort('-createdAt');
+      .populate({
+        path: 'userId',
+        select: 'firstName lastName email departmentId designationId role',
+        populate: [
+          { path: 'departmentId', select: 'departmentName' },
+          { path: 'designationId', select: 'designationName' }
+        ]
+      })
+      .sort('-createdAt')
+      .lean();
+
+    const mappedLeaves = leaves.map((leave: any) => {
+      if (leave.userId) {
+        leave.userId.departmentName = leave.userId.departmentId?.departmentName || 'Not Assigned';
+        leave.userId.designationName = leave.userId.designationId?.designationName || 'Not Set';
+      }
+      return leave;
+    });
       
     res.status(200).json({
       success: true,
-      data: leaves,
+      data: mappedLeaves,
     });
   } catch (error: any) {
     next(error);

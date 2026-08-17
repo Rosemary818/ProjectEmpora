@@ -1,0 +1,142 @@
+.mysal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.mysal-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.mysal-card-title {
+  font-size: 1.1rem;
+  color: #0d9488;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+}
+
+.mysal-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  font-size: 0.95rem;
+}
+
+.mysal-row:last-child {
+  margin-bottom: 0;
+}
+
+.mysal-label {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.mysal-value {
+  font-weight: 500;
+  color: #111827;
+  text-align: right;
+}
+
+.mysal-value.net-salary {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.mysal-history-section {
+  margin-top: 2rem;
+}
+
+.mysal-payslip-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mysal-payslip-left h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.mysal-payslip-date {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.mysal-payslip-amounts {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.mysal-amount-item span.label {
+  color: #6b7280;
+  margin-right: 0.5rem;
+}
+
+.mysal-amount-item span.val {
+  font-weight: 600;
+  color: #111827;
+}
+
+.mysal-amount-item span.val.net {
+  color: #16a34a;
+}
+
+.mysal-payslip-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.mysal-status-paid {
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 0.25rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.mysal-status-other {
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 0.25rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.mysal-btn {
+  background-color: transparent;
+  border: 1px solid #0d9488;
+  color: #0d9488;
+  padding: 0.4rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.mysal-btn:hover {
+  background-color: #f0fdfa;
+}

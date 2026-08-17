@@ -1,0 +1,115 @@
+.activity-feed-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vertical Layout (default) */
+.layout-vertical .activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Horizontal Layout */
+.layout-horizontal .activity-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.layout-horizontal .activity-item {
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.activity-icon-container {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  font-size: 1.1rem;
+}
+
+.activity-content {
+  flex-grow: 1;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.activity-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.activity-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.activity-user-text {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.activity-message {
+  color: #6b7280;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.activity-error {
+  color: #dc2626;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.activity-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.view-all-btn:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
