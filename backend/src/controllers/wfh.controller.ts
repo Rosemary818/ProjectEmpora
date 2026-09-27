@@ -19,16 +19,26 @@ export const createWFHRequest = async (req: Request, res: Response, next: NextFu
     }
 
     const employee = await User.findById(employeeId);
+
     if (!employee) {
       return next(new AppError('Employee not found', 404));
     }
 
     let assignedManagerId = employee.managerId;
+
     if (!assignedManagerId) {
-      const projects = await Project.find({ teamMembers: employeeId, status: 'Active' });
+      const projects = await Project.find({
+        teamMembers: employeeId,
+        status: 'Active'
+      });
+
       if (projects.length > 0) {
         assignedManagerId = projects[0].managerId as any;
       }
+    }
+
+    if (!assignedManagerId) {
+      return next(new AppError('No manager assigned to this employee', 400));
     }
 
     // Check for overlapping requests
@@ -36,17 +46,25 @@ export const createWFHRequest = async (req: Request, res: Response, next: NextFu
       employee: employeeId,
       status: { $in: ['Pending', 'Approved'] },
       $or: [
-        { fromDate: { $lte: toDate }, toDate: { $gte: fromDate } }
+        {
+          fromDate: { $lte: toDate },
+          toDate: { $gte: fromDate }
+        }
       ]
     });
 
     if (overlapping) {
-      return next(new AppError('You already have a WFH request for this period', 400));
+      return next(
+        new AppError(
+          'You already have a WFH request for this period',
+          400
+        )
+      );
     }
 
     const wfhRequest = await WFHRequest.create({
       employee: employeeId,
-      manager: assignedManagerId || null,
+      manager: assignedManagerId,
       fromDate,
       toDate,
       reason,
@@ -65,7 +83,9 @@ export const createWFHRequest = async (req: Request, res: Response, next: NextFu
 // Employee: Get My WFH Requests
 export const getMyWFHRequests = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const wfhRequests = await WFHRequest.find({ employee: req.user?.id })
+    const wfhRequests = await WFHRequest.find({
+      employee: req.user?.id
+    })
       .populate('manager', 'firstName lastName email')
       .populate('approvedBy', 'firstName lastName')
       .sort({ createdAt: -1 });
@@ -83,16 +103,27 @@ export const getMyWFHRequests = async (req: Request, res: Response, next: NextFu
 export const getTeamWFHRequests = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const managerId = req.user?.id;
-    const projects = await Project.find({ managerId });
-    const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers.map(id => id.toString())))];
 
-    const wfhRequests = await WFHRequest.find({ 
+    const projects = await Project.find({ managerId });
+
+    const teamMemberIds = [
+      ...new Set(
+        projects.flatMap(p =>
+          p.teamMembers.map(id => id.toString())
+        )
+      )
+    ];
+
+    const wfhRequests = await WFHRequest.find({
       $or: [
         { manager: managerId },
         { employee: { $in: teamMemberIds } }
       ]
     })
-      .populate('employee', 'firstName lastName email department')
+      .populate(
+        'employee',
+        'firstName lastName email department'
+      )
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -108,9 +139,18 @@ export const getTeamWFHRequests = async (req: Request, res: Response, next: Next
 export const getAllWFHRequests = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const wfhRequests = await WFHRequest.find()
-      .populate('employee', 'firstName lastName email department')
-      .populate('manager', 'firstName lastName email')
-      .populate('approvedBy', 'firstName lastName')
+      .populate(
+        'employee',
+        'firstName lastName email department'
+      )
+      .populate(
+        'manager',
+        'firstName lastName email'
+      )
+      .populate(
+        'approvedBy',
+        'firstName lastName'
+      )
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -139,29 +179,46 @@ export const updateWFHRequestStatus = async (req: Request, res: Response, next: 
       return next(new AppError('WFH Request not found', 404));
     }
 
-    // Check authorization: Must be the assigned manager, an Admin/HR, or their project manager
-    let isManager = wfhRequest.manager && wfhRequest.manager.toString() === userId;
-    const isPrivileged = req.user?.role === 'SuperAdmin' || req.user?.role === 'HRAdmin';
+    let isManager =
+      wfhRequest.manager &&
+      wfhRequest.manager.toString() === userId;
+
+    const isPrivileged =
+      req.user?.role === 'SuperAdmin' ||
+      req.user?.role === 'HRAdmin';
 
     if (!isManager && !isPrivileged && req.user?.role === 'Manager') {
-      const projects = await Project.find({ teamMembers: wfhRequest.employee, managerId: userId, status: 'Active' });
+      const projects = await Project.find({
+        teamMembers: wfhRequest.employee,
+        managerId: userId,
+        status: 'Active'
+      });
+
       if (projects.length > 0) {
         isManager = true;
       }
     }
 
     if (!isManager && !isPrivileged) {
-      // If not manager and not privileged, maybe employee cancelling?
-      if (wfhRequest.employee.toString() === userId && status === 'Cancelled') {
-         // allow cancellation by employee
+      if (
+        wfhRequest.employee.toString() === userId &&
+        status === 'Cancelled'
+      ) {
+        // Employee can cancel own request
       } else {
-        return next(new AppError('Not authorized to update this request', 403));
+        return next(
+          new AppError(
+            'Not authorized to update this request',
+            403
+          )
+        );
       }
     }
 
     wfhRequest.status = status;
-    wfhRequest.managerComment = managerComment || wfhRequest.managerComment;
-    
+    wfhRequest.managerComment =
+      managerComment || wfhRequest.managerComment;
+
     if (status === 'Approved' || status === 'Rejected') {
       wfhRequest.approvedBy = userId;
       wfhRequest.approvedAt = new Date();
@@ -188,10 +245,24 @@ export const getWFHCalendar = async (req: Request, res: Response, next: NextFunc
       query.employee = id;
     } else if (role === 'Manager') {
       const projects = await Project.find({ managerId: id });
-      const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers.map(mem => mem.toString())))];
-      query.$or = [{ manager: id }, { employee: { $in: [id, ...teamMemberIds] } }];
+
+      const teamMemberIds = [
+        ...new Set(
+          projects.flatMap(p =>
+            p.teamMembers.map(mem => mem.toString())
+          )
+        )
+      ];
+
+      query.$or = [
+        { manager: id },
+        {
+          employee: {
+            $in: [id, ...teamMemberIds]
+          }
+        }
+      ];
     }
-    // HR/Admin sees all approved
 
     const wfhCalendar = await WFHRequest.find(query)
       .populate('employee', 'firstName lastName')
