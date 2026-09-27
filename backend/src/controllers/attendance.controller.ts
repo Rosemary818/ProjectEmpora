@@ -104,7 +104,10 @@ export const getTeamAttendance = async (req: Request, res: Response, next: NextF
     const teamMemberIds = [...teamMemberIdsSet];
 
     // Find those users
-    const teamMembers = await User.find({ _id: { $in: teamMemberIds }, role: 'Employee' }).select('firstName lastName email profileImage');
+    const teamMembers = await User.find({ 
+      _id: { $in: teamMemberIds }, 
+      role: { $in: ['Employee', 'ServiceExecutive'] } 
+    }).select('firstName lastName email profileImage');
     const validTeamMemberIds = teamMembers.map(u => u._id);
 
     // Get their attendance
@@ -125,8 +128,10 @@ export const getAllAttendance = async (req: Request, res: Response, next: NextFu
   try {
     const today = AttendanceService.getMidnightDate(new Date());
 
-    // Get all employees
-    const employees = await User.find({ role: 'Employee' }).select('firstName lastName email profileImage');
+    // Get all employees, service executives, managers
+    const employees = await User.find({ 
+      role: { $in: ['Employee', 'ServiceExecutive', 'Manager'] } 
+    }).select('firstName lastName email profileImage');
     const employeeIds = employees.map(u => u._id);
 
     // Get all attendance records

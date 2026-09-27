@@ -34,6 +34,22 @@ const visitorSchema = new Schema<IVisitor>(
     phone: {
       type: String,
       trim: true,
+      validate: [
+        {
+          validator: function(v: string) {
+            if (!v) return true; 
+            return /^[6-9]\d{9}$/.test(v);
+          },
+          message: 'Please enter a valid 10-digit Indian mobile number.'
+        },
+        {
+          validator: function(v: string) {
+            if (!v) return true;
+            return !/^(.)\1{9}$/.test(v);
+          },
+          message: 'Please enter a valid mobile number.'
+        }
+      ]
     },
     hostUserId: {
       type: Schema.Types.ObjectId,

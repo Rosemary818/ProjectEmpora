@@ -29,12 +29,12 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
       const managerUser = user.managerId as any;
       managerName = `${managerUser.firstName} ${managerUser.lastName}`;
       managerEmployeeId = managerUser.employeeCode;
-      
+
       // Synchronize employee department if manager has one and employee doesn't
       if (!user.departmentId && managerUser.departmentId) {
         user.departmentId = managerUser.departmentId;
         await user.save();
-        
+
         user = await User.findById(req.user.id)
           .select('-password')
           .populate('departmentId', 'departmentName')
@@ -48,7 +48,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
     }
 
     const userData: any = user.toObject();
-    
+
     // Explicitly add requested fields
     userData.departmentName = userData.departmentId ? (userData.departmentId as any).departmentName : 'Not Assigned';
     userData.designationName = userData.designationId ? (userData.designationId as any).designationName : 'Not Set';
@@ -79,12 +79,12 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (phone !== undefined) user.phone = phone; // Allow clearing phone
-    if (departmentId !== undefined) user.departmentId = departmentId;
-    if (designationId !== undefined) user.designationId = designationId;
+    if (departmentId !== undefined) user.departmentId = departmentId === '' ? null as any : departmentId;
+    if (designationId !== undefined) user.designationId = designationId === '' ? null as any : designationId;
     if (employeeCode !== undefined) user.employeeCode = employeeCode;
     if (dateOfJoining) user.dateOfJoining = new Date(dateOfJoining);
     if (profileImage !== undefined) user.profileImage = profileImage; // Can be base64 string or empty to remove
-    
+
     if (req.body.skills !== undefined) {
       const skillNames = req.body.skills.map((s: any) => s.name.toLowerCase().trim());
       const hasDuplicates = new Set(skillNames).size !== skillNames.length;
@@ -110,7 +110,7 @@ export const getMyTeam = async (req: Request, res: Response, next: NextFunction)
     // 1. Find projects where managerId is the current user
     const projects = await Project.find({ managerId: req.user.id });
     const projectIds = projects.map(p => p._id);
-    
+
     // 2. Extract unique team member IDs
     const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers.map(id => id.toString())))];
 
@@ -122,26 +122,26 @@ export const getMyTeam = async (req: Request, res: Response, next: NextFunction)
       .select('-password')
       .populate('departmentId', 'departmentName')
       .populate('designationId', 'designationName');
-    
+
     // 4. Fetch task statistics
     const tasks = await Task.find({
       projectId: { $in: projectIds },
       assignedTo: { $in: teamMemberIds }
     });
-    
+
     // Map tasks to members
     const teamWithStats = teamMembers.map(member => {
       const memberTasks = tasks.filter(t => t.assignedTo.toString() === member._id.toString());
-      
+
       const totalTasks = memberTasks.length;
       const pendingTasks = memberTasks.filter(t => t.status === 'To Do').length;
       const inProgressTasks = memberTasks.filter(t => t.status === 'In Progress').length;
       const completedTasks = memberTasks.filter(t => t.status === 'Completed').length;
-      
+
       const memberProjects = projects
         .filter(p => p.teamMembers.map(id => id.toString()).includes(member._id.toString()))
         .map(p => ({ _id: p._id, name: p.name }));
-        
+
       const memberObj: any = member.toObject();
       memberObj.departmentName = memberObj.departmentId ? memberObj.departmentId.departmentName : 'Not Assigned';
       memberObj.designationName = memberObj.designationId ? memberObj.designationId.designationName : 'Not Set';
@@ -158,7 +158,7 @@ export const getMyTeam = async (req: Request, res: Response, next: NextFunction)
         tasks: memberTasks
       };
     });
-    
+
     res.status(200).json({
       success: true,
       data: teamWithStats
@@ -213,7 +213,7 @@ export const getManagerDashboard = async (req: Request, res: Response, next: Nex
 
     // 5.5 Attendance Stats for Manager Dashboard
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     const todayAttendance = await Attendance.find({ employee: { $in: teamMemberIds }, date: today });
     const todayLeaves = await LeaveRequest.find({
       userId: { $in: teamMemberIds },
@@ -250,7 +250,7 @@ export const getManagerDashboard = async (req: Request, res: Response, next: Nex
         user: (t.employeeId as any) || { firstName: 'Someone', lastName: '' },
         date: t.updatedAt
       }));
-      
+
     const recentLeaves = leaveRequests
       .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .slice(0, 5)
@@ -338,7 +338,7 @@ export const getEmployeeDashboard = async (req: Request, res: Response, next: Ne
     const pendingLeaveRequests = leaveRequests.filter(l => l.status === 'Pending').length;
     const approvedLeaveRequests = leaveRequests.filter(l => l.status === 'Approved').length;
     const rejectedLeaveRequests = leaveRequests.filter(l => l.status === 'Rejected').length;
-    
+
     // Assume total allowance is 20 days. Subtract approved days.
     const approvedLeaveDays = leaveRequests
       .filter(l => l.status === 'Approved')
@@ -352,7 +352,7 @@ export const getEmployeeDashboard = async (req: Request, res: Response, next: Ne
     const lateDays = attendance.filter(a => a.status === 'Late' || a.isLate).length;
 
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     const todayAttendance = await Attendance.findOne({ employee: employeeId, date: today });
 
     // 6.5 Referrals
@@ -383,7 +383,7 @@ export const getEmployeeDashboard = async (req: Request, res: Response, next: Ne
         action: `Timesheet status changed to ${t.status}`,
         date: t.updatedAt
       }));
-      
+
     const recentLeaves = leaveRequests
       .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .slice(0, 5)
@@ -463,10 +463,10 @@ export const getTeamAvailability = async (req: Request, res: Response, next: Nex
   try {
     const managerId = req.user.id;
     const dateQuery = req.query.date as string;
-    
+
     // Parse the requested date or use today
     const targetDate = dateQuery ? new Date(dateQuery) : new Date();
-    
+
     if (isNaN(targetDate.getTime())) {
       return res.status(400).json({ success: false, message: 'Invalid date format' });
     }
@@ -474,7 +474,7 @@ export const getTeamAvailability = async (req: Request, res: Response, next: Nex
     // Set start and end of the day for querying
     const startOfDay = new Date(targetDate);
     startOfDay.setHours(0, 0, 0, 0);
-    
+
     const endOfDay = new Date(targetDate);
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -500,7 +500,7 @@ export const getTeamAvailability = async (req: Request, res: Response, next: Nex
     // Need to dynamically import Holiday or we can just fetch if the model is available.
     // Assuming Holiday is imported. Wait, Holiday is not imported in user.controller.ts yet.
     // I need to add the import at the top. Let's do it via another replace.
-    
+
     // For now, I'll fetch Leaves and Attendance
     const leaves = await LeaveRequest.find({
       userId: { $in: teamMemberIds },
@@ -524,7 +524,7 @@ export const getTeamAvailability = async (req: Request, res: Response, next: Nex
     let summary = { available: 0, onLeave: 0, absent: 0, holiday: 0 };
     const teamAvailability = teamMembers.map((member: any) => {
       const memberId = member._id.toString();
-      
+
       const onLeave = leaves.find(l => l.userId.toString() === memberId);
       const attendance = attendances.find(a => a.employee.toString() === memberId);
 

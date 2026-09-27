@@ -1,0 +1,221 @@
+.hrpm-container {
+  padding: 1.5rem;
+}
+
+.hrpm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.hrpm-header h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+}
+
+.hrpm-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.hrpm-btn-primary {
+  background-color: #388087;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.hrpm-btn-primary:hover {
+  background-color: #2c666c;
+}
+
+.hrpm-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.hrpm-btn-secondary {
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.hrpm-card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.hrpm-table-wrapper {
+  overflow-x: auto;
+}
+
+.hrpm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hrpm-table th,
+.hrpm-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hrpm-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.hrpm-name {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.hrpm-desc {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.hrpm-manager-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.hrpm-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  overflow: hidden;
+}
+
+.hrpm-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hrpm-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.hrpm-status-upcoming { background-color: #e0e7ff; color: #4338ca; }
+.hrpm-status-active { background-color: #dcfce7; color: #15803d; }
+.hrpm-status-onhold { background-color: #fef3c7; color: #b45309; }
+.hrpm-status-completed { background-color: #f3f4f6; color: #374151; }
+
+.hrpm-date, .hrpm-team-size {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.hrpm-empty {
+  text-align: center;
+  padding: 3rem !important;
+  color: #6b7280;
+}
+
+/* Modal */
+.hrpm-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.hrpm-modal {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.hrpm-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hrpm-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.hrpm-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.hrpm-modal-body {
+  padding: 1.5rem;
+}
+
+.hrpm-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.hrpm-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.hrpm-form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.hrpm-form-group input,
+.hrpm-form-group select,
+.hrpm-form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.hrpm-modal-footer {
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

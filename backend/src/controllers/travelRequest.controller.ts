@@ -69,7 +69,7 @@ export const createRequest = async (req: Request, res: Response, next: NextFunct
       travelType,
       estimatedCost: estimatedCost || 0,
       notes,
-      status
+      status: status as any
     });
 
     // Notify approver

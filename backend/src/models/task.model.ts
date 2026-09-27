@@ -6,9 +6,19 @@ export interface ITask extends Document {
   projectId: mongoose.Types.ObjectId;
   assignedTo: mongoose.Types.ObjectId;
   assignedBy: mongoose.Types.ObjectId;
-  priority: 'Low' | 'Medium' | 'High' | 'Urgent';
+  priority: 'Low' | 'Medium' | 'High' | 'Critical';
   dueDate: Date;
-  status: 'To Do' | 'In Progress' | 'Completed';
+  status: 'To Do' | 'In Progress' | 'Under Review' | 'Completed' | 'Blocked';
+  progressPercentage: number;
+  startedAt?: Date;
+  completedAt?: Date;
+  managerComment?: string;
+  blockedReason?: string;
+  history?: {
+    action: string;
+    date: Date;
+    by: mongoose.Types.ObjectId;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,7 +52,7 @@ const taskSchema = new Schema<ITask>(
     },
     priority: {
       type: String,
-      enum: ['Low', 'Medium', 'High', 'Urgent'],
+      enum: ['Low', 'Medium', 'High', 'Critical'],
       default: 'Medium',
     },
     dueDate: {
@@ -51,9 +61,37 @@ const taskSchema = new Schema<ITask>(
     },
     status: {
       type: String,
-      enum: ['To Do', 'In Progress', 'Completed'],
+      enum: ['To Do', 'In Progress', 'Under Review', 'Completed', 'Blocked'],
       default: 'To Do',
     },
+    progressPercentage: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
+    startedAt: {
+      type: Date,
+    },
+    completedAt: {
+      type: Date,
+    },
+    managerComment: {
+      type: String,
+    },
+    blockedReason: {
+      type: String,
+    },
+    history: [
+      {
+        action: String,
+        date: Date,
+        by: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      },
+    ],
   },
   {
     timestamps: true,

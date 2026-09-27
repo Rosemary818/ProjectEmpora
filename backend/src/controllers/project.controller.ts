@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { Project } from '../models/project.model';
 import { User } from '../models/user.model';
 import { AppError } from '../utils/error';
+import { calculateProjectStatus } from '../utils/project.helper';
+import { syncBenchStatus } from '../utils/bench.helper';
 
 // HRAdmin/SuperAdmin: Create Project
 export const createProject = async (req: Request, res: Response, next: NextFunction) => {
@@ -12,17 +14,23 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
       return next(new AppError('Please provide all required fields', 400));
     }
 
+    if (new Date(endDate) < new Date(startDate)) {
+      return next(new AppError('End date cannot be before start date', 400));
+    }
+
     const manager = await User.findById(managerId);
     if (!manager || manager.role !== 'Manager') {
       return next(new AppError('Invalid manager selected', 400));
     }
+
+    const calculatedStatus = calculateProjectStatus(startDate, endDate, status);
 
     const project = await Project.create({
       name,
       description,
       startDate,
       endDate,
-      status: status || 'Planning',
+      status: calculatedStatus,
       managerId,
       createdBy: req.user._id,
       teamMembers: []
@@ -47,9 +55,17 @@ export const getAllProjects = async (req: Request, res: Response, next: NextFunc
       .populate('teamMembers', 'firstName lastName email profileImage')
       .sort('-createdAt');
 
+    const updatedProjects = projects.map(p => {
+      const pObj = p.toObject();
+      if (pObj.status !== 'On Hold') {
+        pObj.status = calculateProjectStatus(pObj.startDate, pObj.endDate, pObj.status) as any;
+      }
+      return pObj;
+    });
+
     res.status(200).json({
       success: true,
-      data: projects,
+      data: updatedProjects,
     });
   } catch (error: any) {
     next(error);
@@ -70,7 +86,13 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
     if (description) project.description = description;
     if (startDate) project.startDate = startDate;
     if (endDate) project.endDate = endDate;
-    if (status) project.status = status;
+    
+    if (new Date(project.endDate) < new Date(project.startDate)) {
+      return next(new AppError('End date cannot be before start date', 400));
+    }
+
+    const previousStatus = project.status;
+    project.status = calculateProjectStatus(project.startDate, project.endDate, status || previousStatus) as any;
     
     if (managerId && managerId !== project.managerId.toString()) {
       const manager = await User.findById(managerId);
@@ -97,6 +119,17 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
     await project.save();
     await project.populate('managerId', 'firstName lastName email profileImage');
 
+    if (previousStatus !== 'Completed' && project.status === 'Completed') {
+      for (const empId of project.teamMembers) {
+        await syncBenchStatus(empId);
+      }
+    } else if (previousStatus !== project.status || startDate || endDate) {
+      // If status changed or dates changed, re-sync all members
+      for (const empId of project.teamMembers) {
+        await syncBenchStatus(empId);
+      }
+    }
+
     res.status(200).json({
       success: true,
       data: project,
@@ -114,9 +147,17 @@ export const getMyProjects = async (req: Request, res: Response, next: NextFunct
       .populate('teamMembers', 'firstName lastName email profileImage')
       .sort('-createdAt');
 
+    const updatedProjects = projects.map(p => {
+      const pObj = p.toObject();
+      if (pObj.status !== 'On Hold') {
+        pObj.status = calculateProjectStatus(pObj.startDate, pObj.endDate, pObj.status) as any;
+      }
+      return pObj;
+    });
+
     res.status(200).json({
       success: true,
-      data: projects,
+      data: updatedProjects,
     });
   } catch (error: any) {
     next(error);
@@ -131,9 +172,17 @@ export const getAssignedProjects = async (req: Request, res: Response, next: Nex
       .populate('teamMembers', 'firstName lastName email profileImage')
       .sort('-createdAt');
 
+    const updatedProjects = projects.map(p => {
+      const pObj = p.toObject();
+      if (pObj.status !== 'On Hold') {
+        pObj.status = calculateProjectStatus(pObj.startDate, pObj.endDate, pObj.status) as any;
+      }
+      return pObj;
+    });
+
     res.status(200).json({
       success: true,
-      data: projects,
+      data: updatedProjects,
     });
   } catch (error: any) {
     next(error);
@@ -163,13 +212,20 @@ export const addTeamMember = async (req: Request, res: Response, next: NextFunct
       return next(new AppError('Employee is already in the project team', 400));
     }
 
+    if (project.status === 'Completed') {
+      return next(new AppError('Cannot add team members to a completed project', 400));
+    }
+
     project.teamMembers.push(employeeId);
     await project.save();
 
     const manager = await User.findById(project.managerId);
     if (manager && manager.departmentId) {
-      await User.findByIdAndUpdate(employeeId, { departmentId: manager.departmentId });
+      employee.departmentId = manager.departmentId;
+      await employee.save();
     }
+
+    await syncBenchStatus(employeeId);
 
     await project.populate('managerId', 'firstName lastName email profileImage');
     await project.populate('teamMembers', 'firstName lastName email profileImage');
@@ -200,7 +256,12 @@ export const removeTeamMember = async (req: Request, res: Response, next: NextFu
     project.teamMembers = project.teamMembers.filter(id => id.toString() !== employeeId);
     await project.save();
 
-    await User.findByIdAndUpdate(employeeId, { $unset: { departmentId: 1 } });
+    const employee = await User.findById(employeeId);
+    if (employee) {
+      employee.departmentId = undefined;
+      await employee.save();
+      await syncBenchStatus(employeeId);
+    }
 
     await project.populate('managerId', 'firstName lastName email profileImage');
     await project.populate('teamMembers', 'firstName lastName email profileImage');

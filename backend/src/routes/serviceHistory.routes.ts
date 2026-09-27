@@ -4,6 +4,6 @@ import { getServiceHistory } from '../controllers/serviceHistory.controller';
 
 const router = express.Router();
 
-router.get('/', protect, restrictTo('Employee'), getServiceHistory);
+router.get('/', protect, restrictTo('Employee', 'Manager'), getServiceHistory);
 
 export default router;

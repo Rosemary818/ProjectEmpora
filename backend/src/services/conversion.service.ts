@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { sendEmail } from '../utils/email';
 import { IUser } from '../models/user.model';
+import { Project } from '../models/project.model';
 
 export class ConversionService {
   /**
@@ -13,10 +14,30 @@ export class ConversionService {
     const tempPassword = Math.random().toString(36).slice(-8); // Random 8 chars
     const hashedPassword = await bcrypt.hash(tempPassword, 12);
 
+    // Preserve Candidate ID
+    if (user.employeeCode && user.employeeCode.startsWith('CAN')) {
+      user.candidateId = user.employeeCode;
+      user.employeeCode = undefined;
+    }
+
     user.role = 'Employee';
     user.password = hashedPassword;
     user.mustChangePassword = true;
     user.status = 'Active'; // Ensure they are active
+
+    // Check Project Allocation for Bench Status
+    const activeProjectsCount = await Project.countDocuments({
+      teamMembers: user._id,
+      status: 'Active'
+    });
+
+    if (activeProjectsCount > 0) {
+      user.benchStatus = 'Allocated';
+      user.benchStartDate = undefined;
+    } else {
+      user.benchStatus = 'On Bench';
+      user.benchStartDate = new Date();
+    }
 
     const emailSent = await this.sendWelcomeEmail(user.email, user.firstName, tempPassword);
 

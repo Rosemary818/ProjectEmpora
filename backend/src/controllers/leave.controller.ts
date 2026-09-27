@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { LeaveRequest } from '../models/leave.model';
 import { AppError } from '../utils/error';
+import mongoose from 'mongoose';
 
 // Calculate number of weekdays between two dates
 const calculateDays = (start: Date, end: Date): number => {
@@ -12,6 +13,54 @@ const calculateDays = (start: Date, end: Date): number => {
     curDate.setDate(curDate.getDate() + 1);
   }
   return count;
+};
+
+export const calculateLeaveBalances = async (userId: string) => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth(); // 0-indexed
+  const currentYear = currentDate.getFullYear();
+  
+  const fyStartYear = currentYear;
+  
+  const quartersToCredit = Math.floor(currentMonth / 3) + 1;
+  const currentQuarter = `Q${quartersToCredit}`;
+  
+  const credited = {
+    'Earned Leave': 2.5 * quartersToCredit,
+    'Casual Leave': 1 * quartersToCredit,
+    'Sick Leave': 1.5 * quartersToCredit
+  };
+
+  const startOfFY = new Date(fyStartYear, 0, 1);
+  const endOfFY = new Date(fyStartYear, 11, 31, 23, 59, 59, 999);
+
+  const approvedLeaves = await LeaveRequest.find({
+    userId,
+    status: 'Approved',
+    startDate: { $gte: startOfFY, $lte: endOfFY },
+    leaveType: { $in: ['Earned Leave', 'Casual Leave', 'Sick Leave'] }
+  });
+
+  const used = {
+    'Earned Leave': 0,
+    'Casual Leave': 0,
+    'Sick Leave': 0
+  };
+
+  approvedLeaves.forEach(leave => {
+    if (used[leave.leaveType as keyof typeof used] !== undefined) {
+      used[leave.leaveType as keyof typeof used] += leave.numberOfDays;
+    }
+  });
+
+  return {
+    balances: {
+      'Earned Leave': { credited: credited['Earned Leave'], used: used['Earned Leave'], remaining: credited['Earned Leave'] - used['Earned Leave'] },
+      'Casual Leave': { credited: credited['Casual Leave'], used: used['Casual Leave'], remaining: credited['Casual Leave'] - used['Casual Leave'] },
+      'Sick Leave': { credited: credited['Sick Leave'], used: used['Sick Leave'], remaining: credited['Sick Leave'] - used['Sick Leave'] }
+    },
+    currentQuarter
+  };
 };
 
 export const applyLeave = async (req: Request, res: Response, next: NextFunction) => {
@@ -43,6 +92,14 @@ export const applyLeave = async (req: Request, res: Response, next: NextFunction
       return next(new AppError('Leave duration must include at least one working day', 400));
     }
 
+    if (['Earned Leave', 'Casual Leave', 'Sick Leave'].includes(leaveType)) {
+      const { balances } = await calculateLeaveBalances(req.user._id.toString());
+      const remaining = balances[leaveType as keyof typeof balances].remaining;
+      if (numberOfDays > remaining) {
+        return next(new AppError(`Insufficient balance. You have ${remaining} days of ${leaveType} remaining, but requested ${numberOfDays} days.`, 400));
+      }
+    }
+
     const leaveRequest = await LeaveRequest.create({
       userId: req.user._id,
       leaveType,
@@ -67,9 +124,12 @@ export const applyLeave = async (req: Request, res: Response, next: NextFunction
 export const getMyLeaves = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const leaves = await LeaveRequest.find({ userId: req.user._id }).sort('-createdAt');
+    const { balances, currentQuarter } = await calculateLeaveBalances(req.user._id.toString());
     res.status(200).json({
       success: true,
       data: leaves,
+      balances,
+      currentQuarter,
     });
   } catch (error: any) {
     next(error);
@@ -78,7 +138,31 @@ export const getMyLeaves = async (req: Request, res: Response, next: NextFunctio
 
 export const getAllLeaves = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const leaves = await LeaveRequest.find()
+    let query: any = {};
+    const { role, _id } = req.user as any;
+
+    if (role === 'Manager') {
+      // Find projects managed by this user
+      const projects = await mongoose.models.Project.find({ managerId: _id });
+      const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers.map(id => id.toString())))];
+      
+      // Filter out Managers and Candidates from the team
+      const validTeamMembers = await mongoose.models.User.find({
+        _id: { $in: teamMemberIds },
+        role: { $in: ['Employee', 'ServiceExecutive'] }
+      });
+      const validTeamMemberIds = validTeamMembers.map(u => u._id.toString());
+
+      // Exclude manager's own requests (they go to HRAdmin)
+      query = { 
+        userId: { 
+          $in: validTeamMemberIds,
+          $ne: _id 
+        } 
+      };
+    }
+
+    const leaves = await LeaveRequest.find(query)
       .populate({
         path: 'userId',
         select: 'firstName lastName email departmentId designationId role',
@@ -90,7 +174,10 @@ export const getAllLeaves = async (req: Request, res: Response, next: NextFuncti
       .sort('-createdAt')
       .lean();
 
-    const mappedLeaves = leaves.map((leave: any) => {
+    // Filter out Candidates, just in case
+    let filteredLeaves = leaves.filter((leave: any) => leave.userId && leave.userId.role !== 'Candidate');
+
+    const mappedLeaves = filteredLeaves.map((leave: any) => {
       if (leave.userId) {
         leave.userId.departmentName = leave.userId.departmentId?.departmentName || 'Not Assigned';
         leave.userId.designationName = leave.userId.designationId?.designationName || 'Not Set';
@@ -121,9 +208,25 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
       return next(new AppError('Leave request not found', 404));
     }
 
-    // Do not allow employees to approve their own request (should be prevented by routes restrictTo anyway)
-    if (leave.userId.toString() === req.user._id.toString()) {
+    const { role, _id } = req.user as any;
+
+    // Do not allow employees to approve their own request
+    if (leave.userId.toString() === _id.toString()) {
       return next(new AppError('You cannot approve/reject your own leave request', 403));
+    }
+
+    if (role === 'Manager') {
+      const projects = await mongoose.models.Project.find({ managerId: _id });
+      const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers.map(id => id.toString())))];
+      
+      if (!teamMemberIds.includes(leave.userId.toString())) {
+        return next(new AppError('You can only approve leave requests for your own team members', 403));
+      }
+
+      const leaveUser = await mongoose.models.User.findById(leave.userId);
+      if (!leaveUser || !['Employee', 'ServiceExecutive'].includes(leaveUser.role)) {
+        return next(new AppError('Managers can only approve leave requests for Employees and Service Executives', 403));
+      }
     }
 
     leave.status = status;

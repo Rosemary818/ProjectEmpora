@@ -10,6 +10,7 @@ router.use(protect);
 // Employee routes
 router.get('/my-tasks', TaskController.getMyTasks);
 router.patch('/:id/status', TaskController.updateTaskStatus);
+router.patch('/:id/progress', TaskController.updateTaskProgress);
 
 // Manager / Admin routes
 router.post('/', restrictTo('HRAdmin', 'Manager', 'SuperAdmin'), TaskController.createTask);

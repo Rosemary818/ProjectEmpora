@@ -45,9 +45,15 @@ import policyRoutes from "./routes/policy.routes";
 import { errorHandler } from "./middlewares/error.middleware";
 import { initAttendanceCronJobs } from "./jobs/attendance.cron";
 import { initGoalCronJobs } from "./jobs/goal.cron";
+import { initProjectCronJobs } from "./jobs/project.cron";
+import { initPromotionCronJobs } from "./jobs/promotion.cron";
 import roomBookingRoutes from "./routes/roomBooking.routes";
 import visitorRoutes from "./routes/visitor.routes";
 import travelRequestRoutes from "./routes/travelRequest.routes";
+import chatbotRoutes from "./routes/chatbot.routes";
+import benchRoutes from "./routes/bench.routes";
+import promotionRoutes from "./routes/promotion.routes";
+import wfhRoutes from "./routes/wfh.routes";
 
 dotenv.config();
 
@@ -104,6 +110,10 @@ app.use("/api/policies", policyRoutes);
 app.use("/api/rooms", roomBookingRoutes);
 app.use("/api/visitors", visitorRoutes);
 app.use("/api/travel", travelRequestRoutes);
+app.use("/api/chat", chatbotRoutes);
+app.use("/api/bench", benchRoutes);
+app.use("/api/promotions", promotionRoutes);
+app.use("/api/wfh", wfhRoutes);
 
 app.use(errorHandler);
 
@@ -111,6 +121,8 @@ app.use(errorHandler);
 connectDB().then(() => {
   initAttendanceCronJobs();
   initGoalCronJobs();
+  initProjectCronJobs();
+  initPromotionCronJobs();
 
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);

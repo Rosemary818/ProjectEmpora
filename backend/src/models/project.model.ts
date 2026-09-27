@@ -5,11 +5,13 @@ export interface IProject extends Document {
   description: string;
   startDate: Date;
   endDate: Date;
-  status: 'Planning' | 'Active' | 'Completed' | 'On Hold';
+  status: 'Upcoming' | 'Active' | 'Completed' | 'On Hold';
   managerId: mongoose.Types.ObjectId;
   teamMembers: mongoose.Types.ObjectId[];
   createdBy: mongoose.Types.ObjectId;
   departmentId?: mongoose.Types.ObjectId;
+  requiredSkills?: string[];
+  experienceRequired?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,8 +38,8 @@ const projectSchema = new Schema<IProject>(
     },
     status: {
       type: String,
-      enum: ['Planning', 'Active', 'Completed', 'On Hold'],
-      default: 'Planning',
+      enum: ['Upcoming', 'Active', 'Completed', 'On Hold'],
+      default: 'Upcoming',
     },
     managerId: {
       type: Schema.Types.ObjectId,
@@ -58,6 +60,14 @@ const projectSchema = new Schema<IProject>(
     departmentId: {
       type: Schema.Types.ObjectId,
       ref: 'Department',
+    },
+    requiredSkills: [
+      {
+        type: String,
+      }
+    ],
+    experienceRequired: {
+      type: String,
     },
   },
   {

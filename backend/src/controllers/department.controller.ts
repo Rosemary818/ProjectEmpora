@@ -8,7 +8,7 @@ export const getAllDepartments = async (req: Request, res: Response): Promise<vo
     const departments = await Department.find()
       .populate('managerId', 'firstName lastName email profileImage')
       .sort({ createdAt: -1 });
-    
+
     // Get employee counts for each department
     const departmentsWithCounts = await Promise.all(
       departments.map(async (dept) => {
@@ -57,7 +57,7 @@ export const createDepartment = async (req: Request, res: Response): Promise<voi
 
     if (newDept.managerId) {
       await User.findByIdAndUpdate(newDept.managerId, { departmentId: newDept._id });
-      
+
       const projects = await Project.find({ managerId: newDept.managerId });
       const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers))];
       if (teamMemberIds.length > 0) {
@@ -102,18 +102,18 @@ export const updateDepartment = async (req: Request, res: Response): Promise<voi
     }
 
     if (description !== undefined) department.description = description;
-    
+
     if (managerId !== undefined) {
       const oldManagerStr = department.managerId ? department.managerId.toString() : '';
       const newManagerStr = managerId ? managerId.toString() : '';
-      
+
       if (oldManagerStr !== newManagerStr) {
         if (oldManagerStr) {
           await User.findByIdAndUpdate(oldManagerStr, { $unset: { departmentId: 1 } });
         }
         if (managerId) {
           await User.findByIdAndUpdate(managerId, { departmentId: department._id });
-          
+
           const projects = await Project.find({ managerId });
           const teamMemberIds = [...new Set(projects.flatMap(p => p.teamMembers))];
           if (teamMemberIds.length > 0) {
@@ -174,7 +174,7 @@ export const getDepartmentDetails = async (req: Request, res: Response): Promise
   try {
     const { id } = req.params;
     const department = await Department.findById(id).populate('managerId', 'firstName lastName email profileImage');
-    
+
     if (!department) {
       res.status(404).json({ success: false, message: 'Department not found' });
       return;

@@ -12,6 +12,8 @@ export interface IRoomBooking extends Document {
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
   visitorId?: mongoose.Types.ObjectId;
+  preferredCapacity?: number;
+  preferredRoomId?: mongoose.Types.ObjectId;
   status: 'Upcoming' | 'Completed' | 'Cancelled';
   createdAt: Date;
   updatedAt: Date;
@@ -68,6 +70,13 @@ const roomBookingSchema = new Schema<IRoomBooking>(
     visitorId: {
       type: Schema.Types.ObjectId,
       ref: 'Visitor',
+    },
+    preferredCapacity: {
+      type: Number,
+    },
+    preferredRoomId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Room',
     },
     status: {
       type: String,

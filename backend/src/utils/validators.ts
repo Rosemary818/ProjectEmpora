@@ -1,11 +1,22 @@
 import { z } from 'zod';
 
+const indianMobileRegex = /^[6-9]\d{9}$/;
+const repeatingDigitsRegex = /^(.)\1{9}$/;
+
+export const phoneValidator = z.string()
+  .refine(val => !val || indianMobileRegex.test(val), {
+    message: 'Please enter a valid 10-digit Indian mobile number.',
+  })
+  .refine(val => !val || !repeatingDigitsRegex.test(val), {
+    message: 'Please enter a valid mobile number.',
+  });
+
 export const registerSchema = z.object({
   body: z.object({
     firstName: z.string().min(2, 'First name must be at least 2 characters'),
     lastName: z.string().min(2, 'Last name must be at least 2 characters'),
     email: z.string().email('Invalid email address'),
-    phone: z.string().min(10, 'Phone must be at least 10 characters').optional().or(z.literal('')),
+    phone: phoneValidator.optional().or(z.literal('')),
     password: z.string().min(6, 'Password must be at least 6 characters'),
   }),
 });

@@ -2,11 +2,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IInternalApplication extends Document {
   employeeId: mongoose.Types.ObjectId;
-  opportunityId: mongoose.Types.ObjectId;
+  opportunityId?: mongoose.Types.ObjectId;
+  projectId?: mongoose.Types.ObjectId;
   currentDepartmentId: mongoose.Types.ObjectId;
   currentDesignationId: mongoose.Types.ObjectId;
-  targetDepartmentId: mongoose.Types.ObjectId;
-  targetDesignationId: mongoose.Types.ObjectId;
+  targetDepartmentId?: mongoose.Types.ObjectId;
+  targetDesignationId?: mongoose.Types.ObjectId;
   reason: string;
   relevantSkills: string;
   additionalComments?: string;
@@ -30,7 +31,10 @@ const internalApplicationSchema = new Schema<IInternalApplication>(
     opportunityId: {
       type: Schema.Types.ObjectId,
       ref: 'InternalOpportunity',
-      required: true,
+    },
+    projectId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
     },
     currentDepartmentId: {
       type: Schema.Types.ObjectId,
@@ -45,12 +49,10 @@ const internalApplicationSchema = new Schema<IInternalApplication>(
     targetDepartmentId: {
       type: Schema.Types.ObjectId,
       ref: 'Department',
-      required: true,
     },
     targetDesignationId: {
       type: Schema.Types.ObjectId,
       ref: 'Designation',
-      required: true,
     },
     reason: {
       type: String,

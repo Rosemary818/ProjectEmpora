@@ -8,9 +8,9 @@ const router = Router();
 // All leave routes require authentication
 router.use(protect);
 
-// Employee routes
-router.post('/', upload.single('document'), LeaveController.applyLeave);
-router.get('/', LeaveController.getMyLeaves);
+// Employee/Manager/ServiceExecutive routes
+router.post('/', restrictTo('Employee', 'ServiceExecutive', 'Manager', 'HRAdmin', 'SuperAdmin'), upload.single('document'), LeaveController.applyLeave);
+router.get('/', restrictTo('Employee', 'ServiceExecutive', 'Manager', 'HRAdmin', 'SuperAdmin'), LeaveController.getMyLeaves);
 
 // Manager / HRAdmin / SuperAdmin routes
 router.get('/all', restrictTo('HRAdmin', 'Manager', 'SuperAdmin'), LeaveController.getAllLeaves);

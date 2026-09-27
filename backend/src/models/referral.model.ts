@@ -38,6 +38,22 @@ const referralSchema = new Schema<IReferral>(
       type: String,
       required: [true, 'Phone number is required'],
       trim: true,
+      validate: [
+        {
+          validator: function(v: string) {
+            if (!v) return true; 
+            return /^[6-9]\d{9}$/.test(v);
+          },
+          message: 'Please enter a valid 10-digit Indian mobile number.'
+        },
+        {
+          validator: function(v: string) {
+            if (!v) return true;
+            return !/^(.)\1{9}$/.test(v);
+          },
+          message: 'Please enter a valid mobile number.'
+        }
+      ]
     },
     position: {
       type: String,
