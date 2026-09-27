@@ -182,7 +182,7 @@ export const createBooking = async (req: Request, res: Response, next: NextFunct
       startTime,
       endTime,
       preferredCapacity,
-      preferredRoomId,
+      preferredRoomId: preferredRoomId || undefined,
       status: 'Upcoming'
     });
 
