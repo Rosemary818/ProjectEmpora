@@ -54,6 +54,7 @@ import chatbotRoutes from "./routes/chatbot.routes";
 import benchRoutes from "./routes/bench.routes";
 import promotionRoutes from "./routes/promotion.routes";
 import wfhRoutes from "./routes/wfh.routes";
+import approvalInboxRoutes from "./routes/approvalInbox.routes";
 
 dotenv.config();
 
@@ -114,6 +115,7 @@ app.use("/api/chat", chatbotRoutes);
 app.use("/api/bench", benchRoutes);
 app.use("/api/promotions", promotionRoutes);
 app.use("/api/wfh", wfhRoutes);
+app.use("/api/approvals/inbox", approvalInboxRoutes);
 
 app.use(errorHandler);
 

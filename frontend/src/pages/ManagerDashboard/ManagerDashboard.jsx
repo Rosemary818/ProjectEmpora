@@ -41,6 +41,7 @@ import AIChatbot from '../../components/AIFeatures/AIChatbot';
 import ManagerBenchResources from '../../components/BenchManagement/ManagerBenchResources';
 import ManagerPromotions from '../../components/PromotionManagement/ManagerPromotions';
 import ManagerWFH from '../../components/WFH/ManagerWFH';
+import ApprovalInbox from '../../components/ApprovalInbox/ApprovalInbox';
 
 const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
 
   const menuItems = [
     { id: 'Dashboard', label: 'Dashboard', icon: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></> },
+    { id: 'Approval Inbox', label: 'Approval Inbox', icon: <><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /><line x1="12" y1="11" x2="12" y2="17" /><polyline points="9 14 12 17 15 14" /></> },
     { id: 'My Profile', label: 'My Profile', icon: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></> },
     { id: 'Workload', label: 'Workload Monitor', icon: <><path d="M2 12h4l2-9 5 18 2-9h5" /></> },
     { id: 'My Team', label: 'My Team', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></> },
@@ -521,6 +523,8 @@ const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
             </div>
           ) : activeTab === 'My Profile' ? (
             <UserProfile user={user} setUser={setUser} />
+          ) : activeTab === 'Approval Inbox' ? (
+            <ApprovalInbox />
           ) : activeTab === 'Workload' ? (
             <ManagerWorkload />
           ) : activeTab === 'My Team' ? (
