@@ -70,12 +70,19 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email, password: form.password })
-        });
-        const data = await response.json();
+        const response = await fetch(
+          'https://empora-backend-gb2l.onrender.com/api/auth/login',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: form.email,
+              password: form.password
+            })
+          }
+        )
+
+        const data = await response.json()
 
         if (response.ok) {
           if (rememberMe) {
@@ -85,85 +92,93 @@ function Login() {
           }
 
           if (data.data?.accessToken) {
-            localStorage.setItem('accessToken', data.data.accessToken);
+            localStorage.setItem('accessToken', data.data.accessToken)
           }
+
           if (data.data?.user) {
-            localStorage.setItem('user', JSON.stringify(data.data.user));
+            localStorage.setItem('user', JSON.stringify(data.data.user))
           }
 
           if (data.data?.user?.mustChangePassword) {
-            navigate('/change-password');
+            navigate('/change-password')
           } else if (data.data?.user?.role === 'SuperAdmin') {
-            navigate('/super-admin/dashboard');
+            navigate('/super-admin/dashboard')
           } else if (data.data?.user?.role === 'HRAdmin') {
-            navigate('/hr/dashboard');
+            navigate('/hr/dashboard')
           } else if (data.data?.user?.role === 'Manager') {
-            navigate('/manager/dashboard');
+            navigate('/manager/dashboard')
           } else if (data.data?.user?.role === 'Employee') {
-            navigate('/employee/dashboard');
+            navigate('/employee/dashboard')
           } else if (data.data?.user?.role === 'Candidate') {
-            navigate('/career-portal/dashboard');
+            navigate('/career-portal/dashboard')
           } else if (data.data?.user?.role === 'ServiceExecutive') {
-            navigate('/service-executive/dashboard');
+            navigate('/service-executive/dashboard')
           } else {
-            alert('Login successful! Welcome back to Empora.');
+            alert('Login successful! Welcome back to Empora.')
           }
         } else {
-          alert(data.message || data.error || 'Login failed');
+          alert(data.message || data.error || 'Login failed')
         }
       } catch (err) {
-        alert('An error occurred during login. Please try again.');
-        console.error(err);
+        alert('An error occurred during login. Please try again.')
+        console.error(err)
       }
     }
   }
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/google', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credential: credentialResponse.credential })
-      });
-      const data = await response.json();
+      const response = await fetch(
+        'https://empora-backend-gb2l.onrender.com/api/auth/google',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            credential: credentialResponse.credential
+          })
+        }
+      )
+
+      const data = await response.json()
 
       if (response.ok) {
         if (data.data?.accessToken) {
-          localStorage.setItem('accessToken', data.data.accessToken);
+          localStorage.setItem('accessToken', data.data.accessToken)
         }
+
         if (data.data?.user) {
-          localStorage.setItem('user', JSON.stringify(data.data.user));
+          localStorage.setItem('user', JSON.stringify(data.data.user))
         }
 
         if (data.data?.user?.mustChangePassword) {
-          navigate('/change-password');
+          navigate('/change-password')
         } else if (data.data?.user?.role === 'SuperAdmin') {
-          navigate('/super-admin/dashboard');
+          navigate('/super-admin/dashboard')
         } else if (data.data?.user?.role === 'HRAdmin') {
-          navigate('/hr/dashboard');
+          navigate('/hr/dashboard')
         } else if (data.data?.user?.role === 'Manager') {
-          navigate('/manager/dashboard');
+          navigate('/manager/dashboard')
         } else if (data.data?.user?.role === 'Employee') {
-          navigate('/employee/dashboard');
+          navigate('/employee/dashboard')
         } else if (data.data?.user?.role === 'Candidate') {
-          navigate('/career-portal/dashboard');
+          navigate('/career-portal/dashboard')
         } else if (data.data?.user?.role === 'ServiceExecutive') {
-          navigate('/service-executive/dashboard');
+          navigate('/service-executive/dashboard')
         } else {
-          alert('Login successful! Welcome back to Empora.');
+          alert('Login successful! Welcome back to Empora.')
         }
       } else {
-        alert(data.message || data.error || 'Google login failed');
+        alert(data.message || data.error || 'Google login failed')
       }
     } catch (err) {
-      alert('An error occurred during Google login. Please try again.');
-      console.error(err);
+      alert('An error occurred during Google login. Please try again.')
+      console.error(err)
     }
-  };
+  }
 
   const handleGoogleError = () => {
-    alert('Google authentication failed. Please try again.');
-  };
+    alert('Google authentication failed. Please try again.')
+  }
 
   const handleForgotSubmit = (e) => {
     e.preventDefault()
@@ -172,6 +187,7 @@ function Login() {
       setForgotError('Email is required')
       return
     }
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())) {
       setForgotError('Enter a valid email address')
       return
@@ -199,6 +215,7 @@ function Login() {
               <path d="M12 32 C12 21, 17 17, 24 17 C31 17, 36 21, 36 32 Z" />
             </svg>
           </span>
+
           <div className="login__brand-text-group">
             <span className="login__brand-text">EMPORA</span>
             <span className="login__brand-subtext">Work. Connect. Grow.</span>
@@ -207,6 +224,7 @@ function Login() {
 
         <div className="login__panel-content">
           <h1>Welcome Back</h1>
+
           <p>
             Sign in to access your employee dashboard, manage attendance,
             submit leave requests, and more.
@@ -222,12 +240,14 @@ function Login() {
               </svg>
               Unified Workplace Dashboard
             </li>
+
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" />
               </svg>
               Secure Enterprise Access
             </li>
+
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4" strokeLinecap="round" />
@@ -252,6 +272,7 @@ function Login() {
           <form className="login__form" onSubmit={handleSubmit} noValidate>
             <div className={`login__field ${errors.email ? 'login__field--error' : ''}`}>
               <label htmlFor="email">Email</label>
+
               <input
                 type="email"
                 id="email"
@@ -262,11 +283,15 @@ function Login() {
                 placeholder="you@company.com"
                 autoComplete="email"
               />
-              {errors.email && <span className="login__error">{errors.email}</span>}
+
+              {errors.email && (
+                <span className="login__error">{errors.email}</span>
+              )}
             </div>
 
             <div className={`login__field ${errors.password ? 'login__field--error' : ''}`}>
               <label htmlFor="password">Password</label>
+
               <div className="login__input-wrap">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -278,6 +303,7 @@ function Login() {
                   placeholder="Enter your password"
                   autoComplete="current-password"
                 />
+
                 <button
                   type="button"
                   className="login__toggle-pw"
@@ -287,7 +313,10 @@ function Login() {
                   <EyeIcon open={showPassword} />
                 </button>
               </div>
-              {errors.password && <span className="login__error">{errors.password}</span>}
+
+              {errors.password && (
+                <span className="login__error">{errors.password}</span>
+              )}
             </div>
 
             <div className="login__options">
@@ -300,6 +329,7 @@ function Login() {
                 <span className="login__checkbox-box" />
                 <span>Remember Me</span>
               </label>
+
               <Link
                 to="/forgot-password"
                 className="login__forgot"
@@ -312,10 +342,38 @@ function Login() {
               Login
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
-              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
-              <span style={{ padding: '0 1rem', color: '#6b7280', fontSize: '0.9rem' }}>OR</span>
-              <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                margin: '1rem 0'
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  height: '1px',
+                  backgroundColor: '#e5e7eb'
+                }}
+              />
+
+              <span
+                style={{
+                  padding: '0 1rem',
+                  color: '#6b7280',
+                  fontSize: '0.9rem'
+                }}
+              >
+                OR
+              </span>
+
+              <div
+                style={{
+                  flex: 1,
+                  height: '1px',
+                  backgroundColor: '#e5e7eb'
+                }}
+              />
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -336,23 +394,47 @@ function Login() {
       </div>
 
       {showForgotModal && (
-        <div className="login__modal-overlay" onClick={() => setShowForgotModal(false)}>
-          <div className="login__modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="login__modal-overlay"
+          onClick={() => setShowForgotModal(false)}
+        >
+          <div
+            className="login__modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               className="login__modal-close"
               onClick={() => setShowForgotModal(false)}
               aria-label="Close"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
+
             <h3>Reset Password</h3>
-            <p>Enter your email address and we&apos;ll send you a link to reset your password.</p>
+
+            <p>
+              Enter your email address and we&apos;ll send you a link to reset
+              your password.
+            </p>
+
             <form onSubmit={handleForgotSubmit}>
-              <div className={`login__field ${forgotError ? 'login__field--error' : ''}`}>
+              <div
+                className={`login__field ${forgotError ? 'login__field--error' : ''
+                  }`}
+              >
                 <label htmlFor="forgotEmail">Email</label>
+
                 <input
                   type="email"
                   id="forgotEmail"
@@ -364,9 +446,16 @@ function Login() {
                   placeholder="you@company.com"
                   autoComplete="email"
                 />
-                {forgotError && <span className="login__error">{forgotError}</span>}
+
+                {forgotError && (
+                  <span className="login__error">{forgotError}</span>
+                )}
               </div>
-              <button type="submit" className="btn btn-primary login__modal-submit">
+
+              <button
+                type="submit"
+                className="btn btn-primary login__modal-submit"
+              >
                 Send Reset Link
               </button>
             </form>
@@ -378,3 +467,4 @@ function Login() {
 }
 
 export default Login
+
