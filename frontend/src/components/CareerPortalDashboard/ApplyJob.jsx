@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ApplyJob.css';
 import { API_BASE_URL } from '../../config/api';
 
 const ApplyJob = ({ job, user, onCancel, onSuccess, onGoToResume }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     coverLetter: '',
     portfolio: '',
@@ -100,7 +102,7 @@ const ApplyJob = ({ job, user, onCancel, onSuccess, onGoToResume }) => {
       } else {
         if (res.status === 401) {
           alert('Your session has expired. Please log in again.');
-          window.location.href = '/login';
+          navigate('/login', { replace: true });
           return;
         }
         alert(json.error || json.message || 'Failed to submit application.');

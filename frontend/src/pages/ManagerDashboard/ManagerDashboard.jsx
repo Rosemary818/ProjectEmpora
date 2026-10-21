@@ -43,6 +43,7 @@ import ManagerPromotions from '../../components/PromotionManagement/ManagerPromo
 import ManagerWFH from '../../components/WFH/ManagerWFH';
 import ApprovalInbox from '../../components/ApprovalInbox/ApprovalInbox';
 import { API_BASE_URL } from '../../config/api';
+import { authService } from '../../services/auth.service';
 
 const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
   const navigate = useNavigate();
@@ -103,10 +104,9 @@ const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [

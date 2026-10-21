@@ -16,6 +16,7 @@ window.fetch = async (...args) => {
     if (!isAuthEndpoint && window.location.pathname !== '/login') {
       localStorage.removeItem('user');
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       window.location.href = '/login';
     }
   }

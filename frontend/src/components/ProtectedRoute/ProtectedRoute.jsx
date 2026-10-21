@@ -75,6 +75,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         // Unknown role, redirect to login
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         return <Navigate to="/login" replace />;
     }
   }

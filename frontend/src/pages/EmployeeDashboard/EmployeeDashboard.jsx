@@ -38,6 +38,7 @@ import EmployeeBenchStatus from '../../components/BenchManagement/EmployeeBenchS
 import EmployeePromotions from '../../components/PromotionManagement/EmployeePromotions';
 import EmployeeWFH from '../../components/WFH/EmployeeWFH';
 import { API_BASE_URL } from '../../config/api';
+import { authService } from '../../services/auth.service';
 
 const EmployeeDashboard = ({ defaultTab = 'Dashboard' }) => {
   const navigate = useNavigate();
@@ -101,10 +102,9 @@ const EmployeeDashboard = ({ defaultTab = 'Dashboard' }) => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [

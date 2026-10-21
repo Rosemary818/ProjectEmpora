@@ -18,6 +18,7 @@ import ReportsModule from '../../components/Reports/ReportsModule';
 import SuperAdminCandidates from '../../components/CandidateManagement/SuperAdminCandidates';
 import AdminWFH from '../../components/WFH/AdminWFH';
 import { API_BASE_URL } from '../../config/api';
+import { authService } from '../../services/auth.service';
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
@@ -65,10 +66,9 @@ const SuperAdminDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [

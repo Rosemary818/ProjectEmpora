@@ -96,6 +96,10 @@ function Login() {
             localStorage.setItem('accessToken', data.data.accessToken)
           }
 
+          if (data.data?.refreshToken) {
+            localStorage.setItem('refreshToken', data.data.refreshToken)
+          }
+
           if (data.data?.user) {
             localStorage.setItem('user', JSON.stringify(data.data.user))
           }
@@ -145,6 +149,10 @@ function Login() {
       if (response.ok) {
         if (data.data?.accessToken) {
           localStorage.setItem('accessToken', data.data.accessToken)
+        }
+
+        if (data.data?.refreshToken) {
+          localStorage.setItem('refreshToken', data.data.refreshToken)
         }
 
         if (data.data?.user) {

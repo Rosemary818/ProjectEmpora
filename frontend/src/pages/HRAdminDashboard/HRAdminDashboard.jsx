@@ -37,6 +37,7 @@ import HRAdminPromotions from '../../components/PromotionManagement/HRAdminPromo
 import AdminWFH from '../../components/WFH/AdminWFH';
 import ApprovalInbox from '../../components/ApprovalInbox/ApprovalInbox';
 import { API_BASE_URL } from '../../config/api';
+import { authService } from '../../services/auth.service';
 
 const HRAdminDashboard = () => {
   const navigate = useNavigate();
@@ -94,10 +95,9 @@ const HRAdminDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [

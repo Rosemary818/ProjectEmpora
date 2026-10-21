@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
@@ -12,10 +13,9 @@ const CandidateDashboard = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   if (!user) return <div>Loading...</div>;

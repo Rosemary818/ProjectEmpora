@@ -8,6 +8,7 @@ import ServiceExecutiveFeedback from '../../components/FeedbackManagement/Servic
 import AttendanceManagement from '../../components/AttendanceManagement/AttendanceManagement';
 import LeaveManagement from '../../components/LeaveManagement/LeaveManagement';
 import GlobalSearch from '../../components/Search/GlobalSearch';
+import { authService } from '../../services/auth.service';
 
 const ServiceExecutiveDashboard = () => {
   const navigate = useNavigate();
@@ -22,10 +23,9 @@ const ServiceExecutiveDashboard = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [

@@ -11,6 +11,7 @@ import MyResume from '../../components/CareerPortalDashboard/MyResume';
 import NotificationBell from '../../components/Notifications/NotificationBell';
 import UserProfile from '../../components/UserProfile/UserProfile';
 import { API_BASE_URL } from '../../config/api';
+import { authService } from '../../services/auth.service';
 
 const CareerPortalDashboard = () => {
   const navigate = useNavigate();
@@ -77,10 +78,9 @@ const CareerPortalDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.replace('/login');
+  const handleLogout = async () => {
+    await authService.logout();
+    navigate('/login', { replace: true });
   };
 
   const menuItems = [
