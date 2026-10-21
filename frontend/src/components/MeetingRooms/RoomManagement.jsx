@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './RoomManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const RoomManagement = () => {
   const [rooms, setRooms] = useState([]);
@@ -22,7 +23,7 @@ const RoomManagement = () => {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/rooms/admin/all-rooms', {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/admin/all-rooms`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -67,8 +68,8 @@ const RoomManagement = () => {
     setError(null);
     try {
       const url = editingRoom 
-        ? `http://localhost:5000/api/rooms/room/${editingRoom._id}`
-        : 'http://localhost:5000/api/rooms/room';
+        ? `${API_BASE_URL}/api/rooms/room/${editingRoom._id}`
+        : `${API_BASE_URL}/api/rooms/room`;
       
       const method = editingRoom ? 'PUT' : 'POST';
 
@@ -96,7 +97,7 @@ const RoomManagement = () => {
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/room/${id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/room/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +121,7 @@ const RoomManagement = () => {
     if (!window.confirm("Are you sure you want to delete this room? If it has historical bookings, this will fail.")) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/room/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/room/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

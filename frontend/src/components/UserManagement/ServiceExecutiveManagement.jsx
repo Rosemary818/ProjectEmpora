@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { validateIndianMobileNumber } from '../../utils/validation';
+import { API_BASE_URL } from '../../config/api';
 import './SuperAdminUserManagement.css'; // Reusing similar styles
 
 const ServiceExecutiveManagement = () => {
@@ -36,7 +37,7 @@ const ServiceExecutiveManagement = () => {
 
   const fetchServiceExecutives = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/service-executives', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/service-executives`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -59,7 +60,7 @@ const ServiceExecutiveManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} this Service Executive?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -126,8 +127,8 @@ const ServiceExecutiveManagement = () => {
 
     try {
       const url = modalMode === 'add' 
-        ? 'http://localhost:5000/api/admin/service-executives' 
-        : `http://localhost:5000/api/admin/service-executives/${formData.id}`;
+        ? `${API_BASE_URL}/api/admin/service-executives` 
+        : `${API_BASE_URL}/api/admin/service-executives/${formData.id}`;
         
       const method = modalMode === 'add' ? 'POST' : 'PUT';
 
@@ -161,7 +162,7 @@ const ServiceExecutiveManagement = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/service-executives/${resetData.id}/reset-password`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/service-executives/${resetData.id}/reset-password`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +187,7 @@ const ServiceExecutiveManagement = () => {
     if (!window.confirm('Resend invitation to this Service Executive?')) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/service-executives/${user._id}/resend-invite`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/service-executives/${user._id}/resend-invite`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`

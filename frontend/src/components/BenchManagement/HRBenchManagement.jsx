@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BenchManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRBenchManagement = () => {
   const [employees, setEmployees] = useState([]);
@@ -24,8 +25,8 @@ const HRBenchManagement = () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       const [empRes, statsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/bench/employees', { headers }),
-        fetch('http://localhost:5000/api/bench/dashboard', { headers })
+        fetch(`${API_BASE_URL}/api/bench/employees`, { headers }),
+        fetch(`${API_BASE_URL}/api/bench/dashboard`, { headers })
       ]);
       
       const empData = await empRes.json();
@@ -47,7 +48,7 @@ const HRBenchManagement = () => {
   const handleUpdateStatus = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/bench/status/${selectedEmployee._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/bench/status/${selectedEmployee._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

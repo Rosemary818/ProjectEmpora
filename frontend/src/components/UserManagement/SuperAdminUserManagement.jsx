@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SuperAdminUserManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const SuperAdminUserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ const SuperAdminUserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/users', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -38,7 +39,7 @@ const SuperAdminUserManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} this ${user.role}?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

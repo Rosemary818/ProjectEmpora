@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { exportToCSV, printReport } from './exportUtils';
+import { API_BASE_URL } from '../../config/api';
 
 const LeaveReport = () => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const LeaveReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      let url = 'http://localhost:5000/api/reports/leave';
+      let url = `${API_BASE_URL}/api/reports/leave`;
       if (startDate && endDate) {
         url += `?startDate=${startDate}&endDate=${endDate}`;
       }

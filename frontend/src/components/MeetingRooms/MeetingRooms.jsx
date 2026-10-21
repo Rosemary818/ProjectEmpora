@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './MeetingRooms.css';
+import { API_BASE_URL } from '../../config/api';
 
 const timeToMins = (timeStr) => {
   if (!timeStr) return 0;
@@ -53,7 +54,7 @@ const MeetingRooms = ({ userRole, user }) => {
 
   const fetchSwapRequests = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/swaps/requests`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/swaps/requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -67,7 +68,7 @@ const MeetingRooms = ({ userRole, user }) => {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/rooms?date=${selectedDate}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/rooms?date=${selectedDate}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -81,7 +82,7 @@ const MeetingRooms = ({ userRole, user }) => {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -99,7 +100,7 @@ const MeetingRooms = ({ userRole, user }) => {
     const newSuggestions = {};
     for (const b of upcoming) {
       try {
-        const res = await fetch(`http://localhost:5000/api/rooms/${b._id}/alternatives`, {
+        const res = await fetch(`${API_BASE_URL}/api/rooms/${b._id}/alternatives`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -116,7 +117,7 @@ const MeetingRooms = ({ userRole, user }) => {
   const handleSwapRoom = async (bookingId, newRoomId) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/${bookingId}/swap`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/${bookingId}/swap`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ const MeetingRooms = ({ userRole, user }) => {
     setShowSwapModal(true);
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/${booking._id}/swappable`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/${booking._id}/swappable`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -174,7 +175,7 @@ const MeetingRooms = ({ userRole, user }) => {
   const handleSendSwapRequest = async (receiverBookingId) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/swaps`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/swaps`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,7 +203,7 @@ const MeetingRooms = ({ userRole, user }) => {
   const handleActionSwapRequest = async (requestId, action) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/swaps/${requestId}/${action}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/swaps/${requestId}/${action}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -227,7 +228,7 @@ const MeetingRooms = ({ userRole, user }) => {
     // Attempt to fetch users for the participants dropdown
     // Based on userRole, might fetch all or just team
     try {
-      const res = await fetch(`http://localhost:5000/api/user/all`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -250,7 +251,7 @@ const MeetingRooms = ({ userRole, user }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -275,7 +276,7 @@ const MeetingRooms = ({ userRole, user }) => {
   const handleCancelBooking = async (id) => {
     if (!window.confirm("Are you sure you want to cancel this booking?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rooms/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -290,7 +291,7 @@ const MeetingRooms = ({ userRole, user }) => {
 
   const handleVisitorAction = async (visitorId, action) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/visitors/${visitorId}/${action}`, {
+      const res = await fetch(`${API_BASE_URL}/api/visitors/${visitorId}/${action}`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

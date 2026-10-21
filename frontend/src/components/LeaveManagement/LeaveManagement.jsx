@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LeaveManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const LeaveManagement = () => {
   const [leaves, setLeaves] = useState([]);
@@ -20,7 +21,7 @@ const LeaveManagement = () => {
 
   const fetchLeaves = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/leave', {
+      const response = await fetch(`${API_BASE_URL}/api/leave`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -118,7 +119,7 @@ const LeaveManagement = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/leave', {
+      const response = await fetch(`${API_BASE_URL}/api/leave`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

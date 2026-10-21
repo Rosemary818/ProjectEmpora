@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import '../CareerPortalDashboard/MyInterviews.css'; // Reusing CSS
 
 const EmployeeInterviews = () => {
@@ -12,7 +13,7 @@ const EmployeeInterviews = () => {
   const fetchInterviews = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/interviews/candidate', {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/candidate`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ManagerProjects.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -19,7 +20,7 @@ const ManagerProjects = () => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/projects/my-projects', {
+      const res = await fetch(`${API_BASE_URL}/api/projects/my-projects`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -37,7 +38,7 @@ const ManagerProjects = () => {
 
   const fetchAvailableEmployees = async (projectId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/available-employees?projectId=${projectId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/projects/available-employees?projectId=${projectId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -68,7 +69,7 @@ const ManagerProjects = () => {
     setIsSubmitting(true);
     
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${selectedProjectId}/team`, {
+      const res = await fetch(`${API_BASE_URL}/api/projects/${selectedProjectId}/team`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +96,7 @@ const ManagerProjects = () => {
     if (!window.confirm(`Are you sure you want to remove ${employeeName} from the project team?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${projectId}/team/${employeeId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/projects/${projectId}/team/${employeeId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`

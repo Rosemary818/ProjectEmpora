@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TimesheetManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerTimesheets = () => {
   const [timesheets, setTimesheets] = useState([]);
@@ -17,7 +18,7 @@ const ManagerTimesheets = () => {
 
   const fetchTimesheets = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/timesheets/team', {
+      const res = await fetch(`${API_BASE_URL}/api/timesheets/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -37,7 +38,7 @@ const ManagerTimesheets = () => {
     if (!window.confirm('Are you sure you want to approve this timesheet?')) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/timesheets/${id}/review`, {
+      const res = await fetch(`${API_BASE_URL}/api/timesheets/${id}/review`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ const ManagerTimesheets = () => {
     setIsSubmitting(true);
     
     try {
-      const res = await fetch(`http://localhost:5000/api/timesheets/${rejectingId}/review`, {
+      const res = await fetch(`${API_BASE_URL}/api/timesheets/${rejectingId}/review`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

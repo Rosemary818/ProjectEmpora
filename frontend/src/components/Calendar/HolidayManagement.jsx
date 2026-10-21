@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const HolidayManagement = ({ onBack, user }) => {
   const [holidays, setHolidays] = useState([]);
@@ -14,7 +15,7 @@ const HolidayManagement = ({ onBack, user }) => {
   const fetchHolidays = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/holidays`, {
+      const res = await fetch(`${API_BASE_URL}/api/holidays`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -33,7 +34,7 @@ const HolidayManagement = ({ onBack, user }) => {
     setError('');
     
     try {
-      const url = formData._id ? `http://localhost:5000/api/holidays/${formData._id}` : `http://localhost:5000/api/holidays`;
+      const url = formData._id ? `${API_BASE_URL}/api/holidays/${formData._id}` : `${API_BASE_URL}/api/holidays`;
       const method = formData._id ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -66,7 +67,7 @@ const HolidayManagement = ({ onBack, user }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this holiday?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/holidays/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/holidays/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

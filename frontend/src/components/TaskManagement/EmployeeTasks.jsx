@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TaskManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -14,7 +15,7 @@ const EmployeeTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/tasks/my-tasks', {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/my-tasks`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -40,7 +41,7 @@ const EmployeeTasks = () => {
       const payload = { status: newStatus };
       if (newStatus === 'Blocked') payload.blockedReason = reason;
 
-      const res = await fetch(`http://localhost:5000/api/tasks/${taskId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ const EmployeeTasks = () => {
 
   const updateProgress = async (taskId, progress) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/tasks/${taskId}/progress`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/progress`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

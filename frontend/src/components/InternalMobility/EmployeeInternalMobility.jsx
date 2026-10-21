@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './EmployeeInternalMobility.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeInternalMobility = ({ user }) => {
   const [activeSubTab, setActiveSubTab] = useState('opportunities');
@@ -33,8 +34,8 @@ const EmployeeInternalMobility = ({ user }) => {
     setLoading(true);
     try {
       const [oppRes, appsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/internal-mobility/opportunities', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
-        fetch('http://localhost:5000/api/internal-mobility/my-applications', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } })
+        fetch(`${API_BASE_URL}/api/internal-mobility/opportunities`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
+        fetch(`${API_BASE_URL}/api/internal-mobility/my-applications`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } })
       ]);
       const oppData = await oppRes.json();
       const appsData = await appsRes.json();
@@ -61,7 +62,7 @@ const EmployeeInternalMobility = ({ user }) => {
   const handleSubmitApplication = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/internal-mobility/apply', {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/apply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ const EmployeeInternalMobility = ({ user }) => {
   const handleWithdraw = async (appId) => {
     if (!window.confirm('Are you sure you want to withdraw this application?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/internal-mobility/my-applications/${appId}/withdraw`, {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/my-applications/${appId}/withdraw`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5000/api/workloads';
+import { API_BASE_URL } from '../config/api';
+const API_URL = `${API_BASE_URL}/api/workloads`;
 
 // Helper to get auth headers
 const getHeaders = () => {

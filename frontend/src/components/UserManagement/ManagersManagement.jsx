@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { validateIndianMobileNumber } from '../../utils/validation';
 import './SuperAdminUserManagement.css'; 
+import { API_BASE_URL } from '../../config/api';
 
 const ManagersManagement = () => {
   const [managers, setManagers] = useState([]);
@@ -43,7 +44,7 @@ const ManagersManagement = () => {
 
   const fetchManagers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/managers', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/managers`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -61,7 +62,7 @@ const ManagersManagement = () => {
 
   const fetchDepartments = async () => {
     try {
-      const depRes = await fetch('http://localhost:5000/api/departments', {
+      const depRes = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const depData = await depRes.json();
@@ -80,7 +81,7 @@ const ManagersManagement = () => {
     }
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +148,7 @@ const ManagersManagement = () => {
     setTeamLoading(true);
     setTeamData([]);
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/managers/${manager._id}/team`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/managers/${manager._id}/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -188,8 +189,8 @@ const ManagersManagement = () => {
 
     try {
       const url = modalMode === 'add' 
-        ? 'http://localhost:5000/api/admin/managers' 
-        : `http://localhost:5000/api/admin/managers/${formData.id}`;
+        ? `${API_BASE_URL}/api/admin/managers` 
+        : `${API_BASE_URL}/api/admin/managers/${formData.id}`;
         
       const method = modalMode === 'add' ? 'POST' : 'PUT';
 
@@ -230,7 +231,7 @@ const ManagersManagement = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/managers/${resetData.id}/reset-password`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/managers/${resetData.id}/reset-password`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

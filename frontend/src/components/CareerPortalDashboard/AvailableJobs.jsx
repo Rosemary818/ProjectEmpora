@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AvailableJobs.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AvailableJobs = ({ appliedJobIds = [], savedJobIds = [], onApplyClick, onSaveToggle }) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const AvailableJobs = ({ appliedJobIds = [], savedJobIds = [], onApplyClick, onS
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/jobs/published', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/published`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -83,7 +84,7 @@ const AvailableJobs = ({ appliedJobIds = [], savedJobIds = [], onApplyClick, onS
     );
 
     try {
-      const res = await fetch(`http://localhost:5000/api/career-portal/saved-jobs/${jobId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/career-portal/saved-jobs/${jobId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

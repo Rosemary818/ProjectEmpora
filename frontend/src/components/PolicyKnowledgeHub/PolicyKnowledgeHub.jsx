@@ -3,6 +3,7 @@ import './PolicyKnowledgeHub.css';
 import PolicyCard from './PolicyCard';
 import PolicyDetail from './PolicyDetail';
 import PolicyForm from './PolicyForm';
+import { API_BASE_URL } from '../../config/api';
 
 const CATEGORIES = [
   'All',
@@ -38,7 +39,7 @@ const PolicyKnowledgeHub = ({ userRole, user }) => {
   const fetchPolicies = async () => {
     setLoading(true);
     try {
-      let url = 'http://localhost:5000/api/policies?';
+      let url = `${API_BASE_URL}/api/policies?`;
       if (categoryFilter !== 'All') url += `category=${encodeURIComponent(categoryFilter)}&`;
       if (searchQuery) url += `search=${encodeURIComponent(searchQuery)}`;
 
@@ -78,7 +79,7 @@ const PolicyKnowledgeHub = ({ userRole, user }) => {
     if (!window.confirm('Are you sure you want to delete this policy?')) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/policies/${policyId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/policies/${policyId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -96,7 +97,7 @@ const PolicyKnowledgeHub = ({ userRole, user }) => {
   const handleToggleStatus = async (policy) => {
     const newStatus = policy.status === 'Active' ? 'Inactive' : 'Active';
     try {
-      const res = await fetch(`http://localhost:5000/api/policies/${policy._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/policies/${policy._id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -118,8 +119,8 @@ const PolicyKnowledgeHub = ({ userRole, user }) => {
   const handleSavePolicy = async (formData, policyId) => {
     try {
       const url = policyId 
-        ? `http://localhost:5000/api/policies/${policyId}`
-        : `http://localhost:5000/api/policies`;
+        ? `${API_BASE_URL}/api/policies/${policyId}`
+        : `${API_BASE_URL}/api/policies`;
       
       const method = policyId ? 'PUT' : 'POST';
       

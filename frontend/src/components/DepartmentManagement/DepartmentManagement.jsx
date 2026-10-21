@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DepartmentManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const DepartmentManagement = () => {
   const [departments, setDepartments] = useState([]);
@@ -33,8 +34,8 @@ const DepartmentManagement = () => {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       
       const [deptRes, usersRes] = await Promise.all([
-        fetch('http://localhost:5000/api/departments', { headers }),
-        fetch('http://localhost:5000/api/admin/employees', { headers })
+        fetch(`${API_BASE_URL}/api/departments`, { headers }),
+        fetch(`${API_BASE_URL}/api/admin/employees`, { headers })
       ]);
       
       const deptData = await deptRes.json();
@@ -93,8 +94,8 @@ const DepartmentManagement = () => {
     
     try {
       const url = editMode 
-        ? `http://localhost:5000/api/departments/${selectedDept._id}`
-        : 'http://localhost:5000/api/departments';
+        ? `${API_BASE_URL}/api/departments/${selectedDept._id}`
+        : `${API_BASE_URL}/api/departments`;
       
       const method = editMode ? 'PATCH' : 'POST';
 
@@ -128,7 +129,7 @@ const DepartmentManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} the ${dept.departmentName} department?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/departments/${dept._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/departments/${dept._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +151,7 @@ const DepartmentManagement = () => {
 
   const handleViewDetails = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/departments/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/departments/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

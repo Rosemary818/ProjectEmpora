@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ScheduleInterviewModal.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ScheduleInterviewModal = ({ application, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const ScheduleInterviewModal = ({ application, onClose, onSuccess }) => {
 
   const fetchManagers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/managers', {
+      const res = await fetch(`${API_BASE_URL}/api/user/managers`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -74,7 +75,7 @@ const ScheduleInterviewModal = ({ application, onClose, onSuccess }) => {
         jobId: application.jobId._id
       };
 
-      const res = await fetch('http://localhost:5000/api/interviews', {
+      const res = await fetch(`${API_BASE_URL}/api/interviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

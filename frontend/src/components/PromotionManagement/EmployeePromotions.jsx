@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PromotionManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeePromotions = () => {
   const [promotions, setPromotions] = useState([]);
@@ -9,7 +10,7 @@ const EmployeePromotions = () => {
   const fetchPromotions = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      const res = await fetch('http://localhost:5000/api/promotions/my-promotions', {
+      const res = await fetch(`${API_BASE_URL}/api/promotions/my-promotions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();

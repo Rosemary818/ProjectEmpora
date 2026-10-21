@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PromotionManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerPromotions = () => {
   const [promotions, setPromotions] = useState([]);
@@ -26,8 +27,8 @@ const ManagerPromotions = () => {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
 
       const [promoRes, usersRes] = await Promise.all([
-        fetch('http://localhost:5000/api/promotions/team', { headers: { Authorization: `Bearer ${token}` } }).then(res => res.json()),
-        fetch('http://localhost:5000/api/user/my-team', { headers: { Authorization: `Bearer ${token}` } }).then(res => res.json())
+        fetch(`${API_BASE_URL}/api/promotions/team`, { headers: { Authorization: `Bearer ${token}` } }).then(res => res.json()),
+        fetch(`${API_BASE_URL}/api/user/my-team`, { headers: { Authorization: `Bearer ${token}` } }).then(res => res.json())
       ]);
 
       setPromotions(promoRes.data || []);
@@ -68,7 +69,7 @@ const ManagerPromotions = () => {
 
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      const res = await fetch('http://localhost:5000/api/promotions/proposal', {
+      const res = await fetch(`${API_BASE_URL}/api/promotions/proposal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ const ManagerPromotions = () => {
 
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      const res = await fetch(`http://localhost:5000/api/promotions/${id}/cancel`, {
+      const res = await fetch(`${API_BASE_URL}/api/promotions/${id}/cancel`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -199,7 +200,7 @@ const ManagerPromotions = () => {
                     <div className="promo-employee-cell">
                       <div className="promo-avatar">
                         {promo.employeeId?.profileImage ? (
-                          <img src={`http://localhost:5000/${promo.employeeId.profileImage}`} alt="profile" />
+                          <img src={`${API_BASE_URL}/${promo.employeeId.profileImage}`} alt="profile" />
                         ) : (
                           <span>👤</span>
                         )}

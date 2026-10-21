@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ServiceRequestManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ServiceExecutiveServiceRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -24,7 +25,7 @@ const ServiceExecutiveServiceRequests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -64,7 +65,7 @@ const ServiceExecutiveServiceRequests = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/service-requests/${viewRequest._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests/${viewRequest._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

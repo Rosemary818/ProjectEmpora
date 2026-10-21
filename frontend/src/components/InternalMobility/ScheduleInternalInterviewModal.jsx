@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../CareerPortalAdmin/ScheduleInterviewModal.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ScheduleInternalInterviewModal = ({ application, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const ScheduleInternalInterviewModal = ({ application, onClose, onSuccess }) => 
 
   const fetchManagers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/managers', {
+      const res = await fetch(`${API_BASE_URL}/api/user/managers`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -69,7 +70,7 @@ const ScheduleInternalInterviewModal = ({ application, onClose, onSuccess }) => 
     try {
       const payload = { ...formData };
 
-      const res = await fetch(`http://localhost:5000/api/internal-mobility/hr/applications/${application._id}/interview`, {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/hr/applications/${application._id}/interview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

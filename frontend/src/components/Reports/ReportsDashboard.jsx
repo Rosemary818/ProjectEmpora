@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const ReportsDashboard = () => {
   const [data, setData] = useState(null);
@@ -11,7 +12,7 @@ const ReportsDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/reports/dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/reports/dashboard`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }

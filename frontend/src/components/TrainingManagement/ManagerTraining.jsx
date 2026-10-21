@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EmployeeTraining from './EmployeeTraining';
 import './TrainingManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerTraining = () => {
   const [activeTab, setActiveTab] = useState('My Learning');
@@ -16,7 +17,7 @@ const ManagerTraining = () => {
   const fetchTeamTrainings = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/trainings/team-enrollments', {
+      const res = await fetch(`${API_BASE_URL}/api/trainings/team-enrollments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

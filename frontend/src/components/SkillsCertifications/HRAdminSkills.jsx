@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import './EmployeeSkills.css'; // Reusing styles
 
 const HRAdminSkills = () => {
@@ -40,7 +41,7 @@ const HRAdminSkills = () => {
 
   const fetchInitialData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/skills', {
+      const res = await fetch(`${API_BASE_URL}/api/skills`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -55,7 +56,7 @@ const HRAdminSkills = () => {
   const fetchEmployeeSkills = async () => {
     setLoading(true);
     try {
-      let url = 'http://localhost:5000/api/skills/all-employee-skills';
+      let url = `${API_BASE_URL}/api/skills/all-employee-skills`;
       if (selectedSkillFilter) {
         url += `?skillId=${selectedSkillFilter}`;
       }
@@ -78,7 +79,7 @@ const HRAdminSkills = () => {
   const fetchCertifications = async (type) => {
     setLoading(true);
     try {
-      let url = 'http://localhost:5000/api/certifications/all';
+      let url = `${API_BASE_URL}/api/certifications/all`;
       if (type === 'Expiring') {
         url += '?expiring=true';
       } else {
@@ -103,7 +104,7 @@ const HRAdminSkills = () => {
 
   const handleVerifyCert = async (id, status, reason = '') => {
     try {
-      const res = await fetch(`http://localhost:5000/api/certifications/${id}/verify`, {
+      const res = await fetch(`${API_BASE_URL}/api/certifications/${id}/verify`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -350,10 +351,10 @@ const HRAdminSkills = () => {
                       <td>
                         {cert.certificateFile ? (
                           <div style={{ display: 'flex', gap: '8px' }}>
-                            <a href={`http://localhost:5000${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '4px 8px' }}>
+                            <a href={`${API_BASE_URL}${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '4px 8px' }}>
                               View
                             </a>
-                            <a href={`http://localhost:5000${cert.certificateFile}`} download target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '4px 8px' }}>
+                            <a href={`${API_BASE_URL}${cert.certificateFile}`} download target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '4px 8px' }}>
                               Download
                             </a>
                           </div>

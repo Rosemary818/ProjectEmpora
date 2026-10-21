@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ComplaintManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeComplaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -35,7 +36,7 @@ const EmployeeComplaints = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/complaints/my-complaints', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/my-complaints`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -56,7 +57,7 @@ const EmployeeComplaints = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/complaints', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ const EmployeeComplaints = () => {
     if (comp.status === 'Solved') {
       setLoadingFeedback(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/feedback/Complaint/${comp._id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/feedback/Complaint/${comp._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -120,7 +121,7 @@ const EmployeeComplaints = () => {
         rating: Number(feedbackForm.rating),
         comment: feedbackForm.comment
       };
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

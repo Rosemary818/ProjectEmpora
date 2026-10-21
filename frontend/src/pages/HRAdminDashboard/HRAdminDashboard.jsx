@@ -36,6 +36,7 @@ import HRBenchManagement from '../../components/BenchManagement/HRBenchManagemen
 import HRAdminPromotions from '../../components/PromotionManagement/HRAdminPromotions';
 import AdminWFH from '../../components/WFH/AdminWFH';
 import ApprovalInbox from '../../components/ApprovalInbox/ApprovalInbox';
+import { API_BASE_URL } from '../../config/api';
 
 const HRAdminDashboard = () => {
   const navigate = useNavigate();
@@ -63,12 +64,12 @@ const HRAdminDashboard = () => {
   const fetchDashboardData = async () => {
     setLoadingDashboard(true);
     try {
-      const res = await fetch('http://localhost:5000/api/admin/hr-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/hr-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
 
-      const resInt = await fetch('http://localhost:5000/api/interviews/hr/widgets', {
+      const resInt = await fetch(`${API_BASE_URL}/api/interviews/hr/widgets`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const intData = await resInt.json();

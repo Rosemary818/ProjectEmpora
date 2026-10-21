@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5000/api/activities';
+import { API_BASE_URL } from '../config/api';
+const API_URL = `${API_BASE_URL}/api/activities`;
 
 export const getRecentActivities = async (filter = 'all', limit = 0) => {
   const token = localStorage.getItem('accessToken');

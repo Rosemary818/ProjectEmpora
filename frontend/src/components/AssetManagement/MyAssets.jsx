@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AssetManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const MyAssets = ({ isManager }) => {
   const [assets, setAssets] = useState([]);
@@ -19,7 +20,7 @@ const MyAssets = ({ isManager }) => {
   const fetchTeamAssets = async () => {
     setLoadingTeam(true);
     try {
-      const res = await fetch('http://localhost:5000/api/assets/team', {
+      const res = await fetch(`${API_BASE_URL}/api/assets/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -34,7 +35,7 @@ const MyAssets = ({ isManager }) => {
 
   const fetchMyAssets = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/assets/me', {
+      const res = await fetch(`${API_BASE_URL}/api/assets/me`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

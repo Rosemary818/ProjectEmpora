@@ -42,6 +42,7 @@ import ManagerBenchResources from '../../components/BenchManagement/ManagerBench
 import ManagerPromotions from '../../components/PromotionManagement/ManagerPromotions';
 import ManagerWFH from '../../components/WFH/ManagerWFH';
 import ApprovalInbox from '../../components/ApprovalInbox/ApprovalInbox';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ const ManagerDashboard = ({ defaultTab = 'Dashboard' }) => {
   const fetchDashboardData = async () => {
     setLoadingDashboard(true);
     try {
-      const res = await fetch('http://localhost:5000/api/user/manager-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/user/manager-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

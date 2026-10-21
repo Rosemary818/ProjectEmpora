@@ -3,6 +3,7 @@ import './PayslipManagement.css'; // Reuse CSS
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import PayslipTemplate from './PayslipTemplate';
+import { API_BASE_URL } from '../../config/api';
 
 const MyPayslips = ({ user }) => {
   const [payslips, setPayslips] = useState([]);
@@ -27,7 +28,7 @@ const MyPayslips = ({ user }) => {
   const fetchMyPayslips = async (userId) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/payslips?employeeId=${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/payslips?employeeId=${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

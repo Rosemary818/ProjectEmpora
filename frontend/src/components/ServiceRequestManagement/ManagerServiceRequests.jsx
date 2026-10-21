@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ServiceRequestManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerServiceRequests = () => {
   const [activeTab, setActiveTab] = useState('My Requests');
@@ -42,7 +43,7 @@ const ManagerServiceRequests = () => {
   const fetchMyRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests/my-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests/my-requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -59,7 +60,7 @@ const ManagerServiceRequests = () => {
   const fetchTeamRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests/team', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -80,7 +81,7 @@ const ManagerServiceRequests = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ const ManagerServiceRequests = () => {
     if (activeTab === 'My Requests' && (req.status === 'Resolved' || req.status === 'Closed')) {
       setLoadingFeedback(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/feedback/ServiceRequest/${req._id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/feedback/ServiceRequest/${req._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -154,7 +155,7 @@ const ManagerServiceRequests = () => {
         rating: Number(feedbackForm.rating),
         comment: feedbackForm.comment
       };
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

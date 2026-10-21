@@ -17,6 +17,7 @@ import HolidayManagement from '../../components/Calendar/HolidayManagement';
 import ReportsModule from '../../components/Reports/ReportsModule';
 import SuperAdminCandidates from '../../components/CandidateManagement/SuperAdminCandidates';
 import AdminWFH from '../../components/WFH/AdminWFH';
+import { API_BASE_URL } from '../../config/api';
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const SuperAdminDashboard = () => {
   const fetchDashboardData = async () => {
     setLoadingDashboard(true);
     try {
-      const res = await fetch('http://localhost:5000/api/admin/super-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/super-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

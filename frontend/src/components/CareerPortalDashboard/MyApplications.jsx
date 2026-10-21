@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MyApplications.css';
+import { API_BASE_URL } from '../../config/api';
 
 const MyApplications = ({ onBrowseJobs }) => {
   const [applications, setApplications] = useState([]);
@@ -21,14 +22,14 @@ const MyApplications = ({ onBrowseJobs }) => {
   const fetchApplications = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/career-portal/my-applications', {
+      const res = await fetch(`${API_BASE_URL}/api/career-portal/my-applications`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
       
       let interviews = [];
       try {
-        const intRes = await fetch('http://localhost:5000/api/interviews/candidate', {
+        const intRes = await fetch(`${API_BASE_URL}/api/interviews/candidate`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const intData = await intRes.json();
@@ -71,7 +72,7 @@ const MyApplications = ({ onBrowseJobs }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/career-portal/my-applications/${appId}/withdraw`, {
+      const res = await fetch(`${API_BASE_URL}/api/career-portal/my-applications/${appId}/withdraw`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -330,10 +331,10 @@ const MyApplications = ({ onBrowseJobs }) => {
                   <div className="app-detail-group">
                     <h4>Submitted Documents & Links</h4>
                     <div className="doc-links">
-                      <a href={`http://localhost:5000${selectedApp.resume}`} target="_blank" rel="noreferrer" className="doc-btn">
+                      <a href={`${API_BASE_URL}${selectedApp.resume}`} target="_blank" rel="noreferrer" className="doc-btn">
                         📄 View Resume
                       </a>
-                      <a href={`http://localhost:5000${selectedApp.resume}`} download className="doc-btn secondary">
+                      <a href={`${API_BASE_URL}${selectedApp.resume}`} download className="doc-btn secondary">
                         ⬇️ Download
                       </a>
                     </div>

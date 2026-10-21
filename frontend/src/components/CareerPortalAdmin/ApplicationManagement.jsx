@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ApplicationManagement.css';
 import ScheduleInterviewModal from './ScheduleInterviewModal';
+import { API_BASE_URL } from '../../config/api';
 
 const ApplicationManagement = () => {
   const [applications, setApplications] = useState([]);
@@ -24,7 +25,7 @@ const ApplicationManagement = () => {
   const fetchApplications = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/jobs/applications', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/applications`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -87,7 +88,7 @@ const ApplicationManagement = () => {
       const payload = { status: newStatus };
       if (offerLetterUrl) payload.offerLetterUrl = offerLetterUrl;
 
-      const res = await fetch(`http://localhost:5000/api/jobs/applications/${appId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/applications/${appId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ const ApplicationManagement = () => {
 
   const resendWelcomeEmail = async (appId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/jobs/applications/${appId}/resend-welcome`, {
+      const response = await fetch(`${API_BASE_URL}/api/jobs/applications/${appId}/resend-welcome`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
@@ -226,7 +227,7 @@ const ApplicationManagement = () => {
                   <td>{new Date(app.appliedAt).toLocaleDateString()}</td>
                   <td>{getStatusBadge(app.status)}</td>
                   <td>
-                    <a href={`http://localhost:5000${app.resume}`} target="_blank" rel="noreferrer" className="resume-btn">
+                    <a href={`${API_BASE_URL}${app.resume}`} target="_blank" rel="noreferrer" className="resume-btn">
                       View PDF
                     </a>
                   </td>
@@ -284,7 +285,7 @@ const ApplicationManagement = () => {
                     <h3>Resume Preview</h3>
                     {selectedApp.resume ? (
                       <iframe 
-                        src={`http://localhost:5000${selectedApp.resume}`} 
+                        src={`${API_BASE_URL}${selectedApp.resume}`} 
                         className="resume-preview-iframe"
                         title="Resume Preview"
                       ></iframe>
@@ -292,7 +293,7 @@ const ApplicationManagement = () => {
                       <p>No resume available.</p>
                     )}
                     <div style={{ marginTop: '1rem' }}>
-                      <a href={`http://localhost:5000${selectedApp.resume}`} download className="action-btn-secondary">Download Resume</a>
+                      <a href={`${API_BASE_URL}${selectedApp.resume}`} download className="action-btn-secondary">Download Resume</a>
                     </div>
                   </div>
 

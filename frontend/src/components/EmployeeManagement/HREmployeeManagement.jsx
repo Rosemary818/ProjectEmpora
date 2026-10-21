@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './HREmployeeManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HREmployeeManagement = () => {
   const [employees, setEmployees] = useState([]);
@@ -27,9 +28,9 @@ const HREmployeeManagement = () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       const [empRes, deptRes, desigRes] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/employees', { headers }),
-        fetch('http://localhost:5000/api/departments', { headers }),
-        fetch('http://localhost:5000/api/designations', { headers })
+        fetch(`${API_BASE_URL}/api/admin/employees`, { headers }),
+        fetch(`${API_BASE_URL}/api/departments`, { headers }),
+        fetch(`${API_BASE_URL}/api/designations`, { headers })
       ]);
       
       const empData = await empRes.json();
@@ -57,7 +58,7 @@ const HREmployeeManagement = () => {
 
   const handleViewDetails = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/employees/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -88,7 +89,7 @@ const HREmployeeManagement = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/employees/${selectedUser._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${selectedUser._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const HREmployeeManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} ${user.firstName}?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/employees/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

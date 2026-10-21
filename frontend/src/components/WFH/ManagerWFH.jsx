@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './WFH.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerWFH = ({ user }) => {
   const [requests, setRequests] = useState([]);
@@ -16,7 +17,7 @@ const ManagerWFH = ({ user }) => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/wfh/team', {
+      const res = await fetch(`${API_BASE_URL}/api/wfh/team`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -52,7 +53,7 @@ const ManagerWFH = ({ user }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/wfh/${selectedRequest._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/wfh/${selectedRequest._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

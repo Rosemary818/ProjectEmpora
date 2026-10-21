@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AttendanceManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AttendanceManagement = () => {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -11,7 +12,7 @@ const AttendanceManagement = () => {
 
   const fetchAttendance = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/attendance/my-attendance', {
+      const response = await fetch(`${API_BASE_URL}/api/attendance/my-attendance`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -51,7 +52,7 @@ const AttendanceManagement = () => {
     setSuccess('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/attendance/check-in', {
+      const response = await fetch(`${API_BASE_URL}/api/attendance/check-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ const AttendanceManagement = () => {
     setSuccess('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/attendance/check-out', {
+      const response = await fetch(`${API_BASE_URL}/api/attendance/check-out`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

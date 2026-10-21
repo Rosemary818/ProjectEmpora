@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './InterviewManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const InterviewManagement = () => {
   const [interviews, setInterviews] = useState([]);
@@ -20,7 +21,7 @@ const InterviewManagement = () => {
   const fetchInterviews = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/interviews/hr', {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/hr`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -37,7 +38,7 @@ const InterviewManagement = () => {
   const handleComplete = async (id) => {
     if (!window.confirm('Mark this interview as completed?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/interviews/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ const InterviewManagement = () => {
   const handleCancel = async () => {
     if (!cancelReason) return alert('Reason is required');
     try {
-      const res = await fetch(`http://localhost:5000/api/interviews/${cancelModalData._id}/cancel`, {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/${cancelModalData._id}/cancel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ const InterviewManagement = () => {
         meetingLink: rescheduleModalData.meetingLink,
         venue: rescheduleModalData.venue
       };
-      const res = await fetch(`http://localhost:5000/api/interviews/${rescheduleModalData._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/${rescheduleModalData._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +113,7 @@ const InterviewManagement = () => {
 
   const handleHRDecision = async (decision) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/interviews/${feedbackModalData._id}/hr-decision`, {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/${feedbackModalData._id}/hr-decision`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

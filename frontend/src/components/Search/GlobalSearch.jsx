@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './GlobalSearch.css';
+import { API_BASE_URL } from '../../config/api';
 
 const GlobalSearch = ({ className }) => {
   const [query, setQuery] = useState('');
@@ -38,7 +39,7 @@ const GlobalSearch = ({ className }) => {
   const fetchSearchResults = async (searchQuery) => {
     setIsSearching(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/search?q=${encodeURIComponent(searchQuery)}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

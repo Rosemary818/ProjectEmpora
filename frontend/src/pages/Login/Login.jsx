@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { GoogleLogin } from '@react-oauth/google'
 import { validateLoginForm } from '../../utils/validation'
 import './Login.css'
+import { API_BASE_URL } from '../../config/api';
 
 const REMEMBER_KEY = 'empora_remember_email'
 
@@ -71,7 +72,7 @@ function Login() {
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await fetch(
-          'https://empora-backend-gb2l.onrender.com/api/auth/login',
+          `${API_BASE_URL}/api/auth/login`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -129,7 +130,7 @@ function Login() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const response = await fetch(
-        'https://empora-backend-gb2l.onrender.com/api/auth/google',
+        `${API_BASE_URL}/api/auth/google`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

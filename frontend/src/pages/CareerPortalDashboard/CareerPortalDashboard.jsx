@@ -10,6 +10,7 @@ import SavedJobs from '../../components/CareerPortalDashboard/SavedJobs';
 import MyResume from '../../components/CareerPortalDashboard/MyResume';
 import NotificationBell from '../../components/Notifications/NotificationBell';
 import UserProfile from '../../components/UserProfile/UserProfile';
+import { API_BASE_URL } from '../../config/api';
 
 const CareerPortalDashboard = () => {
   const navigate = useNavigate();
@@ -53,12 +54,12 @@ const CareerPortalDashboard = () => {
   const fetchDashboardData = async () => {
     setLoadingDashboard(true);
     try {
-      const res = await fetch('http://localhost:5000/api/career-portal/dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/career-portal/dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
 
-      const resInt = await fetch('http://localhost:5000/api/interviews/candidate/widgets', {
+      const resInt = await fetch(`${API_BASE_URL}/api/interviews/candidate/widgets`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const intData = await resInt.json();

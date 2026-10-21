@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BenchManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeBenchStatus = () => {
   const [benchData, setBenchData] = useState(null);
@@ -21,10 +22,10 @@ const EmployeeBenchStatus = () => {
     setLoading(true);
     try {
       const [resStatus, resOpps] = await Promise.all([
-        fetch('http://localhost:5000/api/bench/my-status', {
+        fetch(`${API_BASE_URL}/api/bench/my-status`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         }),
-        fetch('http://localhost:5000/api/bench/recommended-opportunities', {
+        fetch(`${API_BASE_URL}/api/bench/recommended-opportunities`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         })
       ]);
@@ -52,7 +53,7 @@ const EmployeeBenchStatus = () => {
     setIsApplying(true);
     try {
       const isProject = selectedOpportunity.type === 'Project';
-      const endpoint = isProject ? 'http://localhost:5000/api/bench/apply' : 'http://localhost:5000/api/internal-mobility/apply';
+      const endpoint = isProject ? `${API_BASE_URL}/api/bench/apply` : `${API_BASE_URL}/api/internal-mobility/apply`;
       const bodyPayload = isProject ? {
         projectId: selectedOpportunity._id,
         reason: applicationNotes,

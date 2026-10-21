@@ -37,6 +37,7 @@ import AIChatbot from '../../components/AIFeatures/AIChatbot';
 import EmployeeBenchStatus from '../../components/BenchManagement/EmployeeBenchStatus';
 import EmployeePromotions from '../../components/PromotionManagement/EmployeePromotions';
 import EmployeeWFH from '../../components/WFH/EmployeeWFH';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeDashboard = ({ defaultTab = 'Dashboard' }) => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const EmployeeDashboard = ({ defaultTab = 'Dashboard' }) => {
   const fetchDashboardData = async () => {
     setLoadingDashboard(true);
     try {
-      const res = await fetch('http://localhost:5000/api/user/employee-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/user/employee-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

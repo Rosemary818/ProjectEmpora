@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ManagerInterviews.css';
 import ManagerFeedbackModal from './ManagerFeedbackModal';
 import EmployeeInterviews from './EmployeeInterviews';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerInterviews = () => {
   const [activeTab, setActiveTab] = useState('conduct');
@@ -19,7 +20,7 @@ const ManagerInterviews = () => {
   const fetchInterviews = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/interviews/manager', {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/manager`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -106,7 +107,7 @@ const ManagerInterviews = () => {
 
             <div className="mgr-interview-docs">
               {i.applicationId?.resume && (
-                <button className="mgr-btn-text" onClick={() => setViewDocument(`http://localhost:5000${i.applicationId.resume}`)}>View Resume</button>
+                <button className="mgr-btn-text" onClick={() => setViewDocument(`${API_BASE_URL}${i.applicationId.resume}`)}>View Resume</button>
               )}
               {i.applicationId?.relevantSkills && (
                 <div style={{ marginTop: '1rem', fontSize: '0.85rem' }}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SalaryManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const SalaryManagement = () => {
   const [salaries, setSalaries] = useState([]);
@@ -37,7 +38,7 @@ const SalaryManagement = () => {
 
   const fetchSalaries = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/salaries', {
+      const res = await fetch(`${API_BASE_URL}/api/salaries`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -57,7 +58,7 @@ const SalaryManagement = () => {
     setUsersLoading(true);
     setUsersError('');
     try {
-      const res = await fetch('http://localhost:5000/api/admin/employees', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -120,7 +121,7 @@ const SalaryManagement = () => {
         paymentFrequency: formData.paymentFrequency
       };
 
-      const res = await fetch('http://localhost:5000/api/salaries', {
+      const res = await fetch(`${API_BASE_URL}/api/salaries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -169,7 +170,7 @@ const SalaryManagement = () => {
     setHistoryLoading(true);
     setShowHistory(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/salaries/${employeeId}/history`, {
+      const res = await fetch(`${API_BASE_URL}/api/salaries/${employeeId}/history`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

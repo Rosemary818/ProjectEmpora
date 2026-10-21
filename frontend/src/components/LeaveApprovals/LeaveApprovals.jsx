@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LeaveApprovals.css';
+import { API_BASE_URL } from '../../config/api';
 
 const LeaveApprovals = () => {
   const [leaves, setLeaves] = useState([]);
@@ -13,7 +14,7 @@ const LeaveApprovals = () => {
 
   const fetchLeaves = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/leave/all', {
+      const response = await fetch(`${API_BASE_URL}/api/leave/all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -48,7 +49,7 @@ const LeaveApprovals = () => {
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:5000/api/leave/${id}/status`, {
+      const response = await fetch(`${API_BASE_URL}/api/leave/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +195,7 @@ const LeaveApprovals = () => {
                             )}
                             {leave.documentUrl && (
                               <div style={{ marginTop: '4px' }}>
-                                <a href={`http://localhost:5000${leave.documentUrl}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#2563eb', textDecoration: 'underline' }}>
+                                <a href={`${API_BASE_URL}${leave.documentUrl}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#2563eb', textDecoration: 'underline' }}>
                                   View Doc
                                 </a>
                               </div>

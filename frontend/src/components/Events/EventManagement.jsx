@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { eventService } from '../../utils/eventService';
 import './EventManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EventManagement = ({ user, viewType }) => {
   const [events, setEvents] = useState([]);
@@ -91,7 +92,7 @@ const EventManagement = ({ user, viewType }) => {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/skills/all-employee-skills', {
+      const res = await fetch(`${API_BASE_URL}/api/skills/all-employee-skills`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -253,7 +254,7 @@ const EventManagement = ({ user, viewType }) => {
 
   const handleFindMatchingTalent = async (event) => {
     try {
-      const res = await fetch('http://localhost:5000/api/skills/all-employee-skills', {
+      const res = await fetch(`${API_BASE_URL}/api/skills/all-employee-skills`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -287,7 +288,7 @@ const EventManagement = ({ user, viewType }) => {
     if (userIds.length === 0) return alert('No users to invite');
 
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${matchingTalentModal.eventId}/invite`, {
+      const res = await fetch(`${API_BASE_URL}/api/events/${matchingTalentModal.eventId}/invite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

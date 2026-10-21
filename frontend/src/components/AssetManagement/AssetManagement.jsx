@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AssetManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AssetManagement = () => {
   const [assets, setAssets] = useState([]);
@@ -47,7 +48,7 @@ const AssetManagement = () => {
       if (statusFilter) query.append('status', statusFilter);
       if (searchTerm) query.append('search', searchTerm);
 
-      const res = await fetch(`http://localhost:5000/api/assets?${query.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets?${query.toString()}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -62,7 +63,7 @@ const AssetManagement = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/assets/stats', {
+      const res = await fetch(`${API_BASE_URL}/api/assets/stats`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -74,7 +75,7 @@ const AssetManagement = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/employees', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -96,7 +97,7 @@ const AssetManagement = () => {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/assets', {
+      const res = await fetch(`${API_BASE_URL}/api/assets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +122,7 @@ const AssetManagement = () => {
   const handleAssign = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/assets/${selectedAsset._id}/assign`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${selectedAsset._id}/assign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +147,7 @@ const AssetManagement = () => {
   const handleReturn = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/assets/${selectedAsset._id}/return`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${selectedAsset._id}/return`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -171,7 +172,7 @@ const AssetManagement = () => {
   const handleTransfer = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/assets/${selectedAsset._id}/transfer`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${selectedAsset._id}/transfer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +198,7 @@ const AssetManagement = () => {
     e.preventDefault();
     try {
       const isAvailable = selectedAsset.status === 'Under Maintenance';
-      const res = await fetch(`http://localhost:5000/api/assets/${selectedAsset._id}/maintenance`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${selectedAsset._id}/maintenance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -222,7 +223,7 @@ const AssetManagement = () => {
   const handleRetire = async (assetId) => {
     if (!window.confirm('Are you sure you want to retire this asset? This cannot be undone.')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/assets/${assetId}/retire`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${assetId}/retire`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -244,7 +245,7 @@ const AssetManagement = () => {
 
   const viewHistory = async (asset) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/assets/${asset._id}/history`, {
+      const res = await fetch(`${API_BASE_URL}/api/assets/${asset._id}/history`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

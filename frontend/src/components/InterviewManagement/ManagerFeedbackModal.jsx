@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ManagerFeedbackModal.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerFeedbackModal = ({ interview, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const ManagerFeedbackModal = ({ interview, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const res = await fetch(`http://localhost:5000/api/interviews/${interview._id}/feedback`, {
+      const res = await fetch(`${API_BASE_URL}/api/interviews/${interview._id}/feedback`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

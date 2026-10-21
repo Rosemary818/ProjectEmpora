@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AttendanceManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HREmployeeAttendance = () => {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -20,7 +21,7 @@ const HREmployeeAttendance = () => {
 
   const fetchAllAttendance = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/attendance/all-attendance', {
+      const response = await fetch(`${API_BASE_URL}/api/attendance/all-attendance`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },

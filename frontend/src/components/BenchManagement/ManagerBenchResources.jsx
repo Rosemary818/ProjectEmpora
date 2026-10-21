@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BenchManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerBenchResources = () => {
   const [activeTab, setActiveTab] = useState('my-team'); // 'my-team' | 'matching'
@@ -29,8 +30,8 @@ const ManagerBenchResources = () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       const [teamRes, projRes] = await Promise.all([
-        fetch('http://localhost:5000/api/bench/my-team', { headers }),
-        fetch('http://localhost:5000/api/projects/my-projects', { headers })
+        fetch(`${API_BASE_URL}/api/bench/my-team`, { headers }),
+        fetch(`${API_BASE_URL}/api/projects/my-projects`, { headers })
       ]);
       
       const teamData = await teamRes.json();
@@ -57,8 +58,8 @@ const ManagerBenchResources = () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       const url = projectId 
-        ? `http://localhost:5000/api/bench/available?projectId=${projectId}` 
-        : `http://localhost:5000/api/bench/available`;
+        ? `${API_BASE_URL}/api/bench/available?projectId=${projectId}` 
+        : `${API_BASE_URL}/api/bench/available`;
         
       const res = await fetch(url, { headers });
       const data = await res.json();
@@ -83,7 +84,7 @@ const ManagerBenchResources = () => {
     
     setIsRequesting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/bench/request-allocation', {
+      const res = await fetch(`${API_BASE_URL}/api/bench/request-allocation`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SuperAdminCandidates.css';
+import { API_BASE_URL } from '../../config/api';
 
 const SuperAdminCandidates = () => {
   const [candidates, setCandidates] = useState([]);
@@ -25,7 +26,7 @@ const SuperAdminCandidates = () => {
   const fetchCandidates = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/admin/super-admin/candidates', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/super-admin/candidates`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

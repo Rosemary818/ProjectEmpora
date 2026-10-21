@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { goalService } from '../../services/goal.service';
 import './Goals.css';
+import { API_BASE_URL } from '../../config/api';
 
 const StarRating = ({ label, value, onChange }) => {
   return (
@@ -78,7 +79,7 @@ const ManagerGoals = () => {
 
   const fetchTeamMembers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/manager-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/user/manager-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

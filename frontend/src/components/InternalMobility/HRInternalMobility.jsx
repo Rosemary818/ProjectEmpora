@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './HRInternalMobility.css';
 import ScheduleInternalInterviewModal from './ScheduleInternalInterviewModal';
+import { API_BASE_URL } from '../../config/api';
 
 const HRInternalMobility = ({ user }) => {
   const [activeTab, setActiveTab] = useState('applications'); // 'opportunities', 'applications'
@@ -42,10 +43,10 @@ const HRInternalMobility = ({ user }) => {
     setLoading(true);
     try {
       const [oppRes, appRes, deptRes, desigRes] = await Promise.all([
-        fetch('http://localhost:5000/api/internal-mobility/hr/opportunities', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
-        fetch('http://localhost:5000/api/internal-mobility/hr/applications', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
-        fetch('http://localhost:5000/api/departments', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
-        fetch('http://localhost:5000/api/designations', { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } })
+        fetch(`${API_BASE_URL}/api/internal-mobility/hr/opportunities`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
+        fetch(`${API_BASE_URL}/api/internal-mobility/hr/applications`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
+        fetch(`${API_BASE_URL}/api/departments`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } }),
+        fetch(`${API_BASE_URL}/api/designations`, { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } })
       ]);
       const oppData = await oppRes.json();
       const appData = await appRes.json();
@@ -91,7 +92,7 @@ const HRInternalMobility = ({ user }) => {
       ...formData,
       requiredSkills: formData.requiredSkills.split(',').map(s => s.trim()).filter(Boolean)
     };
-    const url = editingId ? `http://localhost:5000/api/internal-mobility/hr/opportunities/${editingId}` : `http://localhost:5000/api/internal-mobility/hr/opportunities`;
+    const url = editingId ? `${API_BASE_URL}/api/internal-mobility/hr/opportunities/${editingId}` : `${API_BASE_URL}/api/internal-mobility/hr/opportunities`;
     try {
       const res = await fetch(url, {
         method: editingId ? 'PUT' : 'POST',
@@ -111,7 +112,7 @@ const HRInternalMobility = ({ user }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this internal opportunity?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/internal-mobility/hr/opportunities/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/hr/opportunities/${id}`, {
         method: 'DELETE', headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -124,7 +125,7 @@ const HRInternalMobility = ({ user }) => {
 
   const handleUpdateStatus = async (appId, newStatus, reason = null) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/internal-mobility/hr/applications/${appId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/hr/applications/${appId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         body: JSON.stringify({ status: newStatus, rejectionReason: reason })
@@ -149,7 +150,7 @@ const HRInternalMobility = ({ user }) => {
   const handleConfirmTransfer = async (appId) => {
     if (!window.confirm('Are you sure you want to confirm this transfer? This will permanently update the employee records.')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/internal-mobility/hr/applications/${appId}/confirm-transfer`, {
+      const res = await fetch(`${API_BASE_URL}/api/internal-mobility/hr/applications/${appId}/confirm-transfer`, {
         method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

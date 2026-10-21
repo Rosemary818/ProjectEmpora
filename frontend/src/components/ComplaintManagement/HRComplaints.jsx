@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ComplaintManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRComplaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -17,7 +18,7 @@ const HRComplaints = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/complaints', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -46,7 +47,7 @@ const HRComplaints = () => {
   const submitReply = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/complaints/${viewComplaint._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/${viewComplaint._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ const HRComplaints = () => {
 
   const updateStatusDirectly = async (complaintId, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/complaints/${complaintId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/${complaintId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

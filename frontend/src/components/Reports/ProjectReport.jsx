@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { exportToCSV, printReport } from './exportUtils';
+import { API_BASE_URL } from '../../config/api';
 
 const ProjectReport = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const ProjectReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      let url = 'http://localhost:5000/api/reports/project';
+      let url = `${API_BASE_URL}/api/reports/project`;
       if (statusFilter) url += `?status=${statusFilter}`;
       
       const res = await fetch(url, {

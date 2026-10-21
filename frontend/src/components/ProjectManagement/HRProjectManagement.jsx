@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './HRProjectManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRProjectManagement = () => {
   const [projects, setProjects] = useState([]);
@@ -32,9 +33,9 @@ const HRProjectManagement = () => {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       
       const [projectsRes, usersRes, deptRes] = await Promise.all([
-        fetch('http://localhost:5000/api/projects', { headers }),
-        fetch('http://localhost:5000/api/admin/employees', { headers }),
-        fetch('http://localhost:5000/api/departments', { headers })
+        fetch(`${API_BASE_URL}/api/projects`, { headers }),
+        fetch(`${API_BASE_URL}/api/admin/employees`, { headers }),
+        fetch(`${API_BASE_URL}/api/departments`, { headers })
       ]);
       
       const projectsData = await projectsRes.json();
@@ -91,7 +92,7 @@ const HRProjectManagement = () => {
         payload.requiredSkills = [];
       }
 
-      const res = await fetch('http://localhost:5000/api/projects', {
+      const res = await fetch(`${API_BASE_URL}/api/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

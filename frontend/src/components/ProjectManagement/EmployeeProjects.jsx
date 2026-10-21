@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './EmployeeProjects.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -13,7 +14,7 @@ const EmployeeProjects = () => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/projects/assigned', {
+      const res = await fetch(`${API_BASE_URL}/api/projects/assigned`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

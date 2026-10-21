@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DesignationManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const DesignationManagement = () => {
   const [designations, setDesignations] = useState([]);
@@ -35,8 +36,8 @@ const DesignationManagement = () => {
       const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
       
       const [desigRes, deptRes] = await Promise.all([
-        fetch('http://localhost:5000/api/designations', { headers }),
-        fetch('http://localhost:5000/api/departments', { headers })
+        fetch(`${API_BASE_URL}/api/designations`, { headers }),
+        fetch(`${API_BASE_URL}/api/departments`, { headers })
       ]);
       
       const desigData = await desigRes.json();
@@ -63,7 +64,7 @@ const DesignationManagement = () => {
     setIsSubmitting(true);
     
     try {
-      const res = await fetch('http://localhost:5000/api/designations', {
+      const res = await fetch(`${API_BASE_URL}/api/designations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ const DesignationManagement = () => {
     setIsSubmitting(true);
     
     try {
-      const res = await fetch(`http://localhost:5000/api/designations/${selectedDesignation._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/designations/${selectedDesignation._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +125,7 @@ const DesignationManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} the ${designation.designationName} designation?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/designations/${designation._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/designations/${designation._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

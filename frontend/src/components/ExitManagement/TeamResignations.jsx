@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ExitManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const TeamResignations = () => {
   const [requests, setRequests] = useState([]);
@@ -15,7 +16,7 @@ const TeamResignations = () => {
   const fetchTeamResignations = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/exits/team', {
+      const res = await fetch(`${API_BASE_URL}/api/exits/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -34,7 +35,7 @@ const TeamResignations = () => {
   const handleReview = async (status) => {
     if (!selectedRequest) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/exits/${selectedRequest._id}/manager-review`, {
+      const res = await fetch(`${API_BASE_URL}/api/exits/${selectedRequest._id}/manager-review`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

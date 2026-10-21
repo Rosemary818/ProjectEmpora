@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { validateIndianMobileNumber } from '../../utils/validation';
+import { API_BASE_URL } from '../../config/api';
 import './SuperAdminUserManagement.css'; // Reusing similar styles
 
 const HRAdminsManagement = () => {
@@ -39,7 +40,7 @@ const HRAdminsManagement = () => {
 
   const fetchHRAdmins = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/users', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -59,10 +60,10 @@ const HRAdminsManagement = () => {
 
   const fetchDepartmentsAndDesignations = async () => {
     try {
-      const depRes = await fetch('http://localhost:5000/api/departments/all', {
+      const depRes = await fetch(`${API_BASE_URL}/api/departments/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
-      const desRes = await fetch('http://localhost:5000/api/designations/all', {
+      const desRes = await fetch(`${API_BASE_URL}/api/designations/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       
@@ -83,7 +84,7 @@ const HRAdminsManagement = () => {
     if (!window.confirm(`Are you sure you want to ${action} this HR Admin?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -163,8 +164,8 @@ const HRAdminsManagement = () => {
 
     try {
       const url = modalMode === 'add' 
-        ? 'http://localhost:5000/api/admin/hr-admins' 
-        : `http://localhost:5000/api/admin/hr-admins/${formData.id}`;
+        ? `${API_BASE_URL}/api/admin/hr-admins` 
+        : `${API_BASE_URL}/api/admin/hr-admins/${formData.id}`;
         
       const method = modalMode === 'add' ? 'POST' : 'PUT';
 
@@ -198,7 +199,7 @@ const HRAdminsManagement = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/hr-admins/${resetData.id}/reset-password`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/hr-admins/${resetData.id}/reset-password`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

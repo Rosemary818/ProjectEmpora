@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Travel.css';
 import EmployeeTravel from './EmployeeTravel';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerTravel = ({ setActiveTab }) => {
   const [localActiveTab, setLocalActiveTab] = useState('Approvals'); // 'Approvals' | 'MyRequests'
@@ -20,7 +21,7 @@ const ManagerTravel = ({ setActiveTab }) => {
   const fetchTeamRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/travel/team', {
+      const res = await fetch(`${API_BASE_URL}/api/travel/team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -36,7 +37,7 @@ const ManagerTravel = ({ setActiveTab }) => {
 
   const handleProcess = async (id, action, reason = '') => {
     try {
-      const res = await fetch(`http://localhost:5000/api/travel/${id}/process`, {
+      const res = await fetch(`${API_BASE_URL}/api/travel/${id}/process`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

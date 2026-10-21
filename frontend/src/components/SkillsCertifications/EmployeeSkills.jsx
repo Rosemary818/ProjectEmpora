@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './EmployeeSkills.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeSkills = ({ user }) => {
   const [skills, setSkills] = useState([]);
@@ -32,10 +33,10 @@ const EmployeeSkills = ({ user }) => {
     setLoading(true);
     try {
       const [skillsRes, certsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/skills/employee', {
+        fetch(`${API_BASE_URL}/api/skills/employee`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         }),
-        fetch('http://localhost:5000/api/certifications/employee', {
+        fetch(`${API_BASE_URL}/api/certifications/employee`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         })
       ]);
@@ -57,7 +58,7 @@ const EmployeeSkills = ({ user }) => {
     try {
       let res;
       if (skillForm.id) {
-        res = await fetch(`http://localhost:5000/api/skills/employee/${skillForm.id}`, {
+        res = await fetch(`${API_BASE_URL}/api/skills/employee/${skillForm.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ const EmployeeSkills = ({ user }) => {
           body: JSON.stringify({ level: skillForm.level })
         });
       } else {
-        res = await fetch('http://localhost:5000/api/skills/employee', {
+        res = await fetch(`${API_BASE_URL}/api/skills/employee`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ const EmployeeSkills = ({ user }) => {
   const handleSkillDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this skill?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/skills/employee/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/skills/employee/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -113,7 +114,7 @@ const EmployeeSkills = ({ user }) => {
       if (certForm.credentialUrl) formData.append('credentialUrl', certForm.credentialUrl);
       if (certForm.certificateFile) formData.append('certificate', certForm.certificateFile);
 
-      let url = 'http://localhost:5000/api/certifications';
+      let url = `${API_BASE_URL}/api/certifications`;
       let method = 'POST';
       if (certForm.id) {
         url += `/${certForm.id}`;
@@ -141,7 +142,7 @@ const EmployeeSkills = ({ user }) => {
   const handleCertDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this certification?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/certifications/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/certifications/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -294,7 +295,7 @@ const EmployeeSkills = ({ user }) => {
                   </td>
                   <td className="actions-cell">
                     {cert.certificateFile && (
-                      <a href={`http://localhost:5000${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="icon-btn view" title="View Certificate">
+                      <a href={`${API_BASE_URL}${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="icon-btn view" title="View Certificate">
                         👁️
                       </a>
                     )}

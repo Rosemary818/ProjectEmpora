@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './HRClientVisitors.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRClientVisitors = () => {
   const [visitors, setVisitors] = useState([]);
@@ -12,7 +13,7 @@ const HRClientVisitors = () => {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/visitors/hr', {
+      const res = await fetch(`${API_BASE_URL}/api/visitors/hr`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ApprovalInbox.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ApprovalInbox = () => {
   const [approvals, setApprovals] = useState([]);
@@ -16,7 +17,7 @@ const ApprovalInbox = () => {
   const fetchApprovals = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/approvals/inbox', {
+      const res = await fetch(`${API_BASE_URL}/api/approvals/inbox`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -51,7 +52,7 @@ const ApprovalInbox = () => {
         payload[approval.reasonKey] = reason;
       }
 
-      const res = await fetch(`http://localhost:5000${approval.apiPath}`, {
+      const res = await fetch(`${API_BASE_URL}${approval.apiPath}`, {
         method: approval.method,
         headers: {
           'Content-Type': 'application/json',

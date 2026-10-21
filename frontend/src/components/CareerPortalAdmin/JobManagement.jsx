@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import JobForm from './JobForm';
+import { API_BASE_URL } from '../../config/api';
 
 const JobManagement = () => {
   const [jobs, setJobs] = useState([]);
@@ -11,7 +12,7 @@ const JobManagement = () => {
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/jobs', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -27,7 +28,7 @@ const JobManagement = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/jobs/stats', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/stats`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -52,7 +53,7 @@ const JobManagement = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this job?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -67,7 +68,7 @@ const JobManagement = () => {
 
   const handleStatusChange = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TimesheetManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeTimesheets = () => {
   const [timesheets, setTimesheets] = useState([]);
@@ -25,7 +26,7 @@ const EmployeeTimesheets = () => {
 
   const fetchTimesheets = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/timesheets/my-timesheets', {
+      const res = await fetch(`${API_BASE_URL}/api/timesheets/my-timesheets`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -43,7 +44,7 @@ const EmployeeTimesheets = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/tasks/my-tasks', {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/my-tasks`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -95,8 +96,8 @@ const EmployeeTimesheets = () => {
 
     try {
       const url = editingId 
-        ? `http://localhost:5000/api/timesheets/${editingId}`
-        : 'http://localhost:5000/api/timesheets';
+        ? `${API_BASE_URL}/api/timesheets/${editingId}`
+        : `${API_BASE_URL}/api/timesheets`;
       
       const method = editingId ? 'PATCH' : 'POST';
       
@@ -137,7 +138,7 @@ const EmployeeTimesheets = () => {
 
   const submitTimesheet = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/timesheets/${id}/submit`, {
+      const res = await fetch(`${API_BASE_URL}/api/timesheets/${id}/submit`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './AIChatbot.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AIChatbot = ({ user }) => {
   const [messages, setMessages] = useState([
@@ -37,7 +38,7 @@ const AIChatbot = ({ user }) => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

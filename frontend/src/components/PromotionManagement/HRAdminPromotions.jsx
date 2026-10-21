@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PromotionManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRAdminPromotions = () => {
   const [promotions, setPromotions] = useState([]);
@@ -15,7 +16,7 @@ const HRAdminPromotions = () => {
   const fetchPromotions = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      const res = await fetch('http://localhost:5000/api/promotions', {
+      const res = await fetch(`${API_BASE_URL}/api/promotions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -48,7 +49,7 @@ const HRAdminPromotions = () => {
 
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      const res = await fetch(`http://localhost:5000/api/promotions/${selectedPromo._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/promotions/${selectedPromo._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +167,7 @@ const HRAdminPromotions = () => {
                     <div className="promo-employee-cell">
                       <div className="promo-avatar">
                         {promo.employeeId?.profileImage ? (
-                          <img src={`http://localhost:5000/${promo.employeeId.profileImage}`} alt="profile" />
+                          <img src={`${API_BASE_URL}/${promo.employeeId.profileImage}`} alt="profile" />
                         ) : (
                           <span>👤</span>
                         )}

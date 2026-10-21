@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { validateIndianMobileNumber } from '../../utils/validation';
 import './SuperAdminUserManagement.css'; 
+import { API_BASE_URL } from '../../config/api';
 
 const SuperAdminEmployeeManagement = () => {
   const [employees, setEmployees] = useState([]);
@@ -40,7 +41,7 @@ const SuperAdminEmployeeManagement = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/super-admin/employees', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/super-admin/employees`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -58,7 +59,7 @@ const SuperAdminEmployeeManagement = () => {
 
   const fetchDepartments = async () => {
     try {
-      const depRes = await fetch('http://localhost:5000/api/departments', {
+      const depRes = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const depData = await depRes.json();
@@ -74,7 +75,7 @@ const SuperAdminEmployeeManagement = () => {
     setProfileData(null);
     setActiveProfileTab('Personal');
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/super-admin/employees/${id}/profile`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/super-admin/employees/${id}/profile`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -97,7 +98,7 @@ const SuperAdminEmployeeManagement = () => {
     if (!window.confirm(`Are you sure you want to ${newStatus === 'Active' ? 'activate' : 'deactivate'} this employee?`)) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/employees/${user._id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${user._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +122,7 @@ const SuperAdminEmployeeManagement = () => {
     if (!window.confirm(`Are you sure you want to ${status === 'Active' ? 'activate' : 'deactivate'} ${selectedIds.length} employees?`)) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/super-admin/employees/bulk-status`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/super-admin/employees/bulk-status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -220,7 +221,7 @@ const SuperAdminEmployeeManagement = () => {
       }
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/employees/${editFormData.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${editFormData.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

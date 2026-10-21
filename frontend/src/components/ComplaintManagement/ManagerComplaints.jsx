@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ComplaintManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerComplaints = () => {
   const [activeTab, setActiveTab] = useState('My Complaints');
@@ -39,7 +40,7 @@ const ManagerComplaints = () => {
     setLoading(true);
     try {
       if (activeTab === 'My Complaints') {
-        const res = await fetch('http://localhost:5000/api/complaints/my-complaints', {
+        const res = await fetch(`${API_BASE_URL}/api/complaints/my-complaints`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -47,7 +48,7 @@ const ManagerComplaints = () => {
           setMyComplaints(data.data);
         }
       } else {
-        const res = await fetch('http://localhost:5000/api/complaints/team', {
+        const res = await fetch(`${API_BASE_URL}/api/complaints/team`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -69,7 +70,7 @@ const ManagerComplaints = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/complaints', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ const ManagerComplaints = () => {
     if (activeTab === 'My Complaints' && comp.status === 'Solved') {
       setLoadingFeedback(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/feedback/Complaint/${comp._id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/feedback/Complaint/${comp._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -137,7 +138,7 @@ const ManagerComplaints = () => {
         rating: Number(feedbackForm.rating),
         comment: feedbackForm.comment
       };
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

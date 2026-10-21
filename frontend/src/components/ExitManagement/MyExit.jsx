@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ExitManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const MyExit = () => {
   const [activeRequest, setActiveRequest] = useState(null);
@@ -20,7 +21,7 @@ const MyExit = () => {
   const fetchMyResignation = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/exits/my', {
+      const res = await fetch(`${API_BASE_URL}/api/exits/my`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -46,7 +47,7 @@ const MyExit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/exits', {
+      const res = await fetch(`${API_BASE_URL}/api/exits`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

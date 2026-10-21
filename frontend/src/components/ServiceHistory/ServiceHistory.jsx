@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ServiceHistory.css';
+import { API_BASE_URL } from '../../config/api';
 import '../ComplaintManagement/ComplaintManagement.css'; // For modal styles
 
 const ServiceHistory = () => {
@@ -27,7 +28,7 @@ const ServiceHistory = () => {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/service-history', {
+      const res = await fetch(`${API_BASE_URL}/api/service-history`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -96,7 +97,7 @@ const ServiceHistory = () => {
         rating: Number(feedbackForm.rating),
         comment: feedbackForm.comment
       };
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

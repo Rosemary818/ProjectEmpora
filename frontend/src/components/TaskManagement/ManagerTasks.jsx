@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TaskManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ManagerTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -34,7 +35,7 @@ const ManagerTasks = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/projects/my-projects', {
+      const res = await fetch(`${API_BASE_URL}/api/projects/my-projects`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -48,7 +49,7 @@ const ManagerTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/tasks/manager', {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/manager`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -106,7 +107,7 @@ const ManagerTasks = () => {
     setError('');
 
     try {
-      const url = editingTaskId ? `http://localhost:5000/api/tasks/${editingTaskId}` : 'http://localhost:5000/api/tasks';
+      const url = editingTaskId ? `${API_BASE_URL}/api/tasks/${editingTaskId}` : `${API_BASE_URL}/api/tasks`;
       const method = editingTaskId ? 'PATCH' : 'POST';
 
       const res = await fetch(url, {
@@ -137,7 +138,7 @@ const ManagerTasks = () => {
       const payload = { status: newStatus };
       if (comment) payload.managerComment = comment;
 
-      const res = await fetch(`http://localhost:5000/api/tasks/${taskId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

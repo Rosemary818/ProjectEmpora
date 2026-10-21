@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Travel.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRTravel = () => {
   const [activeTab, setActiveTab] = useState('Monitoring'); // 'Monitoring' | 'ManagerApprovals'
@@ -23,7 +24,7 @@ const HRTravel = () => {
   const fetchMonitoring = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/travel/hr/monitoring', {
+      const res = await fetch(`${API_BASE_URL}/api/travel/hr/monitoring`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -38,7 +39,7 @@ const HRTravel = () => {
   const fetchManagerRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/travel/hr/approvals', {
+      const res = await fetch(`${API_BASE_URL}/api/travel/hr/approvals`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -52,7 +53,7 @@ const HRTravel = () => {
 
   const handleProcess = async (id, action, reason = '') => {
     try {
-      const res = await fetch(`http://localhost:5000/api/travel/${id}/process`, {
+      const res = await fetch(`${API_BASE_URL}/api/travel/${id}/process`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

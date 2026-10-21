@@ -3,6 +3,7 @@ import './PayslipManagement.css';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import PayslipTemplate from './PayslipTemplate';
+import { API_BASE_URL } from '../../config/api';
 
 const PayslipManagement = () => {
   const [payslips, setPayslips] = useState([]);
@@ -40,7 +41,7 @@ const PayslipManagement = () => {
       if (filters.month) query += `&month=${filters.month}`;
       if (filters.status) query += `&paymentStatus=${filters.status}`;
 
-      const res = await fetch(`http://localhost:5000/api/payslips${query}`, {
+      const res = await fetch(`${API_BASE_URL}/api/payslips${query}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -60,7 +61,7 @@ const PayslipManagement = () => {
     setUsersLoading(true);
     setUsersError('');
     try {
-      const res = await fetch('http://localhost:5000/api/admin/employees', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -82,7 +83,7 @@ const PayslipManagement = () => {
   const handleGenerate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/payslips', {
+      const res = await fetch(`${API_BASE_URL}/api/payslips`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +108,7 @@ const PayslipManagement = () => {
   const handleMarkPaid = async (id) => {
     if (!window.confirm('Mark this payslip as Paid?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/payslips/${id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/payslips/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

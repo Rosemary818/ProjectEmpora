@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ServiceRequestManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeServiceRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -35,7 +36,7 @@ const EmployeeServiceRequests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests/my-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests/my-requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -56,7 +57,7 @@ const EmployeeServiceRequests = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/service-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/service-requests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +101,7 @@ const EmployeeServiceRequests = () => {
     if (req.status === 'Resolved' || req.status === 'Closed') {
       setLoadingFeedback(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/feedback/ServiceRequest/${req._id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/feedback/ServiceRequest/${req._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -129,7 +130,7 @@ const EmployeeServiceRequests = () => {
         rating: Number(feedbackForm.rating),
         comment: feedbackForm.comment
       };
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

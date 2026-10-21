@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ExitManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ExitManagementAdmin = () => {
   const [requests, setRequests] = useState([]);
@@ -26,7 +27,7 @@ const ExitManagementAdmin = () => {
   const fetchResignations = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/exits', {
+      const res = await fetch(`${API_BASE_URL}/api/exits`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -41,7 +42,7 @@ const ExitManagementAdmin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/all', {
+      const res = await fetch(`${API_BASE_URL}/api/user/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -85,7 +86,7 @@ const ExitManagementAdmin = () => {
   const handleHrReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/exits/${selectedRequest._id}/hr-review`, {
+      const res = await fetch(`${API_BASE_URL}/api/exits/${selectedRequest._id}/hr-review`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         body: JSON.stringify(hrReviewForm)
@@ -103,7 +104,7 @@ const ExitManagementAdmin = () => {
   const handleClearanceSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/exits/${selectedRequest._id}/clearance`, {
+      const res = await fetch(`${API_BASE_URL}/api/exits/${selectedRequest._id}/clearance`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         body: JSON.stringify(clearanceForm)
@@ -121,9 +122,9 @@ const ExitManagementAdmin = () => {
   const handleInterviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      let url = `http://localhost:5000/api/exits/${selectedRequest._id}/exit-interview`;
+      let url = `${API_BASE_URL}/api/exits/${selectedRequest._id}/exit-interview`;
       if (interviewForm.status === 'Completed') {
-        url = `http://localhost:5000/api/exits/${selectedRequest._id}/exit-interview/complete`;
+        url = `${API_BASE_URL}/api/exits/${selectedRequest._id}/exit-interview/complete`;
       }
 
       const res = await fetch(url, {
@@ -144,7 +145,7 @@ const ExitManagementAdmin = () => {
   const handleFinalizeExit = async () => {
     if (!window.confirm("Are you sure? This will mark the exit as completed and DEACTIVATE the employee's account.")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/exits/${selectedRequest._id}/complete`, {
+      const res = await fetch(`${API_BASE_URL}/api/exits/${selectedRequest._id}/complete`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

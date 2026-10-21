@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TalentManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const TalentManagement = () => {
   const [employeeSkills, setEmployeeSkills] = useState([]);
@@ -18,7 +19,7 @@ const TalentManagement = () => {
   const fetchEmployeeSkills = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/skills/all-employee-skills', {
+      const res = await fetch(`${API_BASE_URL}/api/skills/all-employee-skills`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserProfile.css';
 import { validateIndianMobileNumber } from '../../utils/validation';
+import { API_BASE_URL } from '../../config/api';
 
 const UserProfile = ({ user, setUser }) => {
   const [profileData, setProfileData] = useState({
@@ -40,8 +41,8 @@ const UserProfile = ({ user, setUser }) => {
   const fetchOptions = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const deptRes = await fetch('http://localhost:5000/api/departments/all', { headers: { 'Authorization': `Bearer ${token}` } });
-      const desigRes = await fetch('http://localhost:5000/api/designations', { headers: { 'Authorization': `Bearer ${token}` } });
+      const deptRes = await fetch(`${API_BASE_URL}/api/departments/all`, { headers: { 'Authorization': `Bearer ${token}` } });
+      const desigRes = await fetch(`${API_BASE_URL}/api/designations`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (deptRes.ok) {
         const deptData = await deptRes.json();
         setDepartments(deptData.data || []);
@@ -58,7 +59,7 @@ const UserProfile = ({ user, setUser }) => {
   const fetchSkills = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://localhost:5000/api/skills/employee', {
+      const response = await fetch(`${API_BASE_URL}/api/skills/employee`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -73,7 +74,7 @@ const UserProfile = ({ user, setUser }) => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://localhost:5000/api/user/profile', {
+      const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -119,7 +120,7 @@ const UserProfile = ({ user, setUser }) => {
     setMessage('');
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://localhost:5000/api/user/profile', {
+      const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ const UserProfile = ({ user, setUser }) => {
   const saveSkillsToBackend = async (updatedSkills) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://localhost:5000/api/user/profile', {
+      const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Travel.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeTravel = ({ setActiveTab }) => {
   const [requests, setRequests] = useState([]);
@@ -24,7 +25,7 @@ const EmployeeTravel = ({ setActiveTab }) => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/travel/my', {
+      const res = await fetch(`${API_BASE_URL}/api/travel/my`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -42,7 +43,7 @@ const EmployeeTravel = ({ setActiveTab }) => {
     e.preventDefault();
     setError(null);
     try {
-      const res = await fetch('http://localhost:5000/api/travel', {
+      const res = await fetch(`${API_BASE_URL}/api/travel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const EmployeeTravel = ({ setActiveTab }) => {
   const handleCancel = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this request?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/travel/${id}/cancel`, {
+      const res = await fetch(`${API_BASE_URL}/api/travel/${id}/cancel`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });

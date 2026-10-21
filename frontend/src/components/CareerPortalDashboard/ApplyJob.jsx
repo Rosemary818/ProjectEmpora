@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './ApplyJob.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ApplyJob = ({ job, user, onCancel, onSuccess, onGoToResume }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const ApplyJob = ({ job, user, onCancel, onSuccess, onGoToResume }) => {
   React.useEffect(() => {
     const fetchResume = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/resume/me', {
+        const res = await fetch(`${API_BASE_URL}/api/resume/me`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
         });
         const data = await res.json();
@@ -84,7 +85,7 @@ const ApplyJob = ({ job, user, onCancel, onSuccess, onGoToResume }) => {
       if (formData.github) data.append('github', formData.github);
       if (formData.linkedin) data.append('linkedin', formData.linkedin);
 
-      const res = await fetch(`http://localhost:5000/api/career-portal/apply/${job._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/career-portal/apply/${job._id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`

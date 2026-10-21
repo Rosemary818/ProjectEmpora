@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import './HRReferralManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRReferralManagement = () => {
   const [referrals, setReferrals] = useState([]);
@@ -23,7 +24,7 @@ const HRReferralManagement = () => {
 
   const fetchReferrals = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/referrals/all', {
+      const response = await fetch(`${API_BASE_URL}/api/referrals/all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -47,7 +48,7 @@ const HRReferralManagement = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/referrals/${id}/status`, {
+      const response = await fetch(`${API_BASE_URL}/api/referrals/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ const HRReferralManagement = () => {
 
   const convertToEmployee = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/referrals/${id}/convert`, {
+      const response = await fetch(`${API_BASE_URL}/api/referrals/${id}/convert`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
@@ -85,7 +86,7 @@ const HRReferralManagement = () => {
 
   const resendEmail = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/referrals/${id}/resend-welcome`, {
+      const response = await fetch(`${API_BASE_URL}/api/referrals/${id}/resend-welcome`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
@@ -104,7 +105,7 @@ const HRReferralManagement = () => {
   const deleteReferral = async (id) => {
     if (window.confirm('Are you sure you want to delete this referral?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/referrals/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/referrals/${id}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
@@ -121,7 +122,7 @@ const HRReferralManagement = () => {
   };
 
   const downloadResume = (resumePath) => {
-    window.open(`http://localhost:5000${resumePath}`, '_blank');
+    window.open(`${API_BASE_URL}${resumePath}`, '_blank');
   };
 
   const filteredReferrals = referrals.filter(ref => {

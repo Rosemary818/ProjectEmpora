@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SalaryManagement.css'; // Reuse CSS
 import './MySalary.css'; // Dedicated CSS for MySalary
 import PayslipTemplate from '../Payslips/PayslipTemplate';
+import { API_BASE_URL } from '../../config/api';
 
 const MySalary = ({ user }) => {
   const [salary, setSalary] = useState(null);
@@ -28,7 +29,7 @@ const MySalary = ({ user }) => {
 
   const fetchMyPayslips = async (userId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/payslips/employee/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/payslips/employee/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -42,7 +43,7 @@ const MySalary = ({ user }) => {
 
   const fetchMySalary = async (userId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/salaries/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/salaries/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

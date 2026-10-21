@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TrainingManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeTraining = () => {
   const [activeTab, setActiveTab] = useState('Available Trainings');
@@ -16,10 +17,10 @@ const EmployeeTraining = () => {
     setLoading(true);
     try {
       const [availRes, myRes] = await Promise.all([
-        fetch('http://localhost:5000/api/trainings/available', {
+        fetch(`${API_BASE_URL}/api/trainings/available`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         }),
-        fetch('http://localhost:5000/api/trainings/my-enrollments', {
+        fetch(`${API_BASE_URL}/api/trainings/my-enrollments`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         })
       ]);
@@ -39,7 +40,7 @@ const EmployeeTraining = () => {
 
   const handleEnroll = async (trainingId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/trainings/${trainingId}/enroll`, {
+      const res = await fetch(`${API_BASE_URL}/api/trainings/${trainingId}/enroll`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
@@ -58,7 +59,7 @@ const EmployeeTraining = () => {
 
   const updateStatus = async (enrollmentId, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/trainings/enrollments/${enrollmentId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/trainings/enrollments/${enrollmentId}/status`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',

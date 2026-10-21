@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './ChangePassword.css';
+import { API_BASE_URL } from '../../config/api';
 
 function EyeIcon({ open }) {
   if (open) {
@@ -98,7 +99,7 @@ function ChangePassword() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/change-password', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MyTeam.css';
+import { API_BASE_URL } from '../../config/api';
 
 const MyTeam = () => {
   const [team, setTeam] = useState([]);
@@ -13,7 +14,7 @@ const MyTeam = () => {
 
   const fetchTeam = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/my-team', {
+      const res = await fetch(`${API_BASE_URL}/api/user/my-team`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

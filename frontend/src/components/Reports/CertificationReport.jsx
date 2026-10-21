@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { exportToCSV, printReport } from './exportUtils';
+import { API_BASE_URL } from '../../config/api';
 
 const CertificationReport = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const CertificationReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/reports/certification', {
+      const res = await fetch(`${API_BASE_URL}/api/reports/certification`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const json = await res.json();

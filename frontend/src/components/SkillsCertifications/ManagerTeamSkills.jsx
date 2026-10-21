@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import './EmployeeSkills.css'; // Reusing styles
 
 const ManagerTeamSkills = () => {
@@ -17,7 +18,7 @@ const ManagerTeamSkills = () => {
   const fetchTeamMembers = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/user/manager-dashboard', {
+      const res = await fetch(`${API_BASE_URL}/api/user/manager-dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -38,10 +39,10 @@ const ManagerTeamSkills = () => {
     setMemberLoading(true);
     try {
       const [skillsRes, certsRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/skills/employee/${member._id}`, {
+        fetch(`${API_BASE_URL}/api/skills/employee/${member._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         }),
-        fetch(`http://localhost:5000/api/certifications/employee/${member._id}`, {
+        fetch(`${API_BASE_URL}/api/certifications/employee/${member._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         })
       ]);
@@ -191,7 +192,7 @@ const ManagerTeamSkills = () => {
                         </td>
                         <td>
                           {cert.certificateFile && (
-                            <a href={`http://localhost:5000${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="icon-btn view" title="View Certificate">
+                            <a href={`${API_BASE_URL}${cert.certificateFile}`} target="_blank" rel="noopener noreferrer" className="icon-btn view" title="View Certificate">
                               👁️ View
                             </a>
                           )}

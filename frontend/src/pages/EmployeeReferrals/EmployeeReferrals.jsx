@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { validateIndianMobileNumber } from '../../utils/validation';
 
 import './EmployeeReferrals.css';
+import { API_BASE_URL } from '../../config/api';
 
 const EmployeeReferrals = () => {
   const [referrals, setReferrals] = useState([]);
@@ -34,7 +35,7 @@ const EmployeeReferrals = () => {
 
   const fetchDepartments = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/departments', {
+      const res = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -50,7 +51,7 @@ const EmployeeReferrals = () => {
 
   const fetchReferrals = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/referrals/my', {
+      const response = await fetch(`${API_BASE_URL}/api/referrals/my`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -105,7 +106,7 @@ const EmployeeReferrals = () => {
     data.append('resume', resume);
 
     try {
-      const response = await fetch('http://localhost:5000/api/referrals', {
+      const response = await fetch(`${API_BASE_URL}/api/referrals`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`

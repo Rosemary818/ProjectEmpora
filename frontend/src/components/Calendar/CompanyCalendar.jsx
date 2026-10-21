@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CompanyCalendar.css';
 import HolidayManagement from './HolidayManagement';
+import { API_BASE_URL } from '../../config/api';
 
 const CompanyCalendar = ({ user, viewType }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -22,7 +23,7 @@ const CompanyCalendar = ({ user, viewType }) => {
   const fetchCalendarData = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/calendar`, {
+      const res = await fetch(`${API_BASE_URL}/api/calendar`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

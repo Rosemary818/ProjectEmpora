@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './FeedbackManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ServiceExecutiveFeedback = () => {
   const [feedback, setFeedback] = useState([]);
@@ -17,7 +18,7 @@ const ServiceExecutiveFeedback = () => {
 
   const fetchFeedback = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/feedback/service-executive', {
+      const res = await fetch(`${API_BASE_URL}/api/feedback/service-executive`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();

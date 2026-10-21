@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const JobForm = ({ job, onClose, onSave }) => {
   const [departments, setDepartments] = useState([]);
@@ -36,7 +37,7 @@ const JobForm = ({ job, onClose, onSave }) => {
 
   const fetchDepartments = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/departments', {
+      const res = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -61,7 +62,7 @@ const JobForm = ({ job, onClose, onSave }) => {
       requiredSkills: formData.requiredSkills.split(',').map(s => s.trim()).filter(s => s)
     };
 
-    const url = job ? `http://localhost:5000/api/jobs/${job._id}` : 'http://localhost:5000/api/jobs';
+    const url = job ? `${API_BASE_URL}/api/jobs/${job._id}` : `${API_BASE_URL}/api/jobs`;
     const method = job ? 'PUT' : 'POST';
 
     try {

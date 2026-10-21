@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { exportToCSV, printReport } from './exportUtils';
+import { API_BASE_URL } from '../../config/api';
 
 const SkillsReport = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const SkillsReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/reports/skills', {
+      const res = await fetch(`${API_BASE_URL}/api/reports/skills`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const json = await res.json();

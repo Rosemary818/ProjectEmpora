@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MyResume.css';
+import { API_BASE_URL } from '../../config/api';
 
 const MyResume = () => {
   const [resume, setResume] = useState(null);
@@ -39,7 +40,7 @@ const MyResume = () => {
 
   const fetchResume = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/resume/me', {
+      const res = await fetch(`${API_BASE_URL}/api/resume/me`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -80,7 +81,7 @@ const MyResume = () => {
 
     setUploading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/resume/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/resume/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -107,7 +108,7 @@ const MyResume = () => {
     if (!window.confirm('Are you sure you want to delete your resume?')) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/resume/me', {
+      const res = await fetch(`${API_BASE_URL}/api/resume/me`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -167,11 +168,11 @@ const MyResume = () => {
             </div>
 
             <div className="resume-actions-bar" style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-              <a href={`http://localhost:5000${resume.resumeUrl}`} target="_blank" rel="noreferrer" className="btn btn-secondary">
+              <a href={`${API_BASE_URL}${resume.resumeUrl}`} target="_blank" rel="noreferrer" className="btn btn-secondary">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '0.5rem' }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
                 View
               </a>
-              <a href={`http://localhost:5000${resume.resumeUrl}`} download className="btn btn-primary">
+              <a href={`${API_BASE_URL}${resume.resumeUrl}`} download className="btn btn-primary">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '0.5rem' }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                 Download
               </a>

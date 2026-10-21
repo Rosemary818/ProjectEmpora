@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './WFH.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AdminWFH = () => {
   const [requests, setRequests] = useState([]);
@@ -15,7 +16,7 @@ const AdminWFH = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/wfh/all', {
+      const res = await fetch(`${API_BASE_URL}/api/wfh/all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }

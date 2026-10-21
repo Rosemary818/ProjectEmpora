@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TrainingManagement.css';
+import { API_BASE_URL } from '../../config/api';
 
 const HRTrainingManagement = () => {
   const [trainings, setTrainings] = useState([]);
@@ -28,7 +29,7 @@ const HRTrainingManagement = () => {
 
   const fetchTrainings = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/trainings', {
+      const res = await fetch(`${API_BASE_URL}/api/trainings`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -46,7 +47,7 @@ const HRTrainingManagement = () => {
 
   const fetchEnrollments = async (trainingId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/trainings/${trainingId}/enrollments`, {
+      const res = await fetch(`${API_BASE_URL}/api/trainings/${trainingId}/enrollments`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await res.json();
@@ -61,7 +62,7 @@ const HRTrainingManagement = () => {
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/trainings', {
+      const res = await fetch(`${API_BASE_URL}/api/trainings`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const HRTrainingManagement = () => {
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
     try {
-      const res = await fetch(`http://localhost:5000/api/trainings/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/trainings/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
