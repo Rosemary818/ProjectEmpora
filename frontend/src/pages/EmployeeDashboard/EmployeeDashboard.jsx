@@ -241,9 +241,6 @@ const EmployeeDashboard = ({ defaultTab = 'Dashboard' }) => {
                   <button onClick={() => { setActiveTab('My Profile'); setIsDropdownOpen(false); }}>
                     View Profile
                   </button>
-                  <button onClick={() => setIsDropdownOpen(false)}>
-                    Settings
-                  </button>
                   <div className="emp-dropdown-divider"></div>
                   <button onClick={handleLogout} className="emp-text-danger">
                     Logout
