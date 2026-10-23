@@ -175,9 +175,6 @@ const CareerPortalDashboard = () => {
                   <button onClick={() => { setActiveTab('My Profile'); setIsDropdownOpen(false); }}>
                     View Profile
                   </button>
-                  <button onClick={() => setIsDropdownOpen(false)}>
-                    Settings
-                  </button>
                   <div className="career-dropdown-divider"></div>
                   <button onClick={handleLogout} className="career-text-danger">
                     Logout
