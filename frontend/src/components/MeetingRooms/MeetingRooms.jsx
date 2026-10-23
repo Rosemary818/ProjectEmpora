@@ -8,10 +8,65 @@ const timeToMins = (timeStr) => {
   return h * 60 + m;
 };
 
+export const calculateBookingStatus = (booking) => {
+  if (!booking) return 'Upcoming';
+  // Preserve existing Cancelled status unchanged
+  if (booking.status === 'Cancelled') {
+    return 'Cancelled';
+  }
+
+  if (!booking.date || !booking.startTime || !booking.endTime) {
+    return booking.status || 'Upcoming';
+  }
+
+  let year;
+  let month;
+  let day;
+
+  if (typeof booking.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(booking.date)) {
+    const [y, m, d] = booking.date.split('-').map(Number);
+    year = y;
+    month = m - 1;
+    day = d;
+  } else {
+    const d = new Date(booking.date);
+    if (isNaN(d.getTime())) {
+      return booking.status || 'Upcoming';
+    }
+    year = d.getFullYear();
+    month = d.getMonth();
+    day = d.getDate();
+  }
+
+  const [startH = 0, startM = 0] = (booking.startTime || '00:00').split(':').map(Number);
+  const [endH = 0, endM = 0] = (booking.endTime || '00:00').split(':').map(Number);
+
+  const startDateTime = new Date(year, month, day, startH, startM, 0, 0);
+  const endDateTime = new Date(year, month, day, endH, endM, 0, 0);
+
+  // If meeting spans past midnight
+  if (endDateTime < startDateTime) {
+    endDateTime.setDate(endDateTime.getDate() + 1);
+  }
+
+  const now = new Date().getTime();
+  const start = startDateTime.getTime();
+  const end = endDateTime.getTime();
+
+  if (now < start) {
+    return 'Upcoming';
+  } else if (now >= end) {
+    return 'Completed';
+  } else {
+    return 'Ongoing';
+  }
+};
+
 const MeetingRooms = ({ userRole, user }) => {
   const [rooms, setRooms] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [, setTick] = useState(0);
   
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -51,6 +106,14 @@ const MeetingRooms = ({ userRole, user }) => {
     fetchUsers();
     fetchSwapRequests();
   }, [selectedDate]);
+
+  // Periodic interval to dynamically update statuses as time passes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTick(t => t + 1);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchSwapRequests = async () => {
     try {
@@ -96,7 +159,7 @@ const MeetingRooms = ({ userRole, user }) => {
   };
 
   const checkAllAlternatives = async (allBookings) => {
-    const upcoming = allBookings.filter(b => b.status === 'Upcoming' && (String(b.createdBy?._id) === String(user.id) || String(b.createdBy?._id) === String(user._id) || userRole === 'Manager'));
+    const upcoming = allBookings.filter(b => calculateBookingStatus(b) === 'Upcoming' && (String(b.createdBy?._id) === String(user.id) || String(b.createdBy?._id) === String(user._id) || userRole === 'Manager'));
     const newSuggestions = {};
     for (const b of upcoming) {
       try {
@@ -499,7 +562,9 @@ const MeetingRooms = ({ userRole, user }) => {
             </tr>
           </thead>
           <tbody>
-            {bookings.length > 0 ? bookings.map(booking => (
+            {bookings.length > 0 ? bookings.map(booking => {
+              const currentStatus = calculateBookingStatus(booking);
+              return (
               <React.Fragment key={booking._id}>
                 {roomSuggestions[booking._id] && (
                   <tr>
@@ -540,13 +605,18 @@ const MeetingRooms = ({ userRole, user }) => {
                 <td>{new Date(booking.date).toLocaleDateString()}</td>
                 <td>{booking.startTime} - {booking.endTime}</td>
                 <td>{booking.roomId?.name || 'N/A'}</td>
-                <td>{booking.status}</td>
+                <td>
+                  <span className={`mr-badge mr-badge-${currentStatus.toLowerCase()}`}>
+                    <span className="mr-badge-dot"></span>
+                    {currentStatus}
+                  </span>
+                </td>
                 <td>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    {booking.status !== 'Cancelled' && (String(booking.createdBy?._id) === String(user.id) || String(booking.createdBy?._id) === String(user._id) || userRole === 'Manager') && (
+                    {currentStatus !== 'Cancelled' && currentStatus !== 'Completed' && (String(booking.createdBy?._id) === String(user.id) || String(booking.createdBy?._id) === String(user._id) || userRole === 'Manager') && (
                       <button className="mr-btn-cancel" onClick={() => handleCancelBooking(booking._id)}>Cancel</button>
                     )}
-                    {booking.status === 'Upcoming' && (String(booking.createdBy?._id) === String(user.id) || String(booking.createdBy?._id) === String(user._id)) && (
+                    {currentStatus === 'Upcoming' && (String(booking.createdBy?._id) === String(user.id) || String(booking.createdBy?._id) === String(user._id)) && (
                       <button className="mr-btn-secondary" onClick={() => handleOpenSwapModal(booking)} disabled={loading}>Request Swap</button>
                     )}
                     {booking.visitorId && String(booking.createdBy?._id) === (user.id || user._id) && (
@@ -569,9 +639,10 @@ const MeetingRooms = ({ userRole, user }) => {
                 </td>
               </tr>
               </React.Fragment>
-            )) : (
+            );
+            }) : (
               <tr>
-                <td colSpan="7" style={{textAlign: 'center', padding: '2rem'}}>No upcoming meetings.</td>
+                <td colSpan="7" style={{textAlign: 'center', padding: '2rem'}}>No meetings scheduled.</td>
               </tr>
             )}
           </tbody>

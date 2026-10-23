@@ -14,7 +14,7 @@ export interface IRoomBooking extends Document {
   visitorId?: mongoose.Types.ObjectId;
   preferredCapacity?: number;
   preferredRoomId?: mongoose.Types.ObjectId;
-  status: 'Upcoming' | 'Completed' | 'Cancelled';
+  status: 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -80,7 +80,7 @@ const roomBookingSchema = new Schema<IRoomBooking>(
     },
     status: {
       type: String,
-      enum: ['Upcoming', 'Completed', 'Cancelled'],
+      enum: ['Upcoming', 'Ongoing', 'Completed', 'Cancelled'],
       default: 'Upcoming',
     }
   },

@@ -7,6 +7,7 @@ import { ServiceRequest } from '../models/serviceRequest.model';
 import { Project } from '../models/project.model';
 import { RoomBooking } from '../models/roomBooking.model';
 import { calculateLeaveBalances } from './leave.controller';
+import { calculateBookingStatus } from '../utils/bookingStatus';
 
 export const chatWithBot = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -65,7 +66,8 @@ export const chatWithBot = async (req: Request, res: Response, next: NextFunctio
     } else if (lowerMessage.includes('meeting')) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const meetings = await RoomBooking.find({ participants: userId, status: 'Upcoming', date: { $gte: today } });
+        const allCandidateMeetings = await RoomBooking.find({ participants: userId, status: { $ne: 'Cancelled' }, date: { $gte: today } });
+        const meetings = allCandidateMeetings.filter(m => calculateBookingStatus(m) === 'Upcoming');
         if (meetings.length > 0) {
             const meetingDetails = meetings.map(m => `${m.title} at ${m.startTime}`).join(', ');
             responseText = `Your upcoming meetings today are: ${meetingDetails}.`;

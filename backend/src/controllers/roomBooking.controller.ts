@@ -6,6 +6,7 @@ import { Notification } from '../models/notification.model';
 import { Visitor } from '../models/visitor.model';
 import { SwapRequest } from '../models/swapRequest.model';
 import { AppError } from '../utils/error';
+import { calculateBookingStatus } from '../utils/bookingStatus';
 import mongoose from 'mongoose';
 
 // Helper to parse time string "HH:mm" to minutes since midnight for easy comparison
@@ -82,7 +83,18 @@ export const getBookings = async (req: Request, res: Response, next: NextFunctio
       .populate('visitorId')
       .sort({ date: 1, startTime: 1 });
 
-    res.status(200).json({ success: true, data: bookings });
+    const updatedBookings = await Promise.all(
+      bookings.map(async (booking) => {
+        const dynamicStatus = calculateBookingStatus(booking);
+        if (booking.status !== dynamicStatus && booking.status !== 'Cancelled') {
+          booking.status = dynamicStatus;
+          await RoomBooking.updateOne({ _id: booking._id }, { status: dynamicStatus });
+        }
+        return booking;
+      })
+    );
+
+    res.status(200).json({ success: true, data: updatedBookings });
   } catch (error) {
     next(error);
   }
@@ -169,6 +181,14 @@ export const createBooking = async (req: Request, res: Response, next: NextFunct
       }
     }
 
+    // Determine dynamic initial status
+    const initialStatus = calculateBookingStatus({
+      date: bookingDate,
+      startTime,
+      endTime,
+      status: 'Upcoming'
+    });
+
     // Create booking
     const booking = new RoomBooking({
       title,
@@ -183,7 +203,7 @@ export const createBooking = async (req: Request, res: Response, next: NextFunct
       endTime,
       preferredCapacity,
       preferredRoomId: preferredRoomId || undefined,
-      status: 'Upcoming'
+      status: initialStatus
     });
 
     // Handle Visitor Creation
@@ -246,6 +266,14 @@ export const cancelBooking = async (req: Request, res: Response, next: NextFunct
       return next(new AppError('Not authorized to cancel this booking', 403));
     }
 
+    const currentStatus = calculateBookingStatus(booking);
+    if (currentStatus === 'Completed') {
+      return next(new AppError('Cannot cancel a completed meeting', 400));
+    }
+    if (booking.status === 'Cancelled') {
+      return next(new AppError('Meeting is already cancelled', 400));
+    }
+
     booking.status = 'Cancelled';
     await booking.save();
 
@@ -280,7 +308,13 @@ export const getAvailableAlternatives = async (req: Request, res: Response, next
     const booking = await RoomBooking.findById(req.params.id).populate('roomId');
     if (!booking) return next(new AppError('Booking not found', 404));
 
-    if (booking.status !== 'Upcoming') {
+    const currentStatus = calculateBookingStatus(booking);
+    if (booking.status !== currentStatus && booking.status !== 'Cancelled') {
+      booking.status = currentStatus;
+      await RoomBooking.updateOne({ _id: booking._id }, { status: currentStatus });
+    }
+
+    if (currentStatus !== 'Upcoming') {
       return res.status(200).json({ success: true, data: null, message: 'Only upcoming bookings can be swapped' });
     }
 
@@ -368,7 +402,13 @@ export const swapRoom = async (req: Request, res: Response, next: NextFunction) 
       return next(new AppError('Not authorized to modify this booking', 403));
     }
 
-    if (booking.status !== 'Upcoming') {
+    const currentStatus = calculateBookingStatus(booking);
+    if (booking.status !== currentStatus && booking.status !== 'Cancelled') {
+      booking.status = currentStatus;
+      await RoomBooking.updateOne({ _id: booking._id }, { status: currentStatus });
+    }
+
+    if (currentStatus !== 'Upcoming') {
       return next(new AppError('Only upcoming bookings can be swapped', 400));
     }
 
@@ -537,7 +577,13 @@ export const getSwappableBookings = async (req: Request, res: Response, next: Ne
     const booking = await RoomBooking.findById(req.params.id).populate('roomId');
     if (!booking) return next(new AppError('Booking not found', 404));
 
-    if (booking.status !== 'Upcoming') {
+    const currentStatus = calculateBookingStatus(booking);
+    if (booking.status !== currentStatus && booking.status !== 'Cancelled') {
+      booking.status = currentStatus;
+      await RoomBooking.updateOne({ _id: booking._id }, { status: currentStatus });
+    }
+
+    if (currentStatus !== 'Upcoming') {
       return res.status(200).json({ success: true, data: [] });
     }
 
@@ -553,7 +599,7 @@ export const getSwappableBookings = async (req: Request, res: Response, next: Ne
 
     const sameDateBookings = await RoomBooking.find({
       date: { $gte: bookingDate, $lt: nextDay },
-      status: 'Upcoming',
+      status: { $ne: 'Cancelled' },
       _id: { $ne: booking._id },
       createdBy: { $ne: req.user.id }
     }).populate('roomId').populate('createdBy', 'firstName lastName email');
@@ -561,7 +607,9 @@ export const getSwappableBookings = async (req: Request, res: Response, next: Ne
     const startMins = timeToMinutes(booking.startTime);
     const endMins = timeToMinutes(booking.endTime);
 
-    const swappable = sameDateBookings.filter(otherBooking => {
+    const swappable = sameDateBookings
+      .filter(otherBooking => calculateBookingStatus(otherBooking) === 'Upcoming')
+      .filter(otherBooking => {
       const otherRoom = otherBooking.roomId as any;
       if (!otherRoom || otherRoom.status !== 'Active') return false;
 
@@ -623,7 +671,10 @@ export const createSwapRequest = async (req: Request, res: Response, next: NextF
       return next(new AppError('You can only request swaps for your own bookings', 403));
     }
 
-    if (requesterBooking.status !== 'Upcoming' || receiverBooking.status !== 'Upcoming') {
+    const reqStatus = calculateBookingStatus(requesterBooking);
+    const recStatus = calculateBookingStatus(receiverBooking);
+
+    if (reqStatus !== 'Upcoming' || recStatus !== 'Upcoming') {
       return next(new AppError('Both bookings must be upcoming', 400));
     }
 
@@ -677,7 +728,10 @@ export const acceptSwapRequest = async (req: Request, res: Response, next: NextF
     const reqBooking = await RoomBooking.findById(swapReq.requesterBooking).populate('roomId');
     const recBooking = await RoomBooking.findById(swapReq.receiverBooking).populate('roomId');
 
-    if (!reqBooking || !recBooking || reqBooking.status !== 'Upcoming' || recBooking.status !== 'Upcoming') {
+    const reqStatus = reqBooking ? calculateBookingStatus(reqBooking) : null;
+    const recStatus = recBooking ? calculateBookingStatus(recBooking) : null;
+
+    if (!reqBooking || !recBooking || reqStatus !== 'Upcoming' || recStatus !== 'Upcoming') {
       swapReq.status = 'Cancelled';
       await swapReq.save();
       return next(new AppError('One or both bookings are no longer active/upcoming. Request cancelled.', 400));

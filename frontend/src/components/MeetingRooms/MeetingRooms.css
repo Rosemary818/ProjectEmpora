@@ -236,6 +236,81 @@
   background: #fca5a5;
 }
 
+/* Meeting Status Badges */
+.mr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: capitalize;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.mr-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+/* Upcoming - Blue */
+.mr-badge-upcoming {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+.mr-badge-upcoming .mr-badge-dot {
+  background: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Ongoing - Emerald/Green with animated pulse */
+.mr-badge-ongoing {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+.mr-badge-ongoing .mr-badge-dot {
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  animation: mr-pulse-green 2s infinite ease-in-out;
+}
+
+@keyframes mr-pulse-green {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.7;
+  }
+}
+
+/* Completed - Neutral Slate/Gray */
+.mr-badge-completed {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+.mr-badge-completed .mr-badge-dot {
+  background: #9ca3af;
+}
+
+/* Cancelled - Muted Red */
+.mr-badge-cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+.mr-badge-cancelled .mr-badge-dot {
+  background: #ef4444;
+}
+
 /* Modal styles */
 .mr-modal-overlay {
   position: fixed;
